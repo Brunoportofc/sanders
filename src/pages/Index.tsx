@@ -57,36 +57,48 @@ const Index = () => {
       <Header />
       
       {/* Hero Banner */}
-      <section className="bg-gradient-hero py-20 text-white relative overflow-hidden">
-        <div className="container mx-auto px-4">
+      <section className="bg-gradient-hero-glow py-24 text-white relative overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-sanders-blue-glow/20 rounded-full blur-3xl animate-float"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-sanders-ocean/30 rounded-full blur-2xl animate-float" style={{animationDelay: '2s'}}></div>
+          <div className="absolute bottom-20 left-1/3 w-40 h-40 bg-sanders-blue-glow/15 rounded-full blur-3xl animate-float" style={{animationDelay: '4s'}}></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <Badge variant="secondary" className="bg-white/20 text-white">
+            <div className="space-y-8 animate-fade-up">
+              <Badge variant="secondary" className="bg-white/20 text-white backdrop-blur-sm animate-scale-up">
+                <Award className="h-4 w-4 mr-2" />
                 +30 anos de experiência
               </Badge>
-              <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
+              <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
                 Equipamentos Hospitalares de 
-                <span className="text-sanders-blue-light"> Excelência</span>
+                <span className="gradient-text block mt-2">Excelência</span>
               </h1>
-              <p className="text-xl opacity-90">
+              <p className="text-xl opacity-90 leading-relaxed">
                 Soluções completas em esterilização e equipamentos médicos 
                 com certificações ANVISA e ISO 13485.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" variant="secondary" asChild>
-                  <Link to="/produtos">Ver Produtos</Link>
+                <Button size="lg" variant="secondary" className="hover-lift animate-glow-pulse" asChild>
+                  <Link to="/produtos">
+                    Ver Produtos
+                    <ArrowRight className="h-5 w-5 ml-2" />
+                  </Link>
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-sanders-blue" asChild>
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-sanders-blue hover-lift glass-effect" asChild>
                   <Link to="/quero-comprar">Solicitar Cotação</Link>
                 </Button>
               </div>
             </div>
-            <div className="bg-white/10 rounded-2xl p-8 backdrop-blur-sm">
-              <div className="aspect-video bg-sanders-blue-light rounded-lg flex items-center justify-center">
-                <div className="text-center text-sanders-blue">
-                  <Settings className="h-16 w-16 mx-auto mb-4" />
-                  <p className="font-semibold">Equipamentos Sanders</p>
-                  <p className="text-sm">Tecnologia e Qualidade</p>
+            <div className="glass-effect rounded-3xl p-8 backdrop-blur-md animate-scale-up hover-lift" style={{animationDelay: '0.3s'}}>
+              <div className="aspect-video bg-gradient-pearl rounded-2xl flex items-center justify-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-sanders-blue/10 animate-glow-pulse"></div>
+                <div className="text-center text-sanders-blue relative z-10">
+                  <Settings className="h-20 w-20 mx-auto mb-4 animate-float" />
+                  <p className="font-bold text-lg">Equipamentos Sanders</p>
+                  <p className="text-sm opacity-80">Tecnologia e Qualidade</p>
                 </div>
               </div>
             </div>
@@ -95,59 +107,65 @@ const Index = () => {
       </section>
 
       {/* Diferenciais */}
-      <section className="py-16">
+      <section className="py-20 relative">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Nossos Diferenciais</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Por que milhares de profissionais da saúde confiam na Sanders do Brasil
+          <div className="text-center mb-16 animate-fade-up">
+            <Badge variant="outline" className="mb-4">
+              <CheckCircle className="h-4 w-4 mr-2" />
+              Nossos Diferenciais
+            </Badge>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6 gradient-text">
+              Por que Escolher a Sanders?
+            </h2>
+            <p className="text-muted-foreground max-w-3xl mx-auto text-lg">
+              Mais de 30 anos de inovação e excelência no mercado de equipamentos médicos
             </p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="text-center hover:shadow-card transition-shadow">
+            <Card className="text-center glass-effect hover-lift group animate-scale-up border-0">
               <CardContent className="p-8">
-                <div className="h-16 w-16 bg-sanders-success rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Leaf className="h-8 w-8 text-white" />
+                <div className="h-20 w-20 bg-gradient-to-br from-sanders-success to-sanders-success/80 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:animate-glow-pulse shadow-glow">
+                  <Leaf className="h-10 w-10 text-white" />
                 </div>
-                <h3 className="font-semibold mb-2">Sustentabilidade</h3>
-                <p className="text-sm text-muted-foreground">
+                <h3 className="font-bold text-lg mb-3">Sustentabilidade</h3>
+                <p className="text-muted-foreground leading-relaxed">
                   Equipamentos eco-friendly com baixo consumo de energia e água
                 </p>
               </CardContent>
             </Card>
             
-            <Card className="text-center hover:shadow-card transition-shadow">
+            <Card className="text-center glass-effect hover-lift group animate-scale-up border-0" style={{animationDelay: '0.1s'}}>
               <CardContent className="p-8">
-                <div className="h-16 w-16 bg-sanders-blue rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Settings className="h-8 w-8 text-white" />
+                <div className="h-20 w-20 bg-gradient-to-br from-sanders-blue to-sanders-blue-dark rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:animate-glow-pulse shadow-glow">
+                  <Settings className="h-10 w-10 text-white" />
                 </div>
-                <h3 className="font-semibold mb-2">Automação</h3>
-                <p className="text-sm text-muted-foreground">
+                <h3 className="font-bold text-lg mb-3">Automação</h3>
+                <p className="text-muted-foreground leading-relaxed">
                   Controles digitais avançados com monitoramento inteligente
                 </p>
               </CardContent>
             </Card>
             
-            <Card className="text-center hover:shadow-card transition-shadow">
+            <Card className="text-center glass-effect hover-lift group animate-scale-up border-0" style={{animationDelay: '0.2s'}}>
               <CardContent className="p-8">
-                <div className="h-16 w-16 bg-sanders-success rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Award className="h-8 w-8 text-white" />
+                <div className="h-20 w-20 bg-gradient-to-br from-sanders-ocean to-sanders-blue rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:animate-glow-pulse shadow-glow">
+                  <Award className="h-10 w-10 text-white" />
                 </div>
-                <h3 className="font-semibold mb-2">Certificações</h3>
-                <p className="text-sm text-muted-foreground">
+                <h3 className="font-bold text-lg mb-3">Certificações</h3>
+                <p className="text-muted-foreground leading-relaxed">
                   ISO 13485, ANVISA e conformidade com normas internacionais
                 </p>
               </CardContent>
             </Card>
             
-            <Card className="text-center hover:shadow-card transition-shadow">
+            <Card className="text-center glass-effect hover-lift group animate-scale-up border-0" style={{animationDelay: '0.3s'}}>
               <CardContent className="p-8">
-                <div className="h-16 w-16 bg-sanders-blue rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Users className="h-8 w-8 text-white" />
+                <div className="h-20 w-20 bg-gradient-to-br from-sanders-blue to-sanders-success rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:animate-glow-pulse shadow-glow">
+                  <Users className="h-10 w-10 text-white" />
                 </div>
-                <h3 className="font-semibold mb-2">Pós-venda</h3>
-                <p className="text-sm text-muted-foreground">
+                <h3 className="font-bold text-lg mb-3">Pós-venda</h3>
+                <p className="text-muted-foreground leading-relaxed">
                   Suporte técnico especializado e garantia estendida
                 </p>
               </CardContent>
@@ -157,30 +175,43 @@ const Index = () => {
       </section>
 
       {/* Produtos em Destaque */}
-      <section className="py-16 bg-muted">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Produtos em Destaque</h2>
-            <p className="text-muted-foreground">
-              Conheça nossa linha premium de equipamentos
+      <section className="py-20 bg-gradient-pearl relative overflow-hidden">
+        <div className="absolute inset-0 bg-sanders-blue-light/5"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-16 animate-fade-up">
+            <Badge variant="outline" className="mb-4">
+              <Settings className="h-4 w-4 mr-2" />
+              Linha Premium
+            </Badge>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6 gradient-text">
+              Produtos em Destaque
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Conheça nossa linha premium de equipamentos com tecnologia de ponta
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            {produtosDestaque.map((produto) => (
-              <Card key={produto.id} className="hover:shadow-card transition-shadow">
+            {produtosDestaque.map((produto, index) => (
+              <Card key={produto.id} className="glass-effect hover-lift group border-0 overflow-hidden animate-scale-up" style={{animationDelay: `${index * 0.1}s`}}>
                 <CardContent className="p-0">
-                  <img
-                    src={produto.image}
-                    alt={produto.name}
-                    className="w-full h-48 object-cover rounded-t-lg"
-                  />
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold mb-2">{produto.name}</h3>
-                    <p className="text-muted-foreground text-sm mb-4">{produto.description}</p>
-                    <div className="text-2xl font-bold text-sanders-blue mb-4">{produto.price}</div>
-                    <Button asChild className="w-full">
-                      <Link to={`/produto/${produto.id}`}>Ver Detalhes</Link>
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={produto.image}
+                      alt={produto.name}
+                      className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-sanders-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  </div>
+                  <div className="p-8">
+                    <h3 className="text-xl font-bold mb-3 group-hover:text-sanders-blue transition-colors">{produto.name}</h3>
+                    <p className="text-muted-foreground mb-4 leading-relaxed">{produto.description}</p>
+                    <div className="text-3xl font-bold gradient-text mb-6">{produto.price}</div>
+                    <Button asChild className="w-full hover-lift animate-glow-pulse">
+                      <Link to={`/produto/${produto.id}`}>
+                        Ver Detalhes
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </Link>
                     </Button>
                   </div>
                 </CardContent>
@@ -188,11 +219,11 @@ const Index = () => {
             ))}
           </div>
           
-          <div className="text-center mt-12">
-            <Button size="lg" variant="outline" asChild>
+          <div className="text-center mt-16 animate-fade-up" style={{animationDelay: '0.4s'}}>
+            <Button size="lg" variant="outline" className="glass-effect hover-lift" asChild>
               <Link to="/produtos">
                 Ver Todos os Produtos
-                <ArrowRight className="h-4 w-4 ml-2" />
+                <ArrowRight className="h-5 w-5 ml-2" />
               </Link>
             </Button>
           </div>
@@ -200,29 +231,37 @@ const Index = () => {
       </section>
 
       {/* Depoimentos */}
-      <section className="py-16">
+      <section className="py-20 relative">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">O que Nossos Clientes Dizem</h2>
-            <p className="text-muted-foreground">
-              Depoimentos reais de profissionais que confiam na Sanders
+          <div className="text-center mb-16 animate-fade-up">
+            <Badge variant="outline" className="mb-4">
+              <Users className="h-4 w-4 mr-2" />
+              Depoimentos
+            </Badge>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6 gradient-text">
+              Histórias de Sucesso
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Depoimentos reais de profissionais que confiam na Sanders do Brasil
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
             {depoimentos.map((depoimento, index) => (
-              <Card key={index} className="hover:shadow-card transition-shadow">
-                <CardContent className="p-8">
-                  <div className="flex items-center mb-4">
+              <Card key={index} className="glass-effect hover-lift group border-0 animate-scale-up" style={{animationDelay: `${index * 0.1}s`}}>
+                <CardContent className="p-8 relative">
+                  <div className="absolute top-4 right-4 opacity-20 group-hover:opacity-40 transition-opacity">
+                    <Quote className="h-12 w-12 text-sanders-blue" />
+                  </div>
+                  <div className="flex items-center mb-6">
                     {[...Array(depoimento.rating)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <Star key={i} className="h-5 w-5 fill-sanders-blue text-sanders-blue mr-1" />
                     ))}
                   </div>
-                  <Quote className="h-8 w-8 text-sanders-blue mb-4" />
-                  <p className="text-muted-foreground mb-6 italic">"{depoimento.texto}"</p>
-                  <div>
-                    <p className="font-semibold">{depoimento.nome}</p>
-                    <p className="text-sm text-muted-foreground">{depoimento.empresa}</p>
+                  <p className="text-foreground mb-8 italic text-lg leading-relaxed group-hover:text-sanders-blue/80 transition-colors">"{depoimento.texto}"</p>
+                  <div className="border-t border-border/20 pt-6">
+                    <p className="font-bold text-lg">{depoimento.nome}</p>
+                    <p className="text-sanders-blue font-medium">{depoimento.empresa}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -232,22 +271,40 @@ const Index = () => {
       </section>
 
       {/* CTA Final */}
-      <section className="py-16 bg-sanders-blue text-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6">
-              Pronto para Modernizar seus Equipamentos?
+      <section className="py-24 bg-gradient-hero-glow text-white relative overflow-hidden">
+        {/* Enhanced background effects */}
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-20 w-40 h-40 bg-sanders-blue-glow/30 rounded-full blur-3xl animate-float"></div>
+          <div className="absolute bottom-20 right-10 w-32 h-32 bg-sanders-ocean/40 rounded-full blur-2xl animate-float" style={{animationDelay: '3s'}}></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-sanders-blue-glow/20 rounded-full blur-3xl animate-float" style={{animationDelay: '1.5s'}}></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto text-center animate-fade-up">
+            <Badge variant="secondary" className="bg-white/20 text-white backdrop-blur-sm mb-6">
+              <CheckCircle className="h-4 w-4 mr-2" />
+              Transforme sua Instituição
+            </Badge>
+            <h2 className="text-4xl lg:text-6xl font-bold mb-8 leading-tight">
+              Pronto para Modernizar seus 
+              <span className="block gradient-text">Equipamentos?</span>
             </h2>
-            <p className="text-lg opacity-90 mb-8">
+            <p className="text-xl opacity-90 mb-12 leading-relaxed max-w-3xl mx-auto">
               Entre em contato conosco e descubra como podemos ajudar sua instituição 
-              com soluções personalizadas em equipamentos médicos.
+              com soluções personalizadas em equipamentos médicos de última geração.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" asChild>
-                <Link to="/quero-comprar">Solicitar Cotação</Link>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Button size="lg" variant="secondary" className="hover-lift animate-glow-pulse" asChild>
+                <Link to="/quero-comprar">
+                  Solicitar Cotação
+                  <ArrowRight className="h-5 w-5 ml-2" />
+                </Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-sanders-blue" asChild>
-                <Link to="/contato">Falar com Especialista</Link>
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-sanders-blue hover-lift glass-effect" asChild>
+                <Link to="/contato">
+                  Falar com Especialista
+                  <Users className="h-5 w-5 ml-2" />
+                </Link>
               </Button>
             </div>
           </div>

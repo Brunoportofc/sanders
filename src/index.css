@@ -2,13 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Sanders do Brasil - Design System
-Paleta institucional: azul, branco, cinza
+/* Sanders do Brasil - Enhanced Design System
+Paleta premium: azul oceano, branco pérola, cinza platina
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    /* Light mode backgrounds */
+    --background: 0 0% 99%;
     --foreground: 210 24% 16%;
 
     --card: 0 0% 100%;
@@ -17,49 +18,67 @@ Paleta institucional: azul, branco, cinza
     --popover: 0 0% 100%;
     --popover-foreground: 210 24% 16%;
 
-    /* Azul institucional Sanders */
-    --primary: 214 84% 56%;
+    /* Enhanced Blue Palette */
+    --primary: 214 88% 58%;
     --primary-foreground: 0 0% 100%;
-    --primary-dark: 214 100% 47%;
-    --primary-light: 214 32% 91%;
+    --primary-dark: 220 95% 48%;
+    --primary-light: 214 50% 92%;
+    --primary-glow: 214 100% 72%;
 
-    /* Cinza institucional */
-    --secondary: 210 11% 71%;
+    /* Enhanced Grays */
+    --secondary: 210 16% 68%;
     --secondary-foreground: 210 24% 16%;
 
-    --muted: 210 13% 97%;
-    --muted-foreground: 210 7% 56%;
+    --muted: 210 20% 98%;
+    --muted-foreground: 210 8% 52%;
 
-    --accent: 214 32% 91%;
+    --accent: 214 40% 88%;
     --accent-foreground: 210 24% 16%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 13% 87%;
-    --input: 210 13% 87%;
-    --ring: 214 84% 56%;
+    --border: 210 20% 90%;
+    --input: 210 20% 92%;
+    --ring: 214 88% 58%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    /* Sanders specific colors */
-    --sanders-blue: 214 84% 56%;
-    --sanders-blue-dark: 214 100% 47%;
-    --sanders-blue-light: 214 32% 91%;
-    --sanders-gray: 210 11% 71%;
-    --sanders-gray-light: 210 13% 97%;
-    --sanders-success: 142 71% 45%;
+    /* Sanders enhanced colors */
+    --sanders-blue: 214 88% 58%;
+    --sanders-blue-dark: 220 95% 48%;
+    --sanders-blue-light: 214 50% 92%;
+    --sanders-blue-glow: 214 100% 72%;
+    --sanders-gray: 210 16% 68%;
+    --sanders-gray-light: 210 20% 98%;
+    --sanders-success: 142 76% 48%;
+    --sanders-ocean: 200 95% 55%;
+    --sanders-pearl: 40 10% 98%;
+    --sanders-platinum: 220 8% 85%;
 
-    /* Gradients */
+    /* Enhanced Gradients */
     --gradient-hero: linear-gradient(135deg, hsl(var(--sanders-blue)), hsl(var(--sanders-blue-dark)));
-    --gradient-card: linear-gradient(145deg, hsl(var(--background)), hsl(var(--sanders-blue-light)));
+    --gradient-hero-glow: linear-gradient(135deg, hsl(var(--sanders-blue) / 0.9), hsl(var(--sanders-blue-dark) / 0.9));
+    --gradient-card: linear-gradient(145deg, hsl(var(--background)), hsl(var(--sanders-blue-light) / 0.3));
+    --gradient-pearl: linear-gradient(145deg, hsl(var(--sanders-pearl)), hsl(var(--background)));
+    --gradient-ocean: linear-gradient(135deg, hsl(var(--sanders-ocean) / 0.8), hsl(var(--sanders-blue) / 0.8));
 
-    /* Shadows */
-    --shadow-card: 0 4px 20px hsl(var(--sanders-blue) / 0.1);
-    --shadow-hero: 0 20px 60px hsl(var(--sanders-blue) / 0.2);
+    /* Lighting Effects */
+    --light-blue-1: 214 100% 72%;
+    --light-blue-2: 200 95% 75%;
+    --light-blue-3: 190 85% 78%;
 
-    /* Animations */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Enhanced Shadows */
+    --shadow-card: 0 8px 32px hsl(var(--sanders-blue) / 0.12);
+    --shadow-hero: 0 25px 80px hsl(var(--sanders-blue) / 0.25);
+    --shadow-glow: 0 0 40px hsl(var(--sanders-blue-glow) / 0.4);
+    --shadow-soft: 0 4px 16px hsl(var(--foreground) / 0.08);
+    --shadow-elevated: 0 12px 48px hsl(var(--sanders-blue) / 0.15);
+
+    /* Enhanced Animations */
+    --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-spring: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-fast: all 0.2s ease-out;
 
     --sidebar-background: 0 0% 98%;
 
@@ -79,33 +98,52 @@ Paleta institucional: azul, branco, cinza
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    /* Dark mode with deep ocean theme */
+    --background: 220 30% 8%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 220 25% 12%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 220 25% 12%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 214 100% 72%;
+    --primary-foreground: 220 30% 8%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 220 20% 20%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 220 20% 15%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 220 20% 18%;
     --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 75% 55%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 220 20% 18%;
+    --input: 220 20% 18%;
+    --ring: 214 100% 72%;
+
+    /* Dark mode enhanced colors */
+    --sanders-blue: 214 100% 72%;
+    --sanders-blue-dark: 220 95% 48%;
+    --sanders-blue-light: 214 50% 25%;
+    --sanders-blue-glow: 214 100% 72%;
+    --sanders-gray: 220 15% 25%;
+    --sanders-gray-light: 220 20% 15%;
+    --sanders-success: 142 76% 48%;
+
+    /* Dark gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--sanders-blue) / 0.9), hsl(var(--sanders-blue-dark) / 0.9));
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(var(--sanders-blue-light) / 0.2));
+
+    /* Dark shadows with glow */
+    --shadow-card: 0 8px 32px hsl(var(--sanders-blue) / 0.2);
+    --shadow-hero: 0 25px 80px hsl(var(--sanders-blue) / 0.3);
+    --shadow-glow: 0 0 60px hsl(var(--sanders-blue-glow) / 0.6);
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -123,6 +161,134 @@ Paleta institucional: azul, branco, cinza
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground relative overflow-x-hidden;
+  }
+
+  /* Animated background lights */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background: 
+      radial-gradient(circle at 20% 30%, hsl(var(--light-blue-1) / 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsl(var(--light-blue-2) / 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 40% 80%, hsl(var(--light-blue-3) / 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 90% 70%, hsl(var(--light-blue-1) / 0.06) 0%, transparent 50%),
+      radial-gradient(circle at 10% 90%, hsl(var(--light-blue-2) / 0.09) 0%, transparent 50%);
+    animation: float-lights 20s ease-in-out infinite;
+  }
+
+  /* Dark mode lights */
+  .dark body::before {
+    background: 
+      radial-gradient(circle at 20% 30%, hsl(var(--sanders-blue-glow) / 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsl(var(--sanders-ocean) / 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 40% 80%, hsl(var(--sanders-blue) / 0.18) 0%, transparent 50%),
+      radial-gradient(circle at 90% 70%, hsl(var(--sanders-blue-glow) / 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 10% 90%, hsl(var(--sanders-ocean) / 0.14) 0%, transparent 50%);
+    animation: float-lights-dark 15s ease-in-out infinite;
+  }
+}
+
+/* Enhanced animations */
+@keyframes float-lights {
+  0%, 100% { 
+    transform: translate(0, 0) scale(1);
+  }
+  25% { 
+    transform: translate(-10px, -15px) scale(1.1);
+  }
+  50% { 
+    transform: translate(15px, -10px) scale(0.9);
+  }
+  75% { 
+    transform: translate(-5px, 10px) scale(1.05);
+  }
+}
+
+@keyframes float-lights-dark {
+  0%, 100% { 
+    transform: translate(0, 0) scale(1);
+    filter: blur(40px);
+  }
+  33% { 
+    transform: translate(-15px, -20px) scale(1.2);
+    filter: blur(35px);
+  }
+  66% { 
+    transform: translate(20px, -15px) scale(0.8);
+    filter: blur(45px);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-up {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px hsl(var(--sanders-blue) / 0.2);
+  }
+  50% {
+    box-shadow: 0 0 40px hsl(var(--sanders-blue) / 0.4);
+  }
+}
+
+/* Utility classes */
+@layer utilities {
+  .animate-fade-up {
+    animation: fade-up 0.6s ease-out;
+  }
+  
+  .animate-scale-up {
+    animation: scale-up 0.4s ease-out;
+  }
+  
+  .animate-glow-pulse {
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+
+  .glass-effect {
+    backdrop-filter: blur(16px);
+    background: hsl(var(--background) / 0.8);
+    border: 1px solid hsl(var(--border) / 0.2);
+  }
+
+  .hover-lift {
+    transition: var(--transition-smooth);
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, hsl(var(--sanders-blue)), hsl(var(--sanders-ocean)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }
