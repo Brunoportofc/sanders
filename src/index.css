@@ -2,41 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* Sanders do Brasil - Design System
+Paleta institucional: azul, branco, cinza
 */
 
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 210 24% 16%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 210 24% 16%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 210 24% 16%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Azul institucional Sanders */
+    --primary: 214 84% 56%;
+    --primary-foreground: 0 0% 100%;
+    --primary-dark: 214 100% 47%;
+    --primary-light: 214 32% 91%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Cinza institucional */
+    --secondary: 210 11% 71%;
+    --secondary-foreground: 210 24% 16%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 210 13% 97%;
+    --muted-foreground: 210 7% 56%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 214 32% 91%;
+    --accent-foreground: 210 24% 16%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 210 13% 87%;
+    --input: 210 13% 87%;
+    --ring: 214 84% 56%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Sanders specific colors */
+    --sanders-blue: 214 84% 56%;
+    --sanders-blue-dark: 214 100% 47%;
+    --sanders-blue-light: 214 32% 91%;
+    --sanders-gray: 210 11% 71%;
+    --sanders-gray-light: 210 13% 97%;
+    --sanders-success: 142 71% 45%;
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--sanders-blue)), hsl(var(--sanders-blue-dark)));
+    --gradient-card: linear-gradient(145deg, hsl(var(--background)), hsl(var(--sanders-blue-light)));
+
+    /* Shadows */
+    --shadow-card: 0 4px 20px hsl(var(--sanders-blue) / 0.1);
+    --shadow-hero: 0 20px 60px hsl(var(--sanders-blue) / 0.2);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
 
