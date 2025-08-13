@@ -98,9 +98,9 @@ Paleta premium: azul oceano, branco pérola, cinza platina
   }
 
   .dark {
-    /* Dark mode with deep ocean theme */
-    --background: 220 30% 8%;
-    --foreground: 210 40% 98%;
+    /* Dark mode - high-tech sterile theme (aligned to site style) */
+    --background: 220 30% 6%;
+    --foreground: 210 32% 96%;
 
     --card: 220 25% 12%;
     --card-foreground: 210 40% 98%;
@@ -108,17 +108,17 @@ Paleta premium: azul oceano, branco pérola, cinza platina
     --popover: 220 25% 12%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 214 100% 72%;
+    --primary: 214 88% 58%;
     --primary-foreground: 220 30% 8%;
 
     --secondary: 220 20% 20%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 220 20% 15%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 220 22% 14%;
+    --muted-foreground: 215 18% 72%;
 
-    --accent: 220 20% 18%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 220 22% 16%;
+    --accent-foreground: 210 32% 96%;
 
     --destructive: 0 75% 55%;
     --destructive-foreground: 210 40% 98%;
@@ -141,9 +141,9 @@ Paleta premium: azul oceano, branco pérola, cinza platina
     --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(var(--sanders-blue-light) / 0.2));
 
     /* Dark shadows with glow */
-    --shadow-card: 0 8px 32px hsl(var(--sanders-blue) / 0.2);
-    --shadow-hero: 0 25px 80px hsl(var(--sanders-blue) / 0.3);
-    --shadow-glow: 0 0 60px hsl(var(--sanders-blue-glow) / 0.6);
+    --shadow-card: 0 8px 32px hsl(var(--sanders-blue) / 0.18);
+    --shadow-hero: 0 25px 80px hsl(var(--sanders-blue) / 0.25);
+    --shadow-glow: 0 0 60px hsl(var(--sanders-blue-glow) / 0.5);
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -185,11 +185,11 @@ Paleta premium: azul oceano, branco pérola, cinza platina
   /* Dark mode lights */
   .dark body::before {
     background: 
-      radial-gradient(circle at 20% 30%, hsl(var(--sanders-blue-glow) / 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, hsl(var(--sanders-ocean) / 0.12) 0%, transparent 50%),
-      radial-gradient(circle at 40% 80%, hsl(var(--sanders-blue) / 0.18) 0%, transparent 50%),
-      radial-gradient(circle at 90% 70%, hsl(var(--sanders-blue-glow) / 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 10% 90%, hsl(var(--sanders-ocean) / 0.14) 0%, transparent 50%);
+      radial-gradient(circle at 20% 30%, hsl(var(--sanders-blue-glow) / 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsl(var(--sanders-ocean) / 0.10) 0%, transparent 50%),
+      radial-gradient(circle at 40% 80%, hsl(var(--sanders-blue) / 0.16) 0%, transparent 50%),
+      radial-gradient(circle at 90% 70%, hsl(var(--sanders-blue-glow) / 0.06) 0%, transparent 50%),
+      radial-gradient(circle at 10% 90%, hsl(var(--sanders-ocean) / 0.12) 0%, transparent 50%);
     animation: float-lights-dark 15s ease-in-out infinite;
   }
 }
@@ -297,5 +297,161 @@ Paleta premium: azul oceano, branco pérola, cinza platina
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  /* Heading gradient: deep to light blue, for professional tech look */
+  .heading-blue-gradient {
+    background: linear-gradient(135deg,
+      hsl(var(--sanders-blue-dark)) 0%,
+      hsl(var(--sanders-blue)) 45%,
+      hsl(var(--sanders-blue) / 0.8) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* High-tech page background for Index (white-first, blue as detail) */
+  .tech-page {
+    position: relative;
+    background: hsl(var(--background));
+    isolation: isolate;
+  }
+
+  /* Subtle grid with blue lines */
+  .tech-page::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background-image:
+      linear-gradient(hsl(var(--sanders-blue) / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--sanders-blue) / 0.06) 1px, transparent 1px);
+    background-size: 28px 28px, 28px 28px;
+    background-position: center center;
+    opacity: 0.65;
+    pointer-events: none;
+  }
+
+  /* Moving blue highlight sweep */
+  .tech-page::after {
+    content: '';
+    position: fixed;
+    inset: -100% -10% 0 -10%;
+    z-index: -1;
+    background:
+      linear-gradient(90deg,
+        transparent 0%,
+        hsl(var(--sanders-blue) / 0.06) 50%,
+        transparent 100%);
+    transform: translateX(-50%);
+    animation: tech-sweep 18s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes tech-sweep {
+    0% { transform: translateX(-60%); }
+    100% { transform: translateX(60%); }
+  }
+
+  /* Soft blue orbs for depth */
+  .tech-orb {
+    position: fixed;
+    width: 40vmin;
+    height: 40vmin;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%,
+      hsl(var(--sanders-blue) / 0.18),
+      hsl(var(--sanders-blue) / 0.06) 45%,
+      transparent 60%);
+    filter: blur(24px);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .tech-orb--tl { top: 5%; left: 8%; animation: orb-float 22s ease-in-out infinite; }
+  .tech-orb--br { bottom: 10%; right: 6%; animation: orb-float 26s ease-in-out infinite reverse; }
+
+  @keyframes orb-float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(2vw, -2vh) scale(1.05); }
+  }
+
+  /* Animações específicas para o Viewer 3D inline */
+  .viewer-3d-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .viewer-3d-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 30% 20%, hsl(var(--sanders-blue) / 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 70% 80%, hsl(var(--sanders-ocean) / 0.08) 0%, transparent 50%);
+    animation: viewer-ambient-glow 8s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .viewer-3d-container canvas {
+    position: relative;
+    z-index: 2;
+  }
+
+  @keyframes viewer-ambient-glow {
+    0% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0.6;
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes animate-float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-float {
+    animation: animate-float 3s ease-in-out infinite;
+  }
+
+  /* Efeitos de transição suave para o container */
+  .viewer-transition {
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Efeito de brilho pulsante para o container ativo */
+  .viewer-active {
+    box-shadow: 
+      0 0 30px hsl(var(--sanders-blue) / 0.3),
+      0 0 60px hsl(var(--sanders-blue) / 0.2),
+      inset 0 0 30px hsl(var(--sanders-blue) / 0.1);
+    animation: viewer-pulse-glow 4s ease-in-out infinite;
+  }
+
+  @keyframes viewer-pulse-glow {
+    0%, 100% {
+      box-shadow: 
+        0 0 30px hsl(var(--sanders-blue) / 0.3),
+        0 0 60px hsl(var(--sanders-blue) / 0.2),
+        inset 0 0 30px hsl(var(--sanders-blue) / 0.1);
+    }
+    50% {
+      box-shadow: 
+        0 0 40px hsl(var(--sanders-blue) / 0.4),
+        0 0 80px hsl(var(--sanders-blue) / 0.3),
+        inset 0 0 40px hsl(var(--sanders-blue) / 0.15);
+    }
   }
 }

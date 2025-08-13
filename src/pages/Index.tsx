@@ -1,12 +1,19 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ThreeDViewer from "@/components/ThreeDViewer";
+import InlineThreeDViewer from "@/components/InlineThreeDViewer";
+import HeroMetaballsBackground from "@/components/HeroMetaballsBackground";
+import HeroNetworkBackground from "@/components/HeroNetworkBackground";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Leaf, Settings, Award, Users, ArrowRight, Star, Quote } from "lucide-react";
+import { CheckCircle, Leaf, Settings, Award, Users, ArrowRight, Star, Quote, Eye } from "lucide-react";
 
 const Index = () => {
+  const [is3DViewerActive, setIs3DViewerActive] = useState(true);
+  // Tema agora é controlado pelo ThemeProvider (next-themes)
   const produtosDestaque = [
     {
       id: "autoclave-horizontal-200l",
@@ -53,53 +60,51 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background tech-page">
       <Header />
       
       {/* Hero Banner */}
-      <section className="bg-gradient-hero-glow py-24 text-white relative overflow-hidden">
+      <section className="py-24 bg-background relative overflow-hidden">
+        {/* Animated network background (points + lines) */}
+        <HeroNetworkBackground />
+        {/* Blue orbs for subtle tech depth (ligadas à cor do tema) */}
+        <div className="tech-orb tech-orb--tl z-[4]" />
+        <div className="tech-orb tech-orb--br z-[4]" />
         {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-sanders-blue-glow/20 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute top-40 right-20 w-24 h-24 bg-sanders-ocean/30 rounded-full blur-2xl animate-float" style={{animationDelay: '2s'}}></div>
-          <div className="absolute bottom-20 left-1/3 w-40 h-40 bg-sanders-blue-glow/15 rounded-full blur-3xl animate-float" style={{animationDelay: '4s'}}></div>
+        <div className="absolute inset-0 overflow-hidden z-[3]">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-sanders-blue-glow/10 rounded-full blur-3xl animate-float"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-sanders-ocean/15 rounded-full blur-2xl animate-float" style={{animationDelay: '2s'}}></div>
+          <div className="absolute bottom-20 left-1/3 w-40 h-40 bg-sanders-blue-glow/10 rounded-full blur-3xl animate-float" style={{animationDelay: '4s'}}></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8 animate-fade-up">
-              <Badge variant="secondary" className="bg-white/20 text-white backdrop-blur-sm animate-scale-up">
+            <div className="space-y-8 animate-fade-up text-foreground">
+              <Badge variant="secondary" className="bg-sanders-blue-light text-sanders-blue backdrop-blur-sm animate-scale-up">
                 <Award className="h-4 w-4 mr-2" />
                 +30 anos de experiência
               </Badge>
               <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
                 Equipamentos Hospitalares de 
-                <span className="gradient-text block mt-2">Excelência</span>
+                <span className="heading-blue-gradient block mt-2">Excelência</span>
               </h1>
-              <p className="text-xl opacity-90 leading-relaxed">
+              <p className="text-xl text-muted-foreground leading-relaxed">
                 Soluções completas em esterilização e equipamentos médicos 
                 com certificações ANVISA e ISO 13485.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" variant="secondary" className="hover-lift animate-glow-pulse" asChild>
+                <Button size="lg" variant="default" className="hover-lift animate-glow-pulse" asChild>
                   <Link to="/produtos">
                     Ver Produtos
                     <ArrowRight className="h-5 w-5 ml-2" />
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-sanders-blue hover-lift glass-effect" asChild>
-                  <Link to="/quero-comprar">Solicitar Cotação</Link>
-                </Button>
+                {/* Botão do viewer removido: viewer agora inicia sempre ativo na hero */}
               </div>
             </div>
-            <div className="glass-effect rounded-3xl p-8 backdrop-blur-md animate-scale-up hover-lift" style={{animationDelay: '0.3s'}}>
-              <div className="aspect-video bg-gradient-pearl rounded-2xl flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-sanders-blue/10 animate-glow-pulse"></div>
-                <div className="text-center text-sanders-blue relative z-10">
-                  <Settings className="h-20 w-20 mx-auto mb-4 animate-float" />
-                  <p className="font-bold text-lg">Equipamentos Sanders</p>
-                  <p className="text-sm opacity-80">Tecnologia e Qualidade</p>
-                </div>
+            <div className="animate-scale-up viewer-transition" style={{animationDelay: '0.3s'}}>
+              <div className="aspect-video relative">
+                <InlineThreeDViewer isActive={is3DViewerActive} />
               </div>
             </div>
           </div>
@@ -294,18 +299,20 @@ const Index = () => {
               com soluções personalizadas em equipamentos médicos de última geração.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button size="lg" variant="secondary" className="hover-lift animate-glow-pulse" asChild>
+              {/* Botão temporariamente removido */}
+              {/* <Button size="lg" variant="secondary" className="hover-lift animate-glow-pulse" asChild>
                 <Link to="/quero-comprar">
                   Solicitar Cotação
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Link>
-              </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-sanders-blue hover-lift glass-effect" asChild>
+              </Button> */}
+              {/* Botão temporariamente removido */}
+              {/* <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-sanders-blue hover-lift glass-effect" asChild>
                 <Link to="/contato">
                   Falar com Especialista
                   <Users className="h-5 w-5 ml-2" />
                 </Link>
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>

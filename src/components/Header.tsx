@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/ModeToggle";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { Menu, ShoppingCart, Facebook, Instagram, Linkedin } from "lucide-react";
+import logoSanders from "@/img/logo-sanders.png";
 
 const Header = () => {
   const [cartItems, setCartItems] = useState(0);
@@ -12,10 +14,11 @@ const Header = () => {
     { name: "Home", path: "/" },
     { name: "Empresa", path: "/empresa" },
     { name: "Produtos", path: "/produtos" },
-    { name: "Blog", path: "/blog" },
-    { name: "Contato", path: "/contato" },
-    { name: "Quero Comprar", path: "/quero-comprar" },
-    { name: "Assistência Técnica", path: "/assistencia-tecnica" },
+    // Itens temporariamente removidos
+    // { name: "Blog", path: "/blog" },
+    // { name: "Contato", path: "/contato" },
+    // { name: "Quero Comprar", path: "/quero-comprar" },
+    // { name: "Assistência Técnica", path: "/assistencia-tecnica" },
   ];
 
   const socialLinks = [
@@ -28,12 +31,10 @@ const Header = () => {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="h-10 w-32 bg-sanders-blue rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">Sanders</span>
-            </div>
-          </Link>
+			{/* Logo */}
+			<Link to="/" className="flex items-center space-x-2">
+				<img src={logoSanders} alt="Sanders Medical" className="h-10 w-auto" />
+			</Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-6">
@@ -62,6 +63,7 @@ const Header = () => {
                 </a>
               ))}
             </div>
+            <ModeToggle />
             
             <Button variant="outline" size="sm" className="relative">
               <ShoppingCart className="h-4 w-4" />
@@ -103,6 +105,7 @@ const Header = () => {
                     </a>
                   ))}
                 </div>
+                <ModeToggle />
                 
                 <Button variant="outline" className="w-full">
                   <ShoppingCart className="h-4 w-4 mr-2" />
