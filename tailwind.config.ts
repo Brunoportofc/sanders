@@ -58,6 +58,8 @@ export default {
 					blue: 'hsl(var(--sanders-blue))',
 					'blue-dark': 'hsl(var(--sanders-blue-dark))',
 					'blue-light': 'hsl(var(--sanders-blue-light))',
+					'blue-glow': 'hsl(var(--sanders-blue-glow))',
+					ocean: 'hsl(var(--sanders-ocean))',
 					gray: 'hsl(var(--sanders-gray))',
 					'gray-light': 'hsl(var(--sanders-gray-light))',
 					success: 'hsl(var(--sanders-success))'

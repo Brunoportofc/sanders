@@ -2,69 +2,23 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ChatModal from "@/components/ChatModal";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Filter } from "lucide-react";
+import { produtos } from "@/data/produtos";
+import { useChatContext } from "@/contexts/ChatContext";
 
 const Produtos = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const { isChatModalOpen, setIsChatModalOpen } = useChatContext();
+  const [selectedProduct, setSelectedProduct] = useState<string>("");
 
-  const produtos = [
-    {
-      id: "autoclave-horizontal-200l",
-      name: "Autoclave Horizontal 200L",
-      category: "hospitalares",
-      price: "R$ 25.000",
-      image: "/api/placeholder/300/200",
-      description: "Esterilização segura e eficiente para grandes volumes",
-      features: ["Controle digital", "Registro de dados", "Validação automática"],
-      novo: false
-    },
-    {
-      id: "lavadora-ultrassonica-40l",
-      name: "Lavadora Ultrassônica 40L",
-      category: "hospitalares", 
-      price: "R$ 18.000",
-      image: "/api/placeholder/300/200",
-      description: "Limpeza profunda de instrumentos cirúrgicos",
-      features: ["Frequência ajustável", "Aquecimento", "Timer digital"],
-      novo: true
-    },
-    {
-      id: "estufa-secagem-100l",
-      name: "Estufa de Secagem 100L",
-      category: "hospitalares",
-      price: "R$ 8.500",
-      image: "/api/placeholder/300/200", 
-      description: "Secagem controlada pós-esterilização",
-      features: ["Controle de temperatura", "Circulação forçada", "Timer"],
-      novo: false
-    },
-    {
-      id: "autoclave-odonto-12l",
-      name: "Autoclave Odontológica 12L",
-      category: "odontologicos",
-      price: "R$ 4.500",
-      image: "/api/placeholder/300/200",
-      description: "Compacta e ideal para consultórios odontológicos",
-      features: ["Ciclo rápido", "Fácil operação", "Compacta"],
-      novo: false
-    },
-    {
-      id: "fotopolimerizador-led",
-      name: "Fotopolimerizador LED",
-      category: "odontologicos",
-      price: "R$ 1.200",
-      image: "/api/placeholder/300/200",
-      description: "Polimerização rápida e uniforme",
-      features: ["LED de alta potência", "Sem fio", "Múltiplos programas"],
-      novo: true
-    }
-  ];
+  // Dados dos produtos importados do arquivo centralizado
 
   const filteredProducts = produtos.filter(produto => {
     const matchesSearch = produto.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -179,11 +133,18 @@ const Produtos = () => {
                 
                 <CardFooter className="p-6 pt-0 space-y-2">
                   <Button asChild className="w-full">
-                    <Link to={`/produto/${produto.id}`}>
+                    <Link to={`/produto-detalhes/${produto.id}`}>
                       Ver Detalhes
                     </Link>
                   </Button>
-                  <Button variant="outline" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => {
+                      setSelectedProduct(produto.name);
+                      setIsChatModalOpen(true);
+                    }}
+                  >
                     Solicitar Cotação
                   </Button>
                 </CardFooter>
@@ -261,6 +222,13 @@ const Produtos = () => {
       </section>
 
       <Footer />
+      
+      {/* Chat Modal */}
+      <ChatModal 
+        isOpen={isChatModalOpen}
+        onClose={() => setIsChatModalOpen(false)}
+        productName={selectedProduct}
+      />
     </div>
   );
 };

@@ -6,6 +6,8 @@ import ThreeDViewer from "@/components/ThreeDViewer";
 import InlineThreeDViewer from "@/components/InlineThreeDViewer";
 import HeroMetaballsBackground from "@/components/HeroMetaballsBackground";
 import HeroNetworkBackground from "@/components/HeroNetworkBackground";
+import HeroPremiumBackground from "@/components/HeroPremiumBackground";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -64,18 +66,9 @@ const Index = () => {
       <Header />
       
       {/* Hero Banner */}
-      <section className="py-24 bg-background relative overflow-hidden">
-        {/* Animated network background (points + lines) */}
-        <HeroNetworkBackground />
-        {/* Blue orbs for subtle tech depth (ligadas à cor do tema) */}
-        <div className="tech-orb tech-orb--tl z-[4]" />
-        <div className="tech-orb tech-orb--br z-[4]" />
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden z-[3]">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-sanders-blue-glow/10 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute top-40 right-20 w-24 h-24 bg-sanders-ocean/15 rounded-full blur-2xl animate-float" style={{animationDelay: '2s'}}></div>
-          <div className="absolute bottom-20 left-1/3 w-40 h-40 bg-sanders-blue-glow/10 rounded-full blur-3xl animate-float" style={{animationDelay: '4s'}}></div>
-        </div>
+      <section className="py-24 relative overflow-hidden">
+        {/* Clean premium background - subtle and professional */}
+        <HeroPremiumBackground />
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -112,8 +105,29 @@ const Index = () => {
       </section>
 
       {/* Diferenciais */}
-      <section className="py-20 relative">
-        <div className="container mx-auto px-4">
+      <section className="py-20 relative overflow-hidden">
+        {/* Clean background - same as HeroSection */}
+        <div className="absolute inset-0 z-[1] pointer-events-none">
+          <div className="absolute inset-0 bg-white dark:bg-slate-900" />
+        </div>
+        
+        {/* Dark mode only: Soft blue ambient lights */}
+        <div className="absolute inset-0 z-[2] pointer-events-none dark:block hidden overflow-hidden">
+          {/* Large soft glow - top left */}
+          <div className="absolute top-0 left-0 w-[600px] h-[400px] bg-gradient-radial from-blue-500/8 via-blue-400/3 to-transparent rounded-full blur-[80px] transform -translate-x-1/3 -translate-y-1/4" />
+          
+          {/* Medium glow - center right */}
+          <div className="absolute top-1/3 right-0 w-[500px] h-[350px] bg-gradient-radial from-blue-400/6 via-blue-300/2 to-transparent rounded-full blur-[60px] transform translate-x-1/4" />
+          
+          {/* Small accent lights */}
+          <div className="absolute top-1/4 left-1/2 w-[300px] h-[200px] bg-gradient-radial from-blue-600/5 to-transparent rounded-full blur-[40px]" />
+          <div className="absolute bottom-1/4 right-1/3 w-[250px] h-[180px] bg-gradient-radial from-blue-500/4 to-transparent rounded-full blur-[50px]" />
+          
+          {/* Extra large background ambient */}
+          <div className="absolute top-1/2 left-1/2 w-[1000px] h-[600px] bg-gradient-radial from-blue-400/3 via-blue-400/1 to-transparent rounded-full blur-[120px] transform -translate-x-1/2 -translate-y-1/2" />
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-[3]">
           <div className="text-center mb-16 animate-fade-up">
             <Badge variant="outline" className="mb-4">
               <CheckCircle className="h-4 w-4 mr-2" />

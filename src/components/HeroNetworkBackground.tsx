@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from "react";
 
-// Animated network: points and lines connecting nearby points
-// White-first design; lines/points in brand blue (#3687F2) with subtle alpha
+// Animated blue lights background - defocused blue lights floating
+// Creates a subtle ambient lighting effect with brand blue (#3687F2)
 const HeroNetworkBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
-  const particlesRef = useRef<Array<{ x: number; y: number; vx: number; vy: number }>>([]);
+  const lightsRef = useRef<Array<{ x: number; y: number; vx: number; vy: number; size: number; opacity: number; pulseSpeed: number }>>([]);
 
   // Config
   const COLOR = "#3687F2"; // brand blue
-  const MAX_DISTANCE = 140; // fewer connections (shorter distance)
-  const POINT_RADIUS = 3.0; // point size
+  const MIN_SIZE = 20; // minimum light size
+  const MAX_SIZE = 80; // maximum light size
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -27,70 +27,73 @@ const HeroNetworkBackground: React.FC = () => {
       canvas.style.width = width + "px";
       canvas.style.height = height + "px";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      initParticles(width, height);
+      initLights(width, height);
     }
 
-    function initParticles(width: number, height: number) {
+    function initLights(width: number, height: number) {
       const area = width * height;
-      // slightly higher density: ~1 per 10,000 px², minus 35 points total (15 + 20 extra)
-      const baseCount = Math.max(60, Math.min(220, Math.floor(area / 10000)));
-      const targetCount = Math.max(20, baseCount - 35);
-      const arr: Array<{ x: number; y: number; vx: number; vy: number }> = [];
+      // Fewer lights for a cleaner look - about 1 per 15,000 px²
+      const baseCount = Math.max(8, Math.min(15, Math.floor(area / 15000)));
+      const targetCount = Math.max(6, baseCount);
+      const arr: Array<{ x: number; y: number; vx: number; vy: number; size: number; opacity: number; pulseSpeed: number }> = [];
       for (let i = 0; i < targetCount; i++) {
         arr.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.25, // gentle speed
-          vy: (Math.random() - 0.5) * 0.25,
+          vx: (Math.random() - 0.5) * 0.15, // very gentle movement
+          vy: (Math.random() - 0.5) * 0.15,
+          size: MIN_SIZE + Math.random() * (MAX_SIZE - MIN_SIZE),
+          opacity: 0.1 + Math.random() * 0.15, // subtle opacity
+          pulseSpeed: 0.01 + Math.random() * 0.02, // gentle pulsing
         });
       }
-      particlesRef.current = arr;
+      lightsRef.current = arr;
     }
 
     function step() {
       const parent = canvas.parentElement as HTMLElement;
       const width = parent.clientWidth;
       const height = parent.clientHeight;
-      const particles = particlesRef.current;
+      const lights = lightsRef.current;
+      const time = Date.now() * 0.001; // time for pulsing effect
 
       ctx.clearRect(0, 0, width, height);
 
-      // Move
-      for (const p of particles) {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x <= 0 || p.x >= width) p.vx *= -1;
-        if (p.y <= 0 || p.y >= height) p.vy *= -1;
+      // Move lights gently
+      for (const light of lights) {
+        light.x += light.vx;
+        light.y += light.vy;
+        
+        // Bounce off edges with some padding
+        const padding = light.size;
+        if (light.x <= padding || light.x >= width - padding) light.vx *= -1;
+        if (light.y <= padding || light.y >= height - padding) light.vy *= -1;
+        
+        // Keep within bounds
+        light.x = Math.max(padding, Math.min(width - padding, light.x));
+        light.y = Math.max(padding, Math.min(height - padding, light.y));
       }
 
-      // Draw connections (reduced but more opaque)
-      ctx.lineWidth = 1.1;
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i];
-          const b = particles[j];
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          const dist = Math.hypot(dx, dy);
-          if (dist <= MAX_DISTANCE) {
-            const t = 1 - dist / MAX_DISTANCE; // 0..1
-            if (t < 0.55) continue; // draw only closer pairs to reduce line count
-            ctx.strokeStyle = COLOR;
-            ctx.globalAlpha = 0.3 * t; // higher opacity lines
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Draw points on top
-      ctx.globalAlpha = 1; // fully opaque points
-      ctx.fillStyle = COLOR;
-      for (const p of particles) {
+      // Draw defocused blue lights
+      for (const light of lights) {
+        const pulseFactor = 1 + Math.sin(time * light.pulseSpeed) * 0.3; // gentle pulsing
+        const currentSize = light.size * pulseFactor;
+        const currentOpacity = light.opacity * (0.8 + Math.sin(time * light.pulseSpeed * 1.5) * 0.2);
+        
+        // Create gradient for defocused effect
+        const gradient = ctx.createRadialGradient(
+          light.x, light.y, 0,
+          light.x, light.y, currentSize
+        );
+        
+        gradient.addColorStop(0, `rgba(54, 135, 242, ${currentOpacity})`);
+        gradient.addColorStop(0.4, `rgba(54, 135, 242, ${currentOpacity * 0.6})`);
+        gradient.addColorStop(0.7, `rgba(54, 135, 242, ${currentOpacity * 0.3})`);
+        gradient.addColorStop(1, `rgba(54, 135, 242, 0)`);
+        
+        ctx.fillStyle = gradient;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, POINT_RADIUS, 0, Math.PI * 2);
+        ctx.arc(light.x, light.y, currentSize, 0, Math.PI * 2);
         ctx.fill();
       }
 

@@ -1,14 +1,17 @@
 import { useParams } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ChatModal from "@/components/ChatModal";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckCircle, Download, Phone, Mail } from "lucide-react";
+import { useChatContext } from "@/contexts/ChatContext";
 
 const ProdutoDetalhes = () => {
   const { id } = useParams();
+  const { isChatModalOpen, setIsChatModalOpen } = useChatContext();
 
   // Mock data - em produção viria de uma API
   const produto = {
@@ -118,7 +121,11 @@ const ProdutoDetalhes = () => {
               </div>
 
               <div className="space-y-3">
-                <Button size="lg" className="w-full">
+                <Button 
+                  size="lg" 
+                  className="w-full"
+                  onClick={() => setIsChatModalOpen(true)}
+                >
                   Solicitar Cotação
                 </Button>
                 <div className="grid grid-cols-2 gap-3">
@@ -232,6 +239,13 @@ const ProdutoDetalhes = () => {
       </section>
 
       <Footer />
+      
+      {/* Chat Modal */}
+      <ChatModal 
+        isOpen={isChatModalOpen}
+        onClose={() => setIsChatModalOpen(false)}
+        productName={produto.name}
+      />
     </div>
   );
 };

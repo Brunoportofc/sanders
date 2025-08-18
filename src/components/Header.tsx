@@ -28,8 +28,20 @@ const Header = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto px-4">
+    <header className="sticky top-0 z-50 w-full border-b overflow-hidden relative">
+      {/* Clean background - same as HeroSection */}
+      <div className="absolute inset-0 z-[1] pointer-events-none">
+        <div className="absolute inset-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 supports-[backdrop-filter]:dark:bg-slate-900/60" />
+      </div>
+      
+      {/* Dark mode only: Soft blue ambient lights */}
+      <div className="absolute inset-0 z-[2] pointer-events-none dark:block hidden overflow-hidden">
+        {/* Subtle header glow */}
+        <div className="absolute top-0 left-1/4 w-[400px] h-[100px] bg-gradient-radial from-blue-500/6 via-blue-400/2 to-transparent rounded-full blur-[40px]" />
+        <div className="absolute top-0 right-1/4 w-[300px] h-[80px] bg-gradient-radial from-blue-400/4 via-blue-300/1 to-transparent rounded-full blur-[30px]" />
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-[3]">
         <div className="flex h-16 items-center justify-between">
 			{/* Logo */}
 			<Link to="/" className="flex items-center space-x-2">
