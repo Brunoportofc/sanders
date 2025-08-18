@@ -126,11 +126,26 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, productName, isF
     // Atualiza o produto selecionado
     setUserInfo(prev => ({ ...prev, selectedProduct: productName }));
     
-    // Envia evento para Google Tag Manager
+    // Envia evento para Google Tag Manager com dados estruturados
+    const selectedProductData = produtos.find(p => p.name === productName);
     sendGTMEvent('chat_product_selected', {
+      // Produto Selecionado
       product_name: productName,
-      source: 'floating_chat',
-      timestamp: new Date().toISOString()
+      product_category: selectedProductData?.category || 'Não especificado',
+      product_id: selectedProductData?.id || 'unknown',
+      
+      // Contexto da Seleção
+      selection_source: isFloatingChat ? 'floating_chat' : 'product_page',
+      page_product: productName || 'Página inicial',
+      
+      // Dados Temporais
+      selection_timestamp: new Date().toISOString(),
+      selection_date: new Date().toLocaleDateString('pt-BR'),
+      selection_time: new Date().toLocaleTimeString('pt-BR'),
+      
+      // Dados Técnicos
+      page_url: window.location.href,
+      user_agent: navigator.userAgent
     });
     
     // Avança para o próximo step
@@ -153,9 +168,27 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, productName, isF
     if (isOpen && messages.length === 0) {
       // Envia evento para Google Tag Manager quando o chat é aberto
       sendGTMEvent('chat_opened', {
-        source: isFloatingChat ? 'floating_chat' : 'product_page',
-        product_name: productName || 'none',
-        timestamp: new Date().toISOString()
+        // Contexto da Abertura
+        chat_source: isFloatingChat ? 'floating_chat' : 'product_page',
+        page_product: productName || 'Página inicial',
+        
+        // Dados Temporais
+        open_timestamp: new Date().toISOString(),
+        open_date: new Date().toLocaleDateString('pt-BR'),
+        open_time: new Date().toLocaleTimeString('pt-BR'),
+        open_day_of_week: new Date().toLocaleDateString('pt-BR', { weekday: 'long' }),
+        
+        // Dados da Sessão
+        session_start: true,
+        chat_type: 'lead_generation',
+        
+        // Dados Técnicos
+        page_url: window.location.href,
+        page_title: document.title,
+        referrer: document.referrer || 'Direct',
+        user_agent: navigator.userAgent,
+        screen_resolution: `${screen.width}x${screen.height}`,
+        viewport_size: `${window.innerWidth}x${window.innerHeight}`
       });
       
       // Simula digitação inicial
@@ -201,6 +234,32 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, productName, isF
     const currentField = chatSteps[currentStep].field as keyof typeof userInfo;
     setUserInfo(prev => ({ ...prev, [currentField]: inputValue }));
 
+    // Envia evento para Google Tag Manager sobre o progresso do chat
+    sendGTMEvent('chat_step_completed', {
+      // Progresso do Chat
+      step_number: currentStep + 1,
+      step_field: currentField,
+      step_value: inputValue,
+      total_steps: chatSteps.length,
+      progress_percentage: Math.round(((currentStep + 1) / chatSteps.length) * 100),
+      
+      // Contexto
+      chat_source: isFloatingChat ? 'floating_chat' : 'product_page',
+      page_product: productName || 'Página inicial',
+      
+      // Dados do Lead (parciais)
+      has_product_selection: !!userInfo.selectedProduct,
+      collected_fields: Object.keys(userInfo).filter(key => userInfo[key as keyof typeof userInfo]).length,
+      
+      // Dados Temporais
+      step_timestamp: new Date().toISOString(),
+      step_date: new Date().toLocaleDateString('pt-BR'),
+      step_time: new Date().toLocaleTimeString('pt-BR'),
+      
+      // Dados Técnicos
+      page_url: window.location.href
+    });
+
     setInputValue('');
 
     // Próximo passo com animação de digitação
@@ -223,15 +282,39 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, productName, isF
         source: isFloatingChat ? 'floating_chat' : 'product_page'
       };
       
-      // Envia evento para Google Tag Manager
+      // Envia evento para Google Tag Manager com variáveis estruturadas para marketing
       sendGTMEvent('chat_lead_generated', {
+        // Informações do Lead
         lead_name: leadData.name,
         lead_email: leadData.email,
         lead_phone: leadData.phone,
         lead_company: leadData.company,
+        lead_message: leadData.message,
+        
+        // Produto de Interesse
         lead_product: leadData.selectedProduct,
+        product_category: produtos.find(p => p.name === leadData.selectedProduct)?.category || 'Não especificado',
+        
+        // Origem e Contexto
         lead_source: leadData.source,
-        value: 1
+        chat_type: isFloatingChat ? 'floating_chat' : 'product_page',
+        page_product: productName || 'Página inicial',
+        
+        // Dados para Segmentação
+        lead_timestamp: leadData.timestamp,
+        lead_date: new Date().toLocaleDateString('pt-BR'),
+        lead_time: new Date().toLocaleTimeString('pt-BR'),
+        lead_day_of_week: new Date().toLocaleDateString('pt-BR', { weekday: 'long' }),
+        
+        // Métricas para Marketing
+        conversion_value: 1,
+        lead_quality: 'qualified', // Lead qualificado pois preencheu todos os dados
+        funnel_stage: 'consideration', // Estágio do funil
+        
+        // Dados Técnicos
+        user_agent: navigator.userAgent,
+        page_url: window.location.href,
+        referrer: document.referrer || 'Direct'
       });
       
       simulateTyping(() => {
@@ -267,6 +350,33 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, productName, isF
   };
 
   const handleClose = () => {
+    // Envia evento para Google Tag Manager quando o chat é fechado
+    sendGTMEvent('chat_closed', {
+      // Dados de Engajamento
+      messages_sent: messages.filter(m => m.sender === 'user').length,
+      chat_duration_seconds: messages.length > 0 ? Math.round((new Date().getTime() - messages[0].timestamp.getTime()) / 1000) : 0,
+      completed_steps: currentStep,
+      total_steps: chatSteps.length,
+      completion_rate: Math.round((currentStep / chatSteps.length) * 100),
+      
+      // Status do Lead
+      lead_completed: currentStep >= chatSteps.length,
+      has_product_selection: !!userInfo.selectedProduct,
+      has_contact_info: !!(userInfo.name && userInfo.email),
+      
+      // Contexto
+      chat_source: isFloatingChat ? 'floating_chat' : 'product_page',
+      page_product: productName || 'Página inicial',
+      
+      // Dados Temporais
+      close_timestamp: new Date().toISOString(),
+      close_date: new Date().toLocaleDateString('pt-BR'),
+      close_time: new Date().toLocaleTimeString('pt-BR'),
+      
+      // Dados Técnicos
+      page_url: window.location.href
+    });
+    
     resetChat();
     onClose();
   };
