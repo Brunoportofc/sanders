@@ -163,8 +163,8 @@ const HeroMetaballsBackground: React.FC = () => {
         m[base + 0] = Math.random() * (width - 2 * radius) + radius;
         m[base + 1] = Math.random() * (height - 2 * radius) + radius;
         m[base + 2] = radius * 0.75;
-        v[vb + 0] = (Math.random() - 0.5) * 1.0;
-        v[vb + 1] = (Math.random() - 0.5) * 1.0;
+        v[vb + 0] = (Math.random() - 0.5) * 0.5; // Velocidade reduzida de 1.0 para 0.5
+        v[vb + 1] = (Math.random() - 0.5) * 0.5; // Velocidade reduzida de 1.0 para 0.5
       }
     }
 

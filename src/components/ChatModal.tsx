@@ -30,15 +30,18 @@ interface ChatModalProps {
   isFloatingChat?: boolean;
 }
 
-// Componente de animação de digitação
+// Componente de animação de digitação premium
 const TypingIndicator = () => (
-  <div className="flex items-center space-x-1 p-3 bg-gray-100 rounded-lg max-w-[80%]">
-    <Bot className="h-4 w-4 text-sanders-blue" />
-    <div className="flex space-x-1">
-      <div className="w-2 h-2 bg-sanders-blue rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-      <div className="w-2 h-2 bg-sanders-blue rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-      <div className="w-2 h-2 bg-sanders-blue rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+  <div className="flex items-center space-x-3 p-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-2xl max-w-[80%] shadow-lg border border-gray-200/50 dark:border-gray-600/50 backdrop-blur-sm hover-lift animate-breathe">
+    <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-sanders-blue to-sanders-ocean rounded-full flex items-center justify-center shadow-md animate-pulse-soft">
+      <Bot className="h-4 w-4 text-white animate-bounce-in" />
     </div>
+    <div className="flex space-x-1.5 animate-typing-dots">
+      <div className="w-2.5 h-2.5 bg-gradient-to-r from-sanders-blue to-sanders-ocean rounded-full animate-bounce shadow-sm" style={{ animationDelay: '0ms' }}></div>
+      <div className="w-2.5 h-2.5 bg-gradient-to-r from-sanders-ocean to-sanders-blue-dark rounded-full animate-bounce shadow-sm" style={{ animationDelay: '200ms' }}></div>
+      <div className="w-2.5 h-2.5 bg-gradient-to-r from-sanders-blue-dark to-sanders-blue rounded-full animate-bounce shadow-sm" style={{ animationDelay: '400ms' }}></div>
+    </div>
+    <div className="text-xs text-gray-500 dark:text-gray-400 font-medium animate-pulse">digitando...</div>
   </div>
 );
 
@@ -384,101 +387,233 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, productName, isF
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-end justify-end z-50 p-4 animate-in fade-in-0 duration-300">
-      <Card className="w-full max-w-md h-[600px] flex flex-col animate-in slide-in-from-bottom-5 fade-in-0 duration-500 ease-out transform">
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b bg-sanders-blue text-white rounded-t-lg">
-          <div className="flex items-center space-x-2">
-            <MessageCircle className="h-5 w-5" />
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-end justify-end z-50 p-4 animate-in fade-in-0 duration-300">
+      <Card className="w-full max-w-md h-[600px] flex flex-col bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
+        {/* Header Premium */}
+        <div className="relative flex items-center justify-between p-4 bg-gradient-to-r from-sanders-blue via-sanders-ocean to-sanders-blue-dark text-white overflow-hidden rounded-t-2xl">
+
+          
+          <div className="flex items-center space-x-3">
+            <div className="flex-shrink-0 w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+              <Bot className="h-5 w-5 text-white" />
+            </div>
             <div>
-              <h3 className="font-semibold">Chat Sanders</h3>
-              <p className="text-xs opacity-90">Solicitar Cotação</p>
+              <h3 className="text-lg font-bold">Sanders Brasil</h3>
+              <p className="text-sm text-white/80">Assistente Virtual</p>
             </div>
           </div>
+          
           <Button
             variant="ghost"
             size="sm"
             onClick={handleClose}
-            className="text-white hover:bg-white/20"
+            className="text-white hover:bg-white/20 rounded-full p-2 transition-all duration-200 hover:scale-105"
           >
-            <X className="h-4 w-4" />
+            <X className="h-5 w-5" />
           </Button>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div 
+          className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/30 dark:bg-gray-800/30"
+        >
           {messages.map((message, index) => (
-            <div
-              key={message.id}
-              className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in-0 slide-in-from-bottom-2 duration-500`}
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
               <div
-                className={`max-w-[80%] p-3 rounded-lg transform transition-all duration-300 hover:scale-105 ${
-                  message.sender === 'user'
-                    ? 'bg-sanders-blue text-white rounded-br-sm'
-                    : 'bg-gray-100 text-gray-900 rounded-bl-sm'
-                }`}
+                key={index}
+                className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} mb-4`}
               >
-                <div className="flex items-start space-x-2">
+                <div
+                  className={`max-w-[85%] ${
+                    message.sender === 'user'
+                      ? 'bg-gradient-to-br from-sanders-blue via-sanders-ocean to-sanders-blue-dark text-white shadow-sm'
+                      : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-sm border border-gray-200 dark:border-gray-600'
+                  } p-4 rounded-xl transition-all duration-200`}
+                >
+
+                  
                   {message.sender === 'bot' && (
-                    <Bot className="h-4 w-4 mt-0.5 text-sanders-blue" />
+                    <div className="flex items-center mb-3">
+                      <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-sanders-blue via-sanders-ocean to-sanders-blue-dark rounded-full flex items-center justify-center mr-3">
+                        <Bot className="h-4 w-4 text-white" />
+                      </div>
+                      <div>
+                        <span className="text-xs font-semibold text-sanders-blue dark:text-sanders-blue-light">
+                          Sanders Assistant
+                        </span>
+                      </div>
+                    </div>
                   )}
+                  
                   {message.sender === 'user' && (
-                    <User className="h-4 w-4 mt-0.5" />
+                    <div className="flex items-center justify-end mb-2">
+                      <span className="text-xs font-semibold text-white/90 mr-2">Você</span>
+                      <div className="flex-shrink-0 w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+                        <User className="h-3 w-3 text-white" />
+                      </div>
+                    </div>
                   )}
-                  <p className="text-sm leading-relaxed">{message.text}</p>
+                  
+                  <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
+                  
+                  <div className={`mt-2 pt-2 border-t ${
+                    message.sender === 'user' 
+                      ? 'border-white/20 text-white/60' 
+                      : 'border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-400'
+                  }`}>
+                    <span className="text-xs">
+                      {new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
           
           {/* Indicador de digitação */}
           {isTyping && (
-            <div className="flex justify-start animate-in fade-in-0 slide-in-from-bottom-2 duration-300">
-              <TypingIndicator />
-            </div>
-          )}
-          
-          {/* Opções de produtos para chat flutuante */}
-          {isFloatingChat && currentStep === 0 && !isTyping && messages.length > 0 && (
-            <div className="space-y-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-500">
-              <div className="text-sm text-gray-600 mb-2">Escolha uma das opções abaixo:</div>
-              {produtos.slice(0, 4).map((produto) => (
-                <Button
-                  key={produto.id}
-                  variant="outline"
-                  className="w-full justify-start text-left hover:bg-sanders-blue hover:text-white transition-colors duration-300"
-                  onClick={() => handleProductSelection(produto.name)}
-                >
-                  <div className="flex flex-col items-start">
-                    <span className="font-medium">{produto.name}</span>
-                    <span className="text-xs opacity-70">{produto.description}</span>
+            <div className="flex justify-start mb-4">
+              <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-600 max-w-[85%]">
+                <div className="flex items-center space-x-3">
+                  <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-sanders-blue via-sanders-ocean to-sanders-blue-dark rounded-full flex items-center justify-center">
+                    <Bot className="h-4 w-4 text-white" />
                   </div>
-                </Button>
-              ))}
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Sanders está digitando</span>
+                    <div className="flex space-x-1">
+                      <div className="w-1.5 h-1.5 bg-sanders-blue rounded-full animate-pulse"></div>
+                      <div className="w-1.5 h-1.5 bg-sanders-ocean rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-1.5 h-1.5 bg-sanders-blue-dark rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
           
-          {/* Botões de contato direto */}
+          {/* Opções de produtos premium para chat flutuante - Design Premium */}
+          {isFloatingChat && currentStep === 0 && !isTyping && messages.length > 0 && (
+            <div className="space-y-4 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 p-4 bg-gradient-to-br from-gray-50/80 via-white/60 to-gray-100/80 dark:from-gray-800/80 dark:via-gray-700/60 dark:to-gray-800/80 backdrop-blur-xl rounded-3xl border border-gray-200/30 dark:border-gray-600/30">
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-gradient-to-br from-sanders-blue via-sanders-ocean to-sanders-blue-dark rounded-2xl flex items-center justify-center mr-4 shadow-xl">
+                  <span className="text-white text-xl font-bold">🏥</span>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 bg-gradient-to-r from-sanders-blue to-sanders-ocean bg-clip-text text-transparent">Escolha sua Linha de Interesse</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Selecione o produto que melhor atende às suas necessidades</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 gap-3">
+                {produtos.slice(0, 4).map((produto, index) => (
+                  <button
+                    key={produto.id}
+                    onClick={() => handleProductSelection(produto.name)}
+                    className="group relative justify-start text-left h-auto p-4 border border-gray-200 dark:border-gray-600 hover:border-sanders-blue hover:bg-gradient-to-r hover:from-sanders-blue hover:to-sanders-ocean hover:text-white transition-all duration-200 rounded-xl"
+                  >
+                    <div className="flex items-center w-full">
+                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-sanders-blue via-sanders-ocean to-sanders-blue-dark rounded-xl flex items-center justify-center mr-4 transition-all duration-200">
+                        <span className="text-xl">
+                          {index === 0 ? '🏥' : index === 1 ? '🔬' : index === 2 ? '🦷' : '💊'}
+                        </span>
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-base group-hover:text-white transition-colors duration-200">{produto.name}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-white/90 mt-1 transition-colors duration-200">{produto.description}</div>
+                      </div>
+                      <div className="flex-shrink-0 opacity-60 group-hover:opacity-100 transition-opacity duration-200">
+                        <div className="w-6 h-6 bg-gray-200 group-hover:bg-white/20 rounded-lg flex items-center justify-center">
+                          <span className="text-gray-600 group-hover:text-white text-sm font-bold">→</span>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Botões de contato direto premium */}
           {currentStep >= chatSteps.length && !isTyping && (
-            <div className="space-y-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-500">
-              <Button
-                variant="outline"
-                className="w-full justify-start hover:bg-sanders-blue hover:text-white transition-colors duration-300"
-                onClick={() => window.open('tel:+551140041234')}
+            <div className="space-y-4 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 p-6 bg-gradient-to-br from-gray-50/80 via-white/60 to-gray-100/80 dark:from-gray-800/80 dark:via-gray-700/60 dark:to-gray-800/80 backdrop-blur-xl rounded-3xl border border-gray-200/30 dark:border-gray-600/30">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-100 to-green-200 dark:from-green-800 dark:to-green-700 rounded-full shadow-lg">
+                  <span className="text-green-600 dark:text-green-300 text-sm font-bold">✅ Contato Direto Disponível</span>
+                </div>
+              </div>
+              
+              <button
+                onClick={() => {
+                  sendGTMEvent('chat_whatsapp_click', { source: 'chat_modal' });
+                  window.open('https://wa.me/5511999999999?text=Olá! Gostaria de saber mais sobre as autoclaves Sanders.', '_blank');
+                }}
+                className="w-full p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-600 rounded-xl hover:bg-green-100 dark:hover:bg-green-800/30 transition-colors duration-200"
               >
-                <Phone className="h-4 w-4 mr-2" />
-                (11) 4004-1234
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start hover:bg-sanders-blue hover:text-white transition-colors duration-300"
-                onClick={() => window.open('mailto:vendas@sandersdobrasil.com.br')}
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mr-4">
+                    <MessageCircle className="h-6 w-6 text-white" />
+                  </div>
+                  
+                  <div className="flex-1 text-left">
+                    <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-1">
+                      WhatsApp
+                    </h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Converse diretamente com nossos especialistas
+                    </p>
+
+                  </div>
+                </div>
+              </button>
+              
+              <button
+                onClick={() => {
+                  sendGTMEvent('chat_phone_click', { source: 'chat_modal' });
+                  window.open('tel:+551140041234');
+                }}
+                className="w-full p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-600 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-800/30 transition-colors duration-200"
               >
-                <Mail className="h-4 w-4 mr-2" />
-                vendas@sandersdobrasil.com.br
-              </Button>
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mr-4">
+                    <Phone className="h-6 w-6 text-white" />
+                  </div>
+                  
+                  <div className="flex-1 text-left">
+                    <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-1">
+                      Telefone
+                    </h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                      Ligue agora e fale com nossos consultores
+                    </p>
+                    <div className="text-base font-semibold text-blue-600 dark:text-blue-400">
+                      (11) 4004-1234
+                    </div>
+                  </div>
+                </div>
+              </button>
+              
+              <button
+                onClick={() => {
+                  sendGTMEvent('chat_email_click', { source: 'chat_modal' });
+                  window.open('mailto:vendas@sandersdobrasil.com.br');
+                }}
+                className="w-full p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-600 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-800/30 transition-colors duration-200"
+              >
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mr-4">
+                    <Mail className="h-6 w-6 text-white" />
+                  </div>
+                  
+                  <div className="flex-1 text-left">
+                    <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-1">
+                      E-mail
+                    </h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                      Envie sua dúvida por e-mail
+                    </p>
+                    <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
+                      vendas@sandersdobrasil.com.br
+                    </div>
+                  </div>
+                </div>
+              </button>
             </div>
           )}
           
@@ -487,24 +622,57 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, productName, isF
 
         {/* Input */}
         {currentStep < chatSteps.length && (
-          <div className="p-4 border-t bg-white rounded-b-lg">
-            <div className="flex space-x-2">
-              <Input
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Digite sua resposta..."
-                type={chatSteps[currentStep]?.type || 'text'}
-                className="flex-1 focus:ring-2 focus:ring-sanders-blue transition-all duration-200"
-                disabled={isTyping}
-              />
-              <Button 
-                onClick={handleSendMessage} 
-                size="sm"
-                disabled={isTyping || !inputValue.trim()}
-                className="bg-sanders-blue hover:bg-sanders-blue/90 transition-colors duration-200"
+          <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-b-2xl">
+            {/* Status indicators */}
+            <div className="flex items-center justify-end mb-3">
+              <div className="text-xs text-gray-400 dark:text-gray-500">
+                Shift + Enter para nova linha
+              </div>
+            </div>
+            
+            {/* Character counter */}
+            <div className="flex items-center justify-between mb-3">
+              <div className="text-xs text-gray-500 dark:text-gray-400">
+                {inputValue.length}/500 caracteres
+              </div>
+              <div className={`text-xs transition-colors duration-200 ${
+                inputValue.length > 450 ? 'text-red-500' : 
+                inputValue.length > 350 ? 'text-yellow-500' : 
+                'text-gray-400'
+              }`}>
+                {inputValue.length > 450 ? '⚠️ Limite próximo' : 
+                 inputValue.length > 350 ? '⚡ Quase no limite' : 
+                 ''}
+              </div>
+            </div>
+            
+            <div className="flex space-x-3">
+              <div className="flex-1">
+                <Input
+                  type="text"
+                  placeholder="Digite sua mensagem..."
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }}
+                  className="w-full py-3 text-base bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl focus:border-sanders-blue focus:ring-2 focus:ring-sanders-blue/20 transition-all duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                  maxLength={500}
+                />
+              </div>
+              <Button
+                onClick={handleSendMessage}
+                disabled={!inputValue.trim() || isTyping}
+                className="px-4 py-3 bg-gradient-to-r from-sanders-blue via-sanders-ocean to-sanders-blue-dark hover:opacity-90 text-white rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Send className="h-4 w-4" />
+                {isTyping ? (
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                ) : (
+                  <Send className="h-5 w-5" />
+                )}
               </Button>
             </div>
           </div>

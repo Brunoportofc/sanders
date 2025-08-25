@@ -1,31 +1,52 @@
 import React, { useState, Suspense, useRef, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useGLTF, OrbitControls, Environment, ContactShadows, Center, useAnimations } from '@react-three/drei';
+import { useGLTF, OrbitControls, Environment, ContactShadows, useAnimations } from '@react-three/drei';
 import { Button } from '@/components/ui/button';
 import { Eye, RotateCcw, Settings } from 'lucide-react';
 import * as THREE from 'three';
 import anime from 'animejs';
 
 function Model({ resetTrigger, isRotating }: { resetTrigger: number; isRotating: boolean }) {
-  const gltf: any = useGLTF('/teste2.glb');
+  const gltf: any = useGLTF('/teste2 copy.glb');
   const { scene, animations } = gltf;
   const modelRef = useRef<THREE.Group>();
-  const clonedScene = React.useMemo(() => scene.clone(true), [scene]);
-  const { actions, names } = useAnimations(animations || [], clonedScene);
+  const { camera } = useThree();
+  const { actions, names } = useAnimations(animations || [], scene as any);
   const primaryClipNameRef = useRef<string | null>(null);
 
-  // Calcular bounding box para definir escala consistente (sem transladar o modelo original)
+  // Calcular bounding box para posicionamento correto
   useEffect(() => {
-    if (clonedScene && modelRef.current) {
-      const box = new THREE.Box3().setFromObject(clonedScene);
+    if (scene && modelRef.current) {
+      const box = new THREE.Box3().setFromObject(scene);
+      const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
-
+      
+      // Ajustar escala baseada no tamanho
       const maxDim = Math.max(size.x, size.y, size.z);
-      const targetSize = 2.5; // tamanho alvo para caber bem no container inline
-      const scale = maxDim > 0 ? targetSize / maxDim : 1;
+      const scale = 1.5 / maxDim; // Tamanho equilibrado para container inline
       modelRef.current.scale.setScalar(scale);
+      
+      // Centralizar o modelo completamente - resetar posições
+      scene.position.set(0, 0, 0);
+      modelRef.current.position.copy(center).multiplyScalar(-1);
+      
+      // Forçar atualização da matriz
+      modelRef.current.updateMatrixWorld(true);
     }
-  }, [clonedScene]);
+  }, [scene]);
+
+  // Garantir centralização contínua do modelo
+  useEffect(() => {
+    if (modelRef.current && scene) {
+      const box = new THREE.Box3().setFromObject(scene);
+      const center = box.getCenter(new THREE.Vector3());
+      
+      // Aplicar a mesma lógica de centralização do carregamento inicial
+      scene.position.set(0, 0, 0);
+      modelRef.current.position.copy(center).multiplyScalar(-1);
+      modelRef.current.updateMatrixWorld(true);
+    }
+  }, [resetTrigger, scene]);
 
   // Animação de reset suave
   useEffect(() => {
@@ -65,7 +86,7 @@ function Model({ resetTrigger, isRotating }: { resetTrigger: number; isRotating:
     }
   }, [actions, names]);
 
-  const handleClickOnlyDoor = (e: ThreeEvent<MouseEvent>) => {
+  const handleClickOnlyDoor = (e: any) => {
     e.stopPropagation();
     let node: THREE.Object3D | null = e.object as THREE.Object3D;
     let matched = false;
@@ -73,14 +94,18 @@ function Model({ resetTrigger, isRotating }: { resetTrigger: number; isRotating:
       if (node.name && /door|porta/i.test(node.name)) { matched = true; break; }
       node = node.parent as THREE.Object3D | null;
     }
-    if (matched) triggerDoorAnimation();
+    if (matched && primaryClipNameRef.current && actions) {
+      const action = actions[primaryClipNameRef.current];
+      if (action) {
+        action.reset();
+        action.play();
+      }
+    }
   };
 
   return (
     <group ref={modelRef}>
-      <Center disableZ>
-        <primitive object={clonedScene} />
-      </Center>
+      <primitive object={scene} onClick={handleClickOnlyDoor} />
     </group>
   );
 }

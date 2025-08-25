@@ -5,16 +5,17 @@ import Footer from "@/components/Footer";
 import ChatModal from "@/components/ChatModal";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, Star, ShoppingCart, Eye } from "lucide-react";
 import { produtos } from "@/data/produtos";
 import { useChatContext } from "@/contexts/ChatContext";
 
 const Produtos = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("all");
   const { isChatModalOpen, setIsChatModalOpen } = useChatContext();
   const [selectedProduct, setSelectedProduct] = useState<string>("");
 
@@ -23,7 +24,33 @@ const Produtos = () => {
   const filteredProducts = produtos.filter(produto => {
     const matchesSearch = produto.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          produto.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || produto.category === selectedCategory;
+    
+    let matchesCategory = true;
+    
+    if (selectedSubcategory !== "all") {
+      switch (selectedSubcategory) {
+        case "autoclaves":
+          matchesCategory = produto.category === "hospitalares" && produto.name.toLowerCase().includes("autoclave");
+          break;
+        case "lavadoras":
+          matchesCategory = produto.category === "hospitalares" && produto.name.toLowerCase().includes("lavadora");
+          break;
+        case "setadoras":
+          matchesCategory = produto.category === "hospitalares" && (produto.name.toLowerCase().includes("secagem") || produto.name.toLowerCase().includes("setadora"));
+          break;
+        case "termodesinfetoras":
+          matchesCategory = produto.category === "odontologicos" && produto.name.toLowerCase().includes("termodesinfetora");
+          break;
+        case "estufas":
+          matchesCategory = produto.category === "odontologicos" && produto.name.toLowerCase().includes("estufa");
+          break;
+        default:
+          matchesCategory = selectedCategory === "all" || produto.category === selectedCategory;
+      }
+    } else {
+      matchesCategory = selectedCategory === "all" || produto.category === selectedCategory;
+    }
+    
     return matchesSearch && matchesCategory;
   });
 
@@ -46,41 +73,140 @@ const Produtos = () => {
         </div>
       </section>
 
-      {/* Filtros */}
-      <section className="py-8 border-b">
+      {/* Área de Pesquisa e Menu Categorizado */}
+      <section className="py-8 border-b bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div className="flex-1 max-w-md">
+          {/* Barra de Pesquisa */}
+          <div className="flex justify-center mb-8">
+            <div className="w-full max-w-2xl">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
                 <Input
                   placeholder="Buscar produtos..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="pl-12 pr-4 py-3 text-lg border-2 border-gray-200 focus:border-primary rounded-xl shadow-sm"
                 />
               </div>
             </div>
+          </div>
+
+          {/* Menu de Categorias */}
+          <div className="flex flex-col items-center space-y-6">
+            <h3 className="text-lg font-semibold text-foreground">Categorias de Produtos</h3>
             
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <Filter className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm font-medium">Categoria:</span>
-              </div>
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="w-48">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todas as Categorias</SelectItem>
-                  <SelectItem value="hospitalares">Hospitalares</SelectItem>
-                  <SelectItem value="odontologicos">Odontológicos</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button
+                 variant={selectedSubcategory === "all" ? "default" : "outline"}
+                 onClick={() => {
+                   setSelectedCategory("all")
+                   setSelectedSubcategory("all")
+                 }}
+                 className={`px-8 py-3 rounded-full text-base font-medium transition-all duration-200 ${
+                   selectedSubcategory === "all" 
+                     ? "bg-primary text-white shadow-lg scale-105" 
+                     : "bg-background text-foreground border-2 border-border hover:border-primary hover:text-primary hover:scale-105"
+                 }`}
+               >
+                 Todos
+                 <Badge variant="secondary" className="ml-2">
+                   {produtos.length}
+                 </Badge>
+               </Button>
+               
+               <Button
+                 variant={selectedSubcategory === "autoclaves" ? "default" : "outline"}
+                 onClick={() => {
+                   setSelectedCategory("hospitalares")
+                   setSelectedSubcategory("autoclaves")
+                 }}
+                 className={`px-8 py-3 rounded-full text-base font-medium transition-all duration-200 ${
+                   selectedSubcategory === "autoclaves" 
+                     ? "bg-primary text-white shadow-lg scale-105" 
+                     : "bg-background text-foreground border-2 border-border hover:border-primary hover:text-primary hover:scale-105"
+                 }`}
+               >
+                 Autoclaves
+                 <Badge variant="secondary" className="ml-2">
+                   {produtos.filter(p => p.category === "hospitalares" && p.name.toLowerCase().includes("autoclave")).length}
+                 </Badge>
+               </Button>
+               
+               <Button
+                 variant={selectedSubcategory === "lavadoras" ? "default" : "outline"}
+                 onClick={() => {
+                   setSelectedCategory("hospitalares")
+                   setSelectedSubcategory("lavadoras")
+                 }}
+                 className={`px-8 py-3 rounded-full text-base font-medium transition-all duration-200 ${
+                   selectedSubcategory === "lavadoras" 
+                     ? "bg-primary text-white shadow-lg scale-105" 
+                     : "bg-background text-foreground border-2 border-border hover:border-primary hover:text-primary hover:scale-105"
+                 }`}
+               >
+                 Lavadoras
+                 <Badge variant="secondary" className="ml-2">
+                   {produtos.filter(p => p.category === "hospitalares" && p.name.toLowerCase().includes("lavadora")).length}
+                 </Badge>
+               </Button>
+               
+               <Button
+                 variant={selectedSubcategory === "setadoras" ? "default" : "outline"}
+                 onClick={() => {
+                   setSelectedCategory("hospitalares")
+                   setSelectedSubcategory("setadoras")
+                 }}
+                 className={`px-8 py-3 rounded-full text-base font-medium transition-all duration-200 ${
+                   selectedSubcategory === "setadoras" 
+                     ? "bg-primary text-white shadow-lg scale-105" 
+                     : "bg-background text-foreground border-2 border-border hover:border-primary hover:text-primary hover:scale-105"
+                 }`}
+               >
+                 Setadoras
+                 <Badge variant="secondary" className="ml-2">
+                   {produtos.filter(p => p.category === "hospitalares" && (p.name.toLowerCase().includes("secagem") || p.name.toLowerCase().includes("setadora"))).length}
+                 </Badge>
+               </Button>
+               
+               <Button
+                 variant={selectedSubcategory === "termodesinfetoras" ? "default" : "outline"}
+                 onClick={() => {
+                   setSelectedCategory("odontologicos")
+                   setSelectedSubcategory("termodesinfetoras")
+                 }}
+                 className={`px-8 py-3 rounded-full text-base font-medium transition-all duration-200 ${
+                   selectedSubcategory === "termodesinfetoras" 
+                     ? "bg-primary text-white shadow-lg scale-105" 
+                     : "bg-background text-foreground border-2 border-border hover:border-primary hover:text-primary hover:scale-105"
+                 }`}
+               >
+                 Termodesinfetoras
+                 <Badge variant="secondary" className="ml-2">
+                   {produtos.filter(p => p.category === "odontologicos" && p.name.toLowerCase().includes("termodesinfetora")).length}
+                 </Badge>
+               </Button>
+               
+               <Button
+                 variant={selectedSubcategory === "estufas" ? "default" : "outline"}
+                 onClick={() => {
+                   setSelectedCategory("odontologicos")
+                   setSelectedSubcategory("estufas")
+                 }}
+                 className={`px-8 py-3 rounded-full text-base font-medium transition-all duration-200 ${
+                   selectedSubcategory === "estufas" 
+                     ? "bg-primary text-white shadow-lg scale-105" 
+                     : "bg-background text-foreground border-2 border-border hover:border-primary hover:text-primary hover:scale-105"
+                 }`}
+               >
+                 Estufas
+                 <Badge variant="secondary" className="ml-2">
+                   {produtos.filter(p => p.category === "odontologicos" && p.name.toLowerCase().includes("estufa")).length}
+                 </Badge>
+               </Button>
             </div>
           </div>
           
-          <div className="mt-4 text-sm text-muted-foreground">
+          <div className="mt-8 text-center text-sm text-muted-foreground">
             Mostrando {filteredProducts.length} de {produtos.length} produtos
           </div>
         </div>

@@ -49,31 +49,31 @@ const HeroLightEffects: React.FC = () => {
         {/* Particle 1 */}
         <div 
           className="absolute top-1/5 left-1/6 w-2 h-2 bg-sanders-blue-glow rounded-full blur-sm animate-float opacity-60"
-          style={{animationDuration: '8s', animationDelay: '0s'}}
+          style={{animationDuration: '12s', animationDelay: '0s'}}
         />
         
         {/* Particle 2 */}
         <div 
           className="absolute top-2/5 right-1/4 w-1.5 h-1.5 bg-sanders-ocean rounded-full blur-sm animate-float opacity-50"
-          style={{animationDuration: '10s', animationDelay: '2s'}}
+          style={{animationDuration: '15s', animationDelay: '3s'}}
         />
         
         {/* Particle 3 */}
         <div 
           className="absolute bottom-1/4 left-1/3 w-1 h-1 bg-sanders-blue rounded-full blur-sm animate-float opacity-70"
-          style={{animationDuration: '12s', animationDelay: '4s'}}
+          style={{animationDuration: '18s', animationDelay: '6s'}}
         />
         
         {/* Particle 4 */}
         <div 
           className="absolute top-3/5 right-1/6 w-2.5 h-2.5 bg-sanders-blue-glow rounded-full blur-sm animate-float opacity-40"
-          style={{animationDuration: '9s', animationDelay: '1s'}}
+          style={{animationDuration: '14s', animationDelay: '2s'}}
         />
         
         {/* Particle 5 */}
         <div 
           className="absolute bottom-2/5 left-2/5 w-1.5 h-1.5 bg-sanders-ocean rounded-full blur-sm animate-float opacity-55"
-          style={{animationDuration: '11s', animationDelay: '3s'}}
+          style={{animationDuration: '16s', animationDelay: '4s'}}
         />
       </div>
       
@@ -81,11 +81,11 @@ const HeroLightEffects: React.FC = () => {
       <div className="absolute inset-0 opacity-20">
         <div 
           className="absolute inset-0 bg-gradient-to-r from-transparent via-sanders-blue/5 to-transparent animate-drift"
-          style={{animationDuration: '20s'}}
+          style={{animationDuration: '30s'}}
         />
         <div 
           className="absolute inset-0 bg-gradient-to-l from-transparent via-sanders-ocean/3 to-transparent animate-drift"
-          style={{animationDuration: '25s', animationDelay: '10s'}}
+          style={{animationDuration: '40s', animationDelay: '15s'}}
         />
       </div>
     </div>

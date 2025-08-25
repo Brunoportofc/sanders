@@ -54,7 +54,7 @@ const InteractiveLights = () => {
         size: Math.random() * 3 + 1.5, // 1.5-4.5px (mais sutil para design clean)
         color: colors[Math.floor(Math.random() * colors.length)],
         opacity: Math.random() * 0.3 + 0.15, // 0.15-0.45 (mais suave)
-        speed: Math.random() * 0.02 + 0.005, // 0.005-0.025 (mais variação)
+        speed: Math.random() * 0.01 + 0.003, // 0.003-0.013 (velocidade reduzida)
         angle: angle,
         radius: radius,
       };
@@ -103,16 +103,16 @@ const InteractiveLights = () => {
             const time = Date.now() * 0.001;
             
             if (light.id % 3 === 0) {
-              // Movimento aleatório para 1/3 das bolinhas
-              const randomX = (Math.sin(time * 0.7 + light.id) * 80) + (Math.cos(time * 0.3 + light.id * 2) * 60);
-              const randomY = (Math.cos(time * 0.5 + light.id) * 70) + (Math.sin(time * 0.8 + light.id * 1.5) * 50);
+              // Movimento aleatório para 1/3 das bolinhas (velocidade reduzida)
+              const randomX = (Math.sin(time * 0.4 + light.id) * 80) + (Math.cos(time * 0.2 + light.id * 2) * 60);
+              const randomY = (Math.cos(time * 0.3 + light.id) * 70) + (Math.sin(time * 0.5 + light.id * 1.5) * 50);
               
               newTargetX = light.baseX + randomX;
               newTargetY = light.baseY + randomY;
             } else {
-              // Movimento orbital para as outras bolinhas
-              const orbitRadius = 35 + Math.sin(time * 0.2 + light.id) * 15; // Raio variável maior
-              const orbitSpeed = 0.4 + light.id * 0.08;
+              // Movimento orbital para as outras bolinhas (velocidade reduzida)
+              const orbitRadius = 35 + Math.sin(time * 0.15 + light.id) * 15; // Raio variável maior
+              const orbitSpeed = 0.25 + light.id * 0.05;
               
               newTargetX = light.baseX + Math.cos(time * orbitSpeed + light.angle) * orbitRadius;
               newTargetY = light.baseY + Math.sin(time * orbitSpeed + light.angle) * orbitRadius;

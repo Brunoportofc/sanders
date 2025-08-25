@@ -1,61 +1,43 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChatModal from "@/components/ChatModal";
+import InlineThreeDViewer from "@/components/InlineThreeDViewer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckCircle, Download, Phone, Mail } from "lucide-react";
+import { CheckCircle, Download, Phone, Mail, ArrowLeft } from "lucide-react";
 import { useChatContext } from "@/contexts/ChatContext";
+import { getProdutoById } from "@/data/produtos";
 
 const ProdutoDetalhes = () => {
   const { id } = useParams();
   const { isChatModalOpen, setIsChatModalOpen } = useChatContext();
 
-  // Mock data - em produção viria de uma API
-  const produto = {
-    id: "autoclave-horizontal-200l",
-    name: "Autoclave Horizontal 200L",
-    category: "Hospitalares",
-    price: "R$ 25.000",
-    images: ["/api/placeholder/600/400", "/api/placeholder/600/400", "/api/placeholder/600/400"],
-    description: "Autoclave horizontal de grande capacidade, ideal para hospitais e clínicas que necessitam de esterilização em grande escala. Equipada com tecnologia avançada e controles digitais para máxima segurança e eficiência.",
-    features: [
-      "Capacidade de 200 litros",
-      "Controle digital com display touchscreen",
-      "Registro automático de dados",
-      "Validação de processos",
-      "Porta dupla opcional",
-      "Sistema de vácuo pulsante",
-      "Construção em aço inoxidável AISI 316L",
-      "Conformidade com normas ISO e ANVISA"
-    ],
-    specifications: {
-      "Dimensões": "180 x 80 x 120 cm",
-      "Peso": "450 kg",
-      "Voltagem": "220V / 380V",
-      "Potência": "12 kW",
-      "Temperatura": "121°C a 134°C",
-      "Pressão": "1,5 a 2,2 bar",
-      "Capacidade": "200 litros",
-      "Material": "Aço inoxidável AISI 316L"
-    },
-    applications: [
-      "Hospitais",
-      "Clínicas",
-      "Centros cirúrgicos",
-      "CME (Central de Material Esterilizado)",
-      "Laboratórios",
-      "Indústria farmacêutica"
-    ],
-    downloads: [
-      { name: "Manual do Usuário", url: "#" },
-      { name: "Ficha Técnica", url: "#" },
-      { name: "Certificados", url: "#" },
-      { name: "Catálogo", url: "#" }
-    ]
-  };
+  const produto = getProdutoById(id || "");
+
+  if (!produto) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="container mx-auto px-4 py-16 text-center">
+          <h1 className="text-2xl font-bold mb-4">Produto não encontrado</h1>
+          <Button asChild>
+            <Link to="/produtos">Voltar aos Produtos</Link>
+          </Button>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  const downloads = [
+    { name: "Manual do Usuário", url: "#" },
+    { name: "Ficha Técnica", url: "#" },
+    { name: "Certificados", url: "#" },
+    { name: "Catálogo", url: "#" }
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -64,8 +46,16 @@ const ProdutoDetalhes = () => {
       {/* Breadcrumb */}
       <div className="border-b">
         <div className="container mx-auto px-4 py-4">
-          <div className="text-sm text-muted-foreground">
-            <span>Home</span> / <span>Produtos</span> / <span>Hospitalares</span> / <span className="text-foreground">{produto.name}</span>
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-muted-foreground">
+              <span>Home</span> / <span>Produtos</span> / <span>{produto.category === "hospitalares" ? "Hospitalares" : "Odontológicos"}</span> / <span className="text-foreground">{produto.name}</span>
+            </div>
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/produtos">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Voltar aos Produtos
+              </Link>
+            </Button>
           </div>
         </div>
       </div>
@@ -76,32 +66,40 @@ const ProdutoDetalhes = () => {
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Galeria de Imagens */}
             <div className="space-y-4">
-              <div className="aspect-[4/3] bg-sanders-blue-light rounded-lg overflow-hidden">
-                <img
-                  src={produto.images[0]}
-                  alt={produto.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="grid grid-cols-3 gap-2">
-                {produto.images.slice(1).map((image, index) => (
-                  <div key={index} className="aspect-square bg-sanders-blue-light rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity">
-                    <img
-                      src={image}
-                      alt={`${produto.name} - Imagem ${index + 2}`}
-                      className="w-full h-full object-cover"
-                    />
+              <div className="aspect-[4/3] bg-gradient-to-br from-sanders-blue-light/20 to-sanders-blue/10 rounded-lg overflow-hidden relative">
+                {produto.gallery?.[0]?.endsWith('.glb') ? (
+                  <div className="h-full w-full viewer-3d-container">
+                    <InlineThreeDViewer isActive={true} />
                   </div>
-                ))}
+                ) : (
+                  <img
+                    src={produto.gallery?.[0] || produto.image}
+                    alt={produto.name}
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </div>
+              {produto.gallery && produto.gallery.length > 1 && (
+                <div className="grid grid-cols-3 gap-2">
+                  {produto.gallery.slice(1).map((image, index) => (
+                    <div key={index} className="aspect-square bg-sanders-blue-light rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity">
+                      <img
+                        src={image}
+                        alt={`${produto.name} - Imagem ${index + 2}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Informações do Produto */}
             <div className="space-y-6">
               <div>
-                <Badge variant="outline" className="mb-2">{produto.category}</Badge>
+                <Badge variant="outline" className="mb-2">{produto.category === "hospitalares" ? "Hospitalares" : "Odontológicos"}</Badge>
                 <h1 className="text-3xl font-bold mb-4">{produto.name}</h1>
-                <p className="text-muted-foreground text-lg">{produto.description}</p>
+                <p className="text-muted-foreground text-lg">{produto.detailedDescription || produto.description}</p>
               </div>
 
               <div className="text-3xl font-bold text-sanders-blue">
@@ -176,14 +174,18 @@ const ProdutoDetalhes = () => {
               <Card>
                 <CardContent className="p-8">
                   <h3 className="text-xl font-semibold mb-6">Especificações Técnicas</h3>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {Object.entries(produto.specifications).map(([key, value]) => (
-                      <div key={key} className="flex justify-between py-2 border-b">
-                        <span className="font-medium">{key}:</span>
-                        <span className="text-muted-foreground">{value}</span>
-                      </div>
-                    ))}
-                  </div>
+                  {produto.specifications ? (
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {Object.entries(produto.specifications).map(([key, value]) => (
+                        <div key={key} className="flex justify-between py-2 border-b">
+                          <span className="font-medium">{key}:</span>
+                          <span className="text-muted-foreground">{value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-muted-foreground">Especificações técnicas não disponíveis.</p>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -208,13 +210,17 @@ const ProdutoDetalhes = () => {
               <Card>
                 <CardContent className="p-8">
                   <h3 className="text-xl font-semibold mb-6">Aplicações Recomendadas</h3>
-                  <div className="grid md:grid-cols-3 gap-4">
-                    {produto.applications.map((application, index) => (
-                      <div key={index} className="bg-sanders-blue-light p-4 rounded-lg text-center">
-                        <span className="font-medium">{application}</span>
-                      </div>
-                    ))}
-                  </div>
+                  {produto.applications ? (
+                    <div className="grid md:grid-cols-3 gap-4">
+                      {produto.applications.map((application, index) => (
+                        <div key={index} className="bg-sanders-blue-light p-4 rounded-lg text-center">
+                          <span className="font-medium">{application}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-muted-foreground">Aplicações não especificadas.</p>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -224,7 +230,7 @@ const ProdutoDetalhes = () => {
                 <CardContent className="p-8">
                   <h3 className="text-xl font-semibold mb-6">Downloads Disponíveis</h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                    {produto.downloads.map((download, index) => (
+                    {downloads.map((download, index) => (
                       <Button key={index} variant="outline" className="justify-start">
                         <Download className="h-4 w-4 mr-2" />
                         {download.name}

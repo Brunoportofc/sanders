@@ -8,7 +8,7 @@ import * as THREE from 'three';
 import anime from 'animejs';
 
 function Model({ resetTrigger }: { resetTrigger: number }) {
-  const gltf: any = useGLTF('/teste2.glb');
+  const gltf: any = useGLTF('/teste2 copy.glb');
   const { scene, animations } = gltf;
   const modelRef = useRef<THREE.Group>();
   const { camera } = useThree();
@@ -268,7 +268,7 @@ const ThreeDViewer: React.FC<ThreeDViewerProps> = ({ trigger }) => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => window.open('/teste2.glb', '_blank')}
+              onClick={() => window.open('/teste2 copy.glb', '_blank')}
               className="bg-white/90 backdrop-blur-sm"
             >
               <Download className="h-4 w-4 mr-2" />
@@ -281,4 +281,4 @@ const ThreeDViewer: React.FC<ThreeDViewerProps> = ({ trigger }) => {
   );
 };
 
-export default ThreeDViewer; 
+export default ThreeDViewer;

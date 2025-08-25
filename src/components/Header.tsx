@@ -12,7 +12,6 @@ const Header = () => {
 
   const navigationItems = [
     { name: "Home", path: "/" },
-    { name: "Empresa", path: "/empresa" },
     { name: "Produtos", path: "/produtos" },
     // Itens temporariamente removidos
     // { name: "Blog", path: "/blog" },

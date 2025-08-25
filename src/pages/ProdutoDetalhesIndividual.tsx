@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChatModal from "@/components/ChatModal";
+import InlineThreeDViewer from "@/components/InlineThreeDViewer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -69,11 +70,17 @@ const ProdutoDetalhesIndividual = () => {
             {/* Galeria de Imagens */}
             <div className="space-y-4">
               <div className="aspect-square rounded-lg overflow-hidden bg-muted">
-                <img
-                  src={produto.gallery?.[selectedImage] || produto.image}
-                  alt={produto.name}
-                  className="w-full h-full object-cover"
-                />
+                {produto.gallery?.[selectedImage]?.endsWith('.glb') ? (
+                  <div className="w-full h-full">
+                    <InlineThreeDViewer isActive={true} />
+                  </div>
+                ) : (
+                  <img
+                    src={produto.gallery?.[selectedImage] || produto.image}
+                    alt={produto.name}
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </div>
               
               {produto.gallery && produto.gallery.length > 1 && (
@@ -82,15 +89,24 @@ const ProdutoDetalhesIndividual = () => {
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
-                      className={`aspect-square rounded-md overflow-hidden border-2 transition-colors ${
+                      className={`aspect-square rounded-md overflow-hidden border-2 transition-colors relative ${
                         selectedImage === index ? 'border-sanders-blue' : 'border-transparent'
                       }`}
                     >
-                      <img
-                        src={image}
-                        alt={`${produto.name} - Imagem ${index + 1}`}
-                        className="w-full h-full object-cover"
-                      />
+                      {image.endsWith('.glb') ? (
+                        <div className="w-full h-full bg-gradient-to-br from-sanders-blue/20 to-sanders-blue/40 flex items-center justify-center">
+                          <div className="text-sanders-blue font-semibold text-xs text-center">
+                            <div className="mb-1">🎯</div>
+                            <div>3D</div>
+                          </div>
+                        </div>
+                      ) : (
+                        <img
+                          src={image}
+                          alt={`${produto.name} - Imagem ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
                     </button>
                   ))}
                 </div>

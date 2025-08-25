@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
+import './styles/chat-animations.css'
 import { ThemeProvider } from 'next-themes'
 
 createRoot(document.getElementById("root")!).render(
