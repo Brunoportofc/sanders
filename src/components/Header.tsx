@@ -13,11 +13,6 @@ const Header = () => {
   const navigationItems = [
     { name: "Home", path: "/" },
     { name: "Produtos", path: "/produtos" },
-    // Itens temporariamente removidos
-    // { name: "Blog", path: "/blog" },
-    // { name: "Contato", path: "/contato" },
-    // { name: "Quero Comprar", path: "/quero-comprar" },
-    // { name: "Assistência Técnica", path: "/assistencia-tecnica" },
   ];
 
   const socialLinks = [

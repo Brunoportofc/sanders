@@ -251,9 +251,7 @@ const Produtos = () => {
                       ))}
                     </div>
                     
-                    <div className="text-2xl font-bold text-sanders-blue mb-4">
-                      {produto.price}
-                    </div>
+
                   </div>
                 </CardContent>
                 

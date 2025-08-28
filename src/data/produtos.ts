@@ -2,7 +2,6 @@ export interface Produto {
   id: string;
   name: string;
   category: "hospitalares" | "odontologicos";
-  price: string;
   image: string;
   description: string;
   features: string[];
@@ -21,7 +20,6 @@ export const produtos: Produto[] = [
     id: "termodesinfetora-digital-60l",
     name: "Termodesinfetora Digital 60L",
     category: "odontologicos",
-    price: "R$ 15.800",
     image: "/images/termodesinfetora-1.svg",
     description: "Desinfecção térmica segura e eficiente para instrumentos odontológicos",
     features: ["Controle digital", "Registro de dados", "Validação automática"],
@@ -40,6 +38,7 @@ export const produtos: Produto[] = [
     },
     gallery: [
       "/teste2 copy.glb",
+      "/images/termodesinfetora-2.svg",
       "/termo1.jpg",
       "/termo2.jpg",
       "/termo3.jpg"

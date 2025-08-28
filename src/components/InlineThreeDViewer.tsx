@@ -23,7 +23,7 @@ function Model({ resetTrigger, isRotating }: { resetTrigger: number; isRotating:
       
       // Ajustar escala baseada no tamanho
       const maxDim = Math.max(size.x, size.y, size.z);
-      const scale = 1.5 / maxDim; // Tamanho equilibrado para container inline
+      const scale = 2.2 / maxDim; // Tamanho aumentado para hero section
       modelRef.current.scale.setScalar(scale);
       
       // Centralizar o modelo completamente - resetar posições

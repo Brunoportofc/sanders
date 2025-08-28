@@ -1,55 +1,71 @@
-import { MessageCircle, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import ChatModal from "@/components/ChatModal";
-import { useChatContext } from "@/contexts/ChatContext";
+import React from 'react';
+import { MessageCircle, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useChatContext } from '@/contexts/ChatContext';
+import ChatModal from './ChatModal';
+import AutoChatMessage from './AutoChatMessage';
 
-const FloatingChat = () => {
-  const { isChatModalOpen, setIsChatModalOpen } = useChatContext();
+const FloatingChat: React.FC = () => {
+  const { 
+    isChatModalOpen, 
+    setIsChatModalOpen,
+    showAutoMessage,
+    setShowAutoMessage
+  } = useChatContext();
+
+  const handleChatToggle = () => {
+    setIsChatModalOpen(!isChatModalOpen);
+    // Esconder mensagem automática quando o chat for aberto
+    if (showAutoMessage) {
+      setShowAutoMessage(false);
+    }
+  };
+
+  const handleAutoMessageClose = () => {
+    setShowAutoMessage(false);
+  };
+
+  const handleAutoMessageChatOpen = () => {
+    setShowAutoMessage(false);
+    setIsChatModalOpen(true);
+  };
 
   return (
     <>
-      {/* Ícone de Chat Flutuante - só aparece quando o chat está fechado */}
-      {!isChatModalOpen && (
-        <div className="fixed bottom-6 right-6 z-50 group">
-          {/* Anel de pulso sutil */}
-          <div className="absolute inset-0">
-            <div className="w-16 h-16 bg-sanders-blue/10 rounded-full animate-ping"></div>
-          </div>
+      {/* Mensagem Automática */}
+      <AutoChatMessage 
+        isVisible={showAutoMessage}
+        onClose={handleAutoMessageClose}
+        onChatOpen={handleAutoMessageChatOpen}
+      />
+      
+      {/* Botão do Chat Flutuante */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <div className="relative">
+          {/* Indicador de notificação */}
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse z-10"></div>
           
-          {/* Botão principal */}
           <Button
-            onClick={() => setIsChatModalOpen(true)}
-            size="lg"
-            className="relative w-16 h-16 bg-gradient-to-br from-sanders-blue via-sanders-ocean to-sanders-blue-dark text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-2 border-white/10"
+            onClick={handleChatToggle}
+            className="w-14 h-14 rounded-full bg-sanders-blue hover:bg-sanders-blue-dark text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            aria-label="Abrir chat de suporte"
           >
-            {/* Ícone */}
-            <div className="flex items-center justify-center w-full h-full">
-              <MessageCircle className="h-7 w-7" />
-            </div>
-            
-            {/* Indicador de notificação */}
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white flex items-center justify-center">
-              <span className="text-xs font-bold text-white">!</span>
-            </div>
+            {isChatModalOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <MessageCircle className="h-6 w-6" />
+            )}
           </Button>
           
-          {/* Tooltip clean */}
-          <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
-            <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-white px-3 py-2 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 whitespace-nowrap text-sm">
-              Precisa de ajuda? Clique aqui!
-              <div className="absolute left-full top-1/2 -translate-y-1/2 border-4 border-transparent border-l-white dark:border-l-gray-800"></div>
-            </div>
+          {/* Tooltip */}
+          <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+            Precisa de ajuda?
           </div>
         </div>
-      )}
+      </div>
 
-      {/* Chat Modal */}
-      <ChatModal 
-        isOpen={isChatModalOpen}
-        onClose={() => setIsChatModalOpen(false)}
-        productName="" // Vazio para indicar que foi aberto pelo ícone flutuante
-        isFloatingChat={true}
-      />
+      {/* Modal do Chat */}
+      <ChatModal isOpen={isChatModalOpen} onClose={() => setIsChatModalOpen(false)} />
     </>
   );
 };

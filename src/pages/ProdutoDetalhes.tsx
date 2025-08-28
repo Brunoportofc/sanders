@@ -102,9 +102,7 @@ const ProdutoDetalhes = () => {
                 <p className="text-muted-foreground text-lg">{produto.detailedDescription || produto.description}</p>
               </div>
 
-              <div className="text-3xl font-bold text-sanders-blue">
-                {produto.price}
-              </div>
+
 
               <div className="space-y-4">
                 <h3 className="font-semibold">Principais Características:</h3>

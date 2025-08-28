@@ -128,9 +128,7 @@ const ProdutoDetalhesIndividual = () => {
                 <p className="text-lg text-muted-foreground mb-6">{produto.description}</p>
               </div>
 
-              <div className="text-4xl font-bold text-sanders-blue mb-6">
-                {produto.price}
-              </div>
+
 
               {/* Características Principais */}
               <div className="space-y-3">

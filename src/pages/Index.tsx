@@ -81,7 +81,7 @@ const Index = () => {
             
             {/* Modelo 3D à direita */}
             <div className="animate-scale-up viewer-transition" style={{animationDelay: '0.3s'}}>
-              <div className="aspect-video relative">
+              <div className="aspect-square lg:aspect-[4/3] relative h-[500px] lg:h-[600px]">
                 <InlineThreeDViewer isActive={is3DViewerActive} />
               </div>
             </div>

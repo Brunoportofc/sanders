@@ -12,11 +12,10 @@ import NotFound from "./pages/NotFound";
 import FloatingChat from "@/components/FloatingChat";
 import { ChatProvider } from "@/contexts/ChatContext";
 
-// Páginas temporariamente removidas
-// import Blog from "./pages/Blog";
-// import Contato from "./pages/Contato";
-// import QueroComprar from "./pages/QueroComprar";
-// import AssistenciaTecnica from "./pages/AssistenciaTecnica";
+import Blog from "./pages/Blog";
+import Contato from "./pages/Contato";
+import QueroComprar from "./pages/QueroComprar";
+import AssistenciaTecnica from "./pages/AssistenciaTecnica";
 
 const queryClient = new QueryClient();
 
@@ -34,11 +33,10 @@ const App = () => {
               <Route path="/produtos" element={<Produtos />} />
               <Route path="/produto/:id" element={<ProdutoDetalhes />} />
               <Route path="/produto-detalhes/:id" element={<ProdutoDetalhesIndividual />} />
-              {/* Rotas temporariamente removidas */}
-              {/* <Route path="/blog" element={<Blog />} /> */}
-              {/* <Route path="/contato" element={<Contato />} /> */}
-              {/* <Route path="/quero-comprar" element={<QueroComprar />} /> */}
-              {/* <Route path="/assistencia-tecnica" element={<AssistenciaTecnica />} /> */}
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/contato" element={<Contato />} />
+              <Route path="/quero-comprar" element={<QueroComprar />} />
+              <Route path="/assistencia-tecnica" element={<AssistenciaTecnica />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             

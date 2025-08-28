@@ -266,22 +266,7 @@ const QueroComprar = () => {
                   <div>
                     <h3 className="text-lg font-semibold mb-4">Informações Adicionais</h3>
                     <div className="space-y-6">
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Orçamento Previsto</label>
-                        <Select>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Faixa de investimento" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="ate-10k">Até R$ 10.000</SelectItem>
-                            <SelectItem value="10k-25k">R$ 10.000 - R$ 25.000</SelectItem>
-                            <SelectItem value="25k-50k">R$ 25.000 - R$ 50.000</SelectItem>
-                            <SelectItem value="50k-100k">R$ 50.000 - R$ 100.000</SelectItem>
-                            <SelectItem value="acima-100k">Acima de R$ 100.000</SelectItem>
-                            <SelectItem value="nao-definido">Não definido</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
+
                       
                       <div className="space-y-2">
                         <label className="text-sm font-medium">Forma de Pagamento Preferida</label>
