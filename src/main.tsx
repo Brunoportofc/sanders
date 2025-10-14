@@ -5,7 +5,7 @@ import './styles/chat-animations.css'
 import { ThemeProvider } from 'next-themes'
 
 createRoot(document.getElementById("root")!).render(
-  <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+  <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
     <App />
   </ThemeProvider>
 );
