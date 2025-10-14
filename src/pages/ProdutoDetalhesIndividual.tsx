@@ -72,7 +72,10 @@ const ProdutoDetalhesIndividual = () => {
               <div className="aspect-square rounded-lg overflow-hidden bg-muted">
                 {produto.gallery?.[selectedImage]?.endsWith('.glb') ? (
                   <div className="w-full h-full">
-                    <InlineThreeDViewer isActive={true} />
+                    <InlineThreeDViewer 
+                      isActive={true} 
+                      modelPath={produto.gallery[selectedImage]}
+                    />
                   </div>
                 ) : (
                   <img

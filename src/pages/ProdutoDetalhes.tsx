@@ -69,7 +69,10 @@ const ProdutoDetalhes = () => {
               <div className="aspect-[4/3] bg-gradient-to-br from-sanders-blue-light/20 to-sanders-blue/10 rounded-lg overflow-hidden relative">
                 {produto.gallery?.[0]?.endsWith('.glb') ? (
                   <div className="h-full w-full viewer-3d-container">
-                    <InlineThreeDViewer isActive={true} />
+                    <InlineThreeDViewer 
+                      isActive={true} 
+                      modelPath={produto.gallery[0]}
+                    />
                   </div>
                 ) : (
                   <img

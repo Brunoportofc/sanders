@@ -37,7 +37,8 @@ export const produtos: Produto[] = [
       "Certificação": "ANVISA, CE, ISO 15883"
     },
     gallery: [
-      "/teste2 copy.glb",
+      "/Termodesinfectora WDS-380SD.glb",
+      "/images/termodesinfetora-1.svg",
       "/images/termodesinfetora-2.svg",
       "/termo1.jpg",
       "/termo2.jpg",

@@ -532,6 +532,25 @@ Paleta premium: azul oceano, branco pérola, cinza platina
     pointer-events: none;
   }
 
+  /* Garantir que o background raycast escale com o zoom da página */
+  @supports (zoom: 1) {
+    html {
+      zoom: 1;
+    }
+  }
+
+  /* Forçar elementos de background a escalarem com zoom */
+  [class*="raycast"] {
+    transform-origin: top left;
+    will-change: transform;
+  }
+
+  /* Canvas e SVG dentro de backgrounds devem escalar com a página */
+  canvas, svg {
+    max-width: 100%;
+    height: auto;
+  }
+
   @keyframes tech-sweep {
     0% { transform: translateX(-60%); }
     100% { transform: translateX(60%); }

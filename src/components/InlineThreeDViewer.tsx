@@ -6,8 +6,8 @@ import { Eye, RotateCcw, Settings } from 'lucide-react';
 import * as THREE from 'three';
 import anime from 'animejs';
 
-function Model({ resetTrigger, isRotating }: { resetTrigger: number; isRotating: boolean }) {
-  const gltf: any = useGLTF('/teste2 copy.glb');
+function Model({ resetTrigger, isRotating, modelPath }: { resetTrigger: number; isRotating: boolean; modelPath: string }) {
+  const gltf: any = useGLTF(modelPath);
   const { scene, animations } = gltf;
   const modelRef = useRef<THREE.Group>();
   const { camera } = useThree();
@@ -168,9 +168,10 @@ function CameraControlsOnly({ onReset }: { onReset: () => void }) {
 interface InlineThreeDViewerProps {
   isActive: boolean;
   onClose?: () => void;
+  modelPath?: string;
 }
 
-const InlineThreeDViewer: React.FC<InlineThreeDViewerProps> = ({ isActive, onClose }) => {
+const InlineThreeDViewer: React.FC<InlineThreeDViewerProps> = ({ isActive, onClose, modelPath = '/Termodesinfectora WDS-380SD.glb' }) => {
   const [resetTrigger, setResetTrigger] = useState(0);
   const [canvasKey, setCanvasKey] = useState(0);
   const [isRotating, setIsRotating] = useState(true);
@@ -263,7 +264,7 @@ const InlineThreeDViewer: React.FC<InlineThreeDViewerProps> = ({ isActive, onClo
           <Environment preset="city" />
           
           {/* Modelo 3D */}
-          <Model resetTrigger={resetTrigger} isRotating={isRotating} />
+          <Model resetTrigger={resetTrigger} isRotating={isRotating} modelPath={modelPath} />
           
           {/* Sem plano de sombra para manter fundo 100% transparente */}
           

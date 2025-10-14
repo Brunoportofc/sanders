@@ -17,9 +17,9 @@ const Index = () => {
       <Header />
       
       {/* Hero Banner */}
-      <section className="py-8 relative overflow-hidden min-h-[700px]">
-        {/* Animated blue and white background */}
-        <div className="absolute inset-0 z-0">
+      <section className="py-6 relative overflow-hidden min-h-[490px]">
+        {/* Animated blue and white background - maior que a seção para cortar a logo */}
+        <div className="absolute inset-x-0 top-0 z-0 w-full" style={{ pointerEvents: 'none', height: '200%', minHeight: '800px' }}>
           <RaycastAnimatedBlueWhiteBackground />
         </div>
         
@@ -27,7 +27,7 @@ const Index = () => {
         <div className="absolute inset-0 z-5 backdrop-blur-sm"></div>
         
         <div className="container mx-auto px-6 relative z-10 h-full">
-          <div className="grid lg:grid-cols-2 gap-12 items-start min-h-[600px] pt-4">
+          <div className="grid lg:grid-cols-2 gap-8 items-start min-h-[510px] pt-2">
             {/* Content Column - mantido do lado esquerdo */}
             <div className="max-w-2xl animate-fade-up order-2 lg:order-1">
               <div className="space-y-6">
