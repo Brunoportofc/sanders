@@ -17,8 +17,8 @@ const Empresa = () => {
               Sobre a Sanders do Brasil
             </h1>
             <p className="text-lg md:text-xl opacity-90">
-              Pioneiros em equipamentos hospitalares e odontológicos, 
-              oferecendo soluções inovadoras há mais de 30 anos.
+              Com 23 anos de atuação, somos fabricantes 100% nacionais de equipamentos hospitalares 
+              de alta tecnologia, com foco em limpeza, secagem, desinfecção e esterilização.
             </p>
           </div>
         </div>
@@ -32,33 +32,95 @@ const Empresa = () => {
               <h2 className="text-3xl font-bold mb-6 text-foreground">Nossa História</h2>
               <div className="space-y-4 text-muted-foreground">
                 <p>
-                  Fundada em 1990 em Santa Rita do Sapucaí, Minas Gerais, a Sanders do Brasil 
-                  nasceu com o objetivo de revolucionar o mercado de equipamentos médicos no país.
+                  Com 23 anos de atuação, a Sanders do Brasil está localizada em Santa Rita do Sapucaí, Minas Gerais, 
+                  reconhecida como o Vale da Eletrônica. Nossa posição estratégica a 220 km de São Paulo, 
+                  380 km do Rio de Janeiro e 400 km de Belo Horizonte favorece logística e agilidade em todo o território nacional.
                 </p>
                 <p>
-                  Iniciamos nossa jornada com foco em autoclaves e equipamentos de esterilização, 
-                  expandindo gradualmente nosso portfólio para atender hospitais, clínicas e 
-                  consultórios odontológicos em todo o território nacional.
+                  Nossa linha de produtos inclui Autoclaves, Termodesinfectoras, Lavadoras Ultrassônicas, 
+                  Reprocessadoras de Endoscópios, Secadoras de Traqueias e Pistolas de limpeza, 
+                  todos desenvolvidos com foco em eficiência, sustentabilidade, segurança e alta performance.
                 </p>
                 <p>
-                  Hoje, somos reconhecidos pela qualidade excepcional de nossos produtos, 
-                  inovação constante e comprometimento com a excelência no atendimento ao cliente.
+                  Certificada com os mais exigentes selos de qualidade nacionais e internacionais (ISO 13485 e RDC 665), 
+                  a Sanders se destaca por sua missão: <strong>preservar a vida dos pacientes e profissionais da área da saúde.</strong>
                 </p>
               </div>
             </div>
-            <div className="bg-sanders-blue-light rounded-2xl p-8 text-center">
-              <div className="space-y-6">
-                <div>
-                  <div className="text-4xl font-bold text-sanders-blue">30+</div>
-                  <div className="text-sm text-muted-foreground">Anos de Experiência</div>
-                </div>
-                <div>
-                  <div className="text-4xl font-bold text-sanders-blue">5000+</div>
-                  <div className="text-sm text-muted-foreground">Clientes Atendidos</div>
-                </div>
-                <div>
-                  <div className="text-4xl font-bold text-sanders-blue">98%</div>
-                  <div className="text-sm text-muted-foreground">Satisfação dos Clientes</div>
+            <div className="relative">
+              {/* Bola de luz azul desfocada atrás */}
+              <div 
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full opacity-50 -z-10"
+                style={{
+                  background: 'radial-gradient(circle, rgba(59, 130, 246, 0.5) 0%, rgba(96, 165, 250, 0.3) 40%, transparent 70%)',
+                  filter: 'blur(50px)',
+                  animation: 'pulse 4s ease-in-out infinite',
+                }}
+              />
+              
+              <div 
+                className="relative overflow-hidden rounded-3xl p-10 text-center"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(240, 249, 255, 0.9) 0%, rgba(219, 234, 254, 0.85) 100%)',
+                  backdropFilter: 'blur(30px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(30px) saturate(180%)',
+                  border: '1px solid rgba(147, 197, 253, 0.4)',
+                  boxShadow: `
+                    0 8px 32px rgba(59, 130, 246, 0.25),
+                    0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+                    0 0 80px rgba(59, 130, 246, 0.2)
+                  `,
+                }}
+              >
+                {/* Reflexo de vidro superior */}
+                <div 
+                  className="absolute top-0 left-0 right-0 h-1/2 pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, transparent 100%)',
+                  }}
+                />
+                
+                {/* Conteúdo */}
+                <div className="space-y-8 relative z-10">
+                  <div className="group">
+                    <div 
+                      className="text-5xl font-bold mb-2 bg-gradient-to-br from-sanders-blue via-blue-500 to-blue-700 bg-clip-text text-transparent drop-shadow-lg"
+                      style={{
+                        textShadow: '0 0 30px rgba(59, 130, 246, 0.3)',
+                      }}
+                    >
+                      23
+                    </div>
+                    <div className="text-sm font-semibold text-gray-600 uppercase tracking-wider">Anos de Experiência</div>
+                  </div>
+                  
+                  <div className="h-px bg-gradient-to-r from-transparent via-blue-300/50 to-transparent" />
+                  
+                  <div className="group">
+                    <div 
+                      className="text-5xl font-bold mb-2 bg-gradient-to-br from-sanders-blue via-blue-500 to-blue-700 bg-clip-text text-transparent drop-shadow-lg"
+                      style={{
+                        textShadow: '0 0 30px rgba(59, 130, 246, 0.3)',
+                      }}
+                    >
+                      5000+
+                    </div>
+                    <div className="text-sm font-semibold text-gray-600 uppercase tracking-wider">Clientes Atendidos</div>
+                  </div>
+                  
+                  <div className="h-px bg-gradient-to-r from-transparent via-blue-300/50 to-transparent" />
+                  
+                  <div className="group">
+                    <div 
+                      className="text-5xl font-bold mb-2 bg-gradient-to-br from-sanders-blue via-blue-500 to-blue-700 bg-clip-text text-transparent drop-shadow-lg"
+                      style={{
+                        textShadow: '0 0 30px rgba(59, 130, 246, 0.3)',
+                      }}
+                    >
+                      98%
+                    </div>
+                    <div className="text-sm font-semibold text-gray-600 uppercase tracking-wider">Satisfação dos Clientes</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -72,8 +134,8 @@ const Empresa = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4 text-foreground">Nossa Localização</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Estrategicamente localizada no polo tecnológico de Santa Rita do Sapucaí, 
-              a "Vale do Silício" de Minas Gerais.
+              Estrategicamente localizada em Santa Rita do Sapucaí – MG, reconhecida como o Vale da Eletrônica, 
+              facilitando logística e atendimento ágil em todo o território nacional.
             </p>
           </div>
           
@@ -174,8 +236,8 @@ const Empresa = () => {
                 <Target className="h-12 w-12 text-sanders-blue mx-auto mb-4" />
                 <h3 className="text-xl font-semibold mb-4">Missão</h3>
                 <p className="text-muted-foreground">
-                  Fornecer equipamentos hospitalares e odontológicos de alta qualidade, 
-                  contribuindo para a saúde e bem-estar da população brasileira.
+                  Nossa missão é preservar a vida dos pacientes e profissionais da área da saúde 
+                  através de equipamentos hospitalares de alta tecnologia e qualidade excepcional.
                 </p>
               </CardContent>
             </Card>

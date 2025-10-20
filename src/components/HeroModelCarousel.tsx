@@ -1,4 +1,4 @@
-import React, { useState, Suspense, useRef, useEffect } from 'react';
+import React, { useState, Suspense, useRef, useEffect, useMemo, useCallback, memo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useGLTF, OrbitControls, Environment, ContactShadows } from '@react-three/drei';
 import { Button } from '@/components/ui/button';
@@ -6,147 +6,66 @@ import { ChevronLeft, ChevronRight, Eye } from 'lucide-react';
 import * as THREE from 'three';
 import anime from 'animejs';
 
-// Dados dos modelos 3D com especificações detalhadas
+// Preload dos modelos para carregar mais rápido
+useGLTF.preload('/Autoclave Stericlean_12_D.glb');
+useGLTF.preload('/SeladoraPecksel.glb');
+useGLTF.preload('/Termodesinfectora WDS-380SD.glb');
+
+// Dados dos modelos 3D
 const models = [
   {
     id: 'autoclave',
     name: 'Autoclave Stericlean 12D',
     path: '/Autoclave Stericlean_12_D.glb',
-    description: 'Autoclave de alta performance para esterilização',
-    specifications: [
-      {
-        angle: 0, // Frente
-        title: 'Capacidade',
-        items: ['12 litros', 'Até 6 bandejas', 'Ciclo rápido 15min']
-      },
-      {
-        angle: 90, // Lado direito
-        title: 'Tecnologia',
-        items: ['Vácuo pulsante', 'Secagem automática', 'Display digital']
-      },
-      {
-        angle: 180, // Traseira
-        title: 'Segurança',
-        items: ['Trava automática', 'Sensor de pressão', 'Alarme sonoro']
-      },
-      {
-        angle: 270, // Lado esquerdo
-        title: 'Dimensões',
-        items: ['45x35x60 cm', '220V/110V', 'Peso: 28kg']
-      }
-    ]
+    description: 'Autoclave de alta performance para esterilização'
   },
   {
     id: 'seladora',
     name: 'Seladora Pecksel',
     path: '/SeladoraPecksel.glb',
-    description: 'Seladora profissional para embalagens médicas',
-    specifications: [
-      {
-        angle: 0, // Frente
-        title: 'Performance',
-        items: ['Selagem 300mm', 'Velocidade 12m/min', 'Temperatura ajustável']
-      },
-      {
-        angle: 90, // Lado direito
-        title: 'Controles',
-        items: ['Painel digital', 'Timer automático', 'Pressão regulável']
-      },
-      {
-        angle: 180, // Traseira
-        title: 'Materiais',
-        items: ['Papel grau médico', 'Filmes plásticos', 'Tyvek compatível']
-      },
-      {
-        angle: 270, // Lado esquerdo
-        title: 'Especificações',
-        items: ['40x30x25 cm', '110V/220V', 'Peso: 15kg']
-      }
-    ]
+    description: 'Seladora profissional para embalagens médicas'
   },
   {
     id: 'termodesinfectora',
     name: 'Termodesinfectora WDS-380SD',
     path: '/Termodesinfectora WDS-380SD.glb',
-    description: 'Termodesinfectora automática de alta capacidade',
-    specifications: [
-      {
-        angle: 0, // Frente
-        title: 'Capacidade',
-        items: ['380 litros', 'Carga até 50kg', 'Múltiplos ciclos']
-      },
-      {
-        angle: 90, // Lado direito
-        title: 'Ciclos',
-        items: ['Desinfecção 93°C', 'Lavagem intensiva', 'Secagem térmica']
-      },
-      {
-        angle: 180, // Traseira
-        title: 'Automação',
-        items: ['Sistema PLC', 'Dosagem automática', 'Relatórios digitais']
-      },
-      {
-        angle: 270, // Lado esquerdo
-        title: 'Instalação',
-        items: ['120x80x180 cm', '380V trifásico', 'Peso: 450kg']
-      }
-    ]
+    description: 'Termodesinfectora automática de alta capacidade'
   }
 ];
 
 // Componente do modelo 3D
-// Componente de iluminação profissional
-function ProfessionalLighting() {
+// Componente de iluminação profissional - memoizado
+const ProfessionalLighting = memo(() => {
   return (
     <>
-      {/* A luz ambiente previne que as sombras fiquem 100% pretas.
-        Com um bom Environment, ela pode ter intensidade baixa.
-      */}
       <ambientLight intensity={0.2} />
-
-      {/* Luz Principal (Key Light): Forte, vindo da direita/frente, cria as sombras principais.
-        A cor levemente quente (#FFDDC9) simula uma lâmpada de estúdio.
-      */}
       <directionalLight 
         color="#FFDDC9"
         position={[5, 5, 5]}
         intensity={2.5}
         castShadow
-        shadow-mapSize-width={2048} // Maior resolução para sombras mais nítidas
-        shadow-mapSize-height={2048}
-        shadow-bias={-0.0001} // Ajuste fino para evitar artefatos na sombra
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+        shadow-bias={-0.0001}
       />
-
-      {/* Luz de Preenchimento (Fill Light): Mais fraca, do lado oposto, para suavizar as sombras.
-        Não precisa gerar sombras para não sobrecarregar e criar sombras duplas.
-      */}
       <directionalLight 
         color="#FFFFFF"
         position={[-5, 3, 5]}
         intensity={0.8}
       />
-
-      {/* Luz de Contorno (Rim Light): Vem de trás para destacar as bordas do modelo.
-      */}
       <directionalLight 
         color="#FFFFFF"
         position={[0, 2, -10]}
         intensity={1.5}
       />
-
-      {/* 
-        O Environment é CRUCIAL. Ele usa uma imagem HDRI para criar reflexos realistas.
-        'studio' é ótimo para produtos. Outras opções: 'city', 'apartment', 'sunset'.
-      */}
       <Environment preset="studio" blur={0.5} />
     </>
   );
-}
+});
 
-function Model({ modelPath, resetTrigger, onRotationChange }: { 
+function Model({ modelPath, resetTrigger }: { 
   modelPath: string; 
   resetTrigger: number;
-  onRotationChange?: (angle: number) => void;
 }) {
   const gltf: any = useGLTF(modelPath);
   const { scene } = gltf;
@@ -158,15 +77,6 @@ function Model({ modelPath, resetTrigger, onRotationChange }: {
   useFrame((state) => {
     if (innerGroupRef.current) {
       innerGroupRef.current.rotation.y += 0.005;
-      
-      // Converte radianos para graus e normaliza para 0-360
-      const degrees = (innerGroupRef.current.rotation.y * 180 / Math.PI) % 360;
-      const normalizedDegrees = degrees < 0 ? degrees + 360 : degrees;
-      
-      // Chama callback com o ângulo atual
-      if (onRotationChange) {
-        onRotationChange(normalizedDegrees);
-      }
     }
   });
 
@@ -245,71 +155,6 @@ function CameraControls({ onReset }: { onReset: () => void }) {
   );
 }
 
-// Componente de cards de especificações
-interface SpecificationCardProps {
-  title: string;
-  items: string[];
-  isVisible: boolean;
-  position: 'left' | 'right' | 'top' | 'bottom';
-}
-
-const SpecificationCard: React.FC<SpecificationCardProps> = ({ 
-  title, 
-  items, 
-  isVisible, 
-  position 
-}) => {
-  const getPositionClasses = () => {
-    switch (position) {
-      case 'left':
-        return 'left-4 top-1/2 -translate-y-1/2';
-      case 'right':
-        return 'right-4 top-1/2 -translate-y-1/2';
-      case 'top':
-        return 'top-4 left-1/2 -translate-x-1/2';
-      case 'bottom':
-        return 'bottom-8 left-1/2 -translate-x-1/2';
-      default:
-        return 'left-4 top-1/2 -translate-y-1/2';
-    }
-  };
-
-  const getAnimationClasses = () => {
-    if (!isVisible) return 'opacity-0 scale-90 translate-y-4 pointer-events-none';
-    return 'opacity-100 scale-100 translate-y-0';
-  };
-
-  return (
-    <div 
-      className={`absolute z-20 ${getPositionClasses()} transition-all duration-700 ease-out ${getAnimationClasses()}`}
-    >
-      <div className="bg-gradient-to-br from-white/20 via-white/10 to-white/5 backdrop-blur-2xl border border-white/20 rounded-xl p-3 shadow-[0_8px_32px_rgba(31,38,135,0.25)] max-w-[280px] min-w-[240px]">
-        <div className="absolute inset-0 bg-gradient-to-br from-sanders-blue/5 to-transparent rounded-xl"></div>
-        <div className="relative">
-          <h3 className="text-sanders-blue font-semibold text-base mb-2 drop-shadow-sm tracking-wide">
-            {title}
-          </h3>
-          <ul className="space-y-1.5">
-            {items.map((item, index) => (
-              <li 
-                key={index}
-                className="text-gray-700 text-xs font-medium flex items-start leading-relaxed"
-                style={{ 
-                  animationDelay: `${index * 100}ms`,
-                  animation: isVisible ? 'fadeInUp 0.5s ease-out forwards' : 'none'
-                }}
-              >
-                <div className="w-1.5 h-1.5 bg-sanders-blue rounded-full mr-2 mt-1.5 flex-shrink-0 shadow-sm"></div>
-                <span className="flex-1">{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 // Componente principal do carrossel
 interface HeroModelCarouselProps {
   className?: string;
@@ -319,48 +164,8 @@ const HeroModelCarousel: React.FC<HeroModelCarouselProps> = ({ className = '' })
   const [currentModelIndex, setCurrentModelIndex] = useState(0);
   const [resetTrigger, setResetTrigger] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [currentRotationAngle, setCurrentRotationAngle] = useState(0);
 
   const currentModel = models[currentModelIndex];
-
-  // Função para determinar qual especificação mostrar baseado no ângulo
-  const getCurrentSpecification = () => {
-    if (!currentModel.specifications) return null;
-    
-    // Encontra a especificação mais próxima do ângulo atual
-    const targetAngles = [0, 90, 180, 270];
-    let closestAngle = targetAngles[0];
-    let minDifference = Math.abs(currentRotationAngle - targetAngles[0]);
-    
-    targetAngles.forEach(angle => {
-      const difference = Math.min(
-        Math.abs(currentRotationAngle - angle),
-        Math.abs(currentRotationAngle - angle + 360),
-        Math.abs(currentRotationAngle - angle - 360)
-      );
-      
-      if (difference < minDifference) {
-        minDifference = difference;
-        closestAngle = angle;
-      }
-    });
-    
-    // Só mostra o card se estiver próximo o suficiente (dentro de 30 graus)
-    if (minDifference > 30) return null;
-    
-    const specIndex = targetAngles.indexOf(closestAngle);
-    return currentModel.specifications[specIndex];
-  };
-
-  // Função para determinar a posição do card baseado no ângulo
-  const getCardPosition = (): 'left' | 'right' | 'top' | 'bottom' => {
-    // Todos os cards aparecem sempre abaixo do modelo
-    return 'bottom';
-  };
-
-  const handleRotationChange = (angle: number) => {
-    setCurrentRotationAngle(angle);
-  };
 
   // Função para navegar para o próximo modelo
   const nextModel = () => {
@@ -401,7 +206,7 @@ const HeroModelCarousel: React.FC<HeroModelCarouselProps> = ({ className = '' })
           </div>
         }>
           <Canvas
-            shadows // ESSENCIAL: Habilita o cálculo de sombras na cena
+            shadows
             camera={{ 
               position: [4, 4, 4], 
               fov: 60,
@@ -412,8 +217,12 @@ const HeroModelCarousel: React.FC<HeroModelCarouselProps> = ({ className = '' })
             gl={{ 
               antialias: true, 
               alpha: true,
-              powerPreference: "high-performance"
+              powerPreference: "high-performance",
+              pixelRatio: Math.min(window.devicePixelRatio, 2)
             }}
+            dpr={[1, 2]}
+            performance={{ min: 0.5 }}
+            frameloop="always"
           >
             {/* Iluminação Profissional */}
             <ProfessionalLighting />
@@ -422,7 +231,6 @@ const HeroModelCarousel: React.FC<HeroModelCarouselProps> = ({ className = '' })
             <Model 
               modelPath={currentModel.path} 
               resetTrigger={resetTrigger}
-              onRotationChange={handleRotationChange}
             />
             
             {/* Controles da câmera */}
@@ -438,21 +246,6 @@ const HeroModelCarousel: React.FC<HeroModelCarouselProps> = ({ className = '' })
             />
           </Canvas>
         </Suspense>
-
-        {/* Cards de especificações */}
-        {(() => {
-          const currentSpec = getCurrentSpecification();
-          if (!currentSpec) return null;
-          
-          return (
-            <SpecificationCard
-              title={currentSpec.title}
-              items={currentSpec.items}
-              isVisible={true}
-              position={getCardPosition()}
-            />
-          );
-        })()}
 
         {/* Controles de navegação */}
         <div className="absolute inset-y-0 left-4 flex items-center z-10">

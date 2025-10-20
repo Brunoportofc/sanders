@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, Award } from "lucide-react";
+import { Award } from "lucide-react";
 import BrazilMap from "./BrazilMap";
 
 
@@ -67,7 +67,7 @@ const SocialProof: React.FC = () => {
               <div className="text-sm text-muted-foreground">Estados Atendidos</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-sanders-blue">30+</div>
+              <div className="text-3xl font-bold text-sanders-blue">23</div>
               <div className="text-sm text-muted-foreground">Anos de Experiência</div>
             </div>
           </div>
@@ -143,18 +143,6 @@ const SocialProof: React.FC = () => {
                     />
                   ))}
                 </div>
-              </CardContent>
-            </Card>
-            
-            {/* Card de credibilidade */}
-            <Card className="p-6 bg-gradient-to-br from-sanders-blue/10 to-sanders-ocean/10 border-sanders-blue/20">
-              <CardContent className="p-0 text-center">
-                <Users className="h-12 w-12 text-sanders-blue mx-auto mb-4" />
-                <h4 className="text-xl font-semibold mb-2">Confiança Comprovada</h4>
-                <p className="text-muted-foreground">
-                  Equipamentos Sanders são a escolha preferida dos principais 
-                  hospitais brasileiros há mais de 3 décadas.
-                </p>
               </CardContent>
             </Card>
           </div>

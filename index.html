@@ -28,10 +28,16 @@
 
     <meta name="twitter:card" content="summary_large_image" />
     
-    <!-- Google Fonts - Figtree -->
+    <!-- Resource Hints para otimização -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Google Fonts - Figtree com display=swap para evitar FOIT -->
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet" /></noscript>
   </head>
 
   <body>
@@ -42,5 +48,6 @@
     
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.82/build/spline-viewer.js"></script>
   </body>
 </html>

@@ -9,7 +9,11 @@ const Header = () => {
 
   const navigationItems = [
     { name: "Home", path: "/" },
-    { name: "Produtos", path: "/produtos" }
+    { name: "Empresa", path: "/empresa" },
+    { name: "Produtos", path: "/produtos" },
+    { name: "Blog", path: "/blog" },
+    { name: "Assistência Técnica", path: "/assistencia-tecnica" },
+    { name: "Contato", path: "/contato" }
   ];
 
   // const socialLinks = [
@@ -34,18 +38,28 @@ const Header = () => {
 				<img src={logoSanders} alt="Sanders Medical" className="h-10 w-auto" />
 			</Link>
 
-          {/* Desktop Navigation - Centralizada */}
+          {/* Desktop Navigation - Centralizada com Liquid Glass Design */}
           <nav className="hidden lg:flex items-center justify-center flex-1">
-            <div className="flex items-center space-x-8">
+            <div className="flex items-center gap-1.5 bg-gradient-to-br from-white/60 via-white/40 to-white/20 backdrop-blur-xl border border-white/30 rounded-2xl p-1.5 shadow-[0_8px_32px_rgba(6,107,164,0.15)]">
               {navigationItems.map((item) => (
                 <Link
                   key={item.name}
                   to={item.path}
-                  className="relative text-sm font-medium transition-all duration-300 hover:text-sanders-blue group px-4 py-2 rounded-lg hover:bg-sanders-blue/5 hover:shadow-md hover:scale-105"
+                  className="relative px-4 py-2.5 text-sm font-semibold text-gray-700 transition-all duration-300 hover:text-white group rounded-xl overflow-hidden whitespace-nowrap"
                 >
-                  {item.name}
-                  {/* Efeito de linha animada */}
-                  <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-sanders-blue transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                  {/* Background gradient on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-sanders-blue via-blue-500 to-sanders-blue opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-100 scale-95"></div>
+                  
+                  {/* Shimmer effect */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                  </div>
+                  
+                  {/* Text */}
+                  <span className="relative z-10 tracking-wide">{item.name}</span>
+                  
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 blur-lg bg-sanders-blue/40 transition-opacity duration-300 -z-10"></div>
                 </Link>
               ))}
             </div>
@@ -90,16 +104,23 @@ const Header = () => {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-              <div className="flex flex-col space-y-6 mt-6">
+              <div className="flex flex-col gap-3 mt-6">
                 {navigationItems.map((item) => (
                   <Link
                     key={item.name}
                     to={item.path}
-                    className="relative text-lg font-medium transition-all duration-300 hover:text-sanders-blue group px-4 py-3 rounded-xl hover:bg-sanders-blue/10 hover:shadow-lg hover:scale-105 text-center"
+                    className="relative px-6 py-4 text-base font-semibold text-gray-700 transition-all duration-300 hover:text-white group rounded-xl overflow-hidden bg-gradient-to-br from-white/60 via-white/40 to-white/20 backdrop-blur-xl border border-white/30 shadow-[0_4px_16px_rgba(6,107,164,0.1)] hover:shadow-[0_8px_24px_rgba(6,107,164,0.2)]"
                   >
-                    {item.name}
-                    {/* Efeito de linha animada para mobile */}
-                    <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-sanders-blue transition-all duration-300 group-hover:w-3/4 group-hover:left-1/8"></span>
+                    {/* Background gradient on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-sanders-blue via-blue-500 to-sanders-blue opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-100 scale-95"></div>
+                    
+                    {/* Shimmer effect */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                    </div>
+                    
+                    {/* Text */}
+                    <span className="relative z-10 tracking-wide text-center block">{item.name}</span>
                   </Link>
                 ))}
 

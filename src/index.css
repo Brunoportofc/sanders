@@ -224,6 +224,15 @@ Paleta premium: azul oceano, branco pérola, cinza platina
 }
 
 /* Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -265,6 +274,146 @@ Paleta premium: azul oceano, branco pérola, cinza platina
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes countUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) translateY(20px);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes numberGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.6));
+  }
+}
+
+/* Stripes Background Effect */
+.stripes-background {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transform-origin: 0;
+  transform: skewY(-12deg);
+  background: linear-gradient(150deg, #53f 15%, #05d5ff 70%, #a6ffcb 94%);
+}
+
+.stripes-background, .stripes-background span {
+  position: absolute;
+}
+
+.stripes-background span {
+  height: 40px;
+}
+
+.stripes-background :nth-child(1) {
+  width: 50%;
+  left: 50%;
+  top: 40px;
+  background: #4c29ff;
+}
+
+.stripes-background :nth-child(2) {
+  width: 14%;
+  right: 0;
+  bottom: 40px;
+  background: #2be7ff;
+}
+
+.stripes-background :nth-child(3) {
+  width: 25%;
+  bottom: 0;
+  right: 0;
+  background: #a1ffc8;
+}
+
+@media (min-width: 670px) {
+  .stripes-background span {
+    height: 150px;
+  }
+  .stripes-background :nth-child(1) {
+    top: 0;
+  }
+  .stripes-background :nth-child(2) {
+    width: 16.66667%;
+    top: 300px;
+    bottom: auto;
+    background: #0dcfff;
+  }
+  .stripes-background :nth-child(3) {
+    width: 33.33333%;
+    right: auto;
+    background: #11bdff;
+  }
+}
+
+@media (min-width: 880px) {
+  .stripes-background span {
+    height: 190px;
+  }
+
+  .stripes-background :nth-child(1) {
+    width: 33.33333%;
+    left: -16.66666%;
+    background: #53f;
+  }
+
+  .stripes-background :nth-child(2) {
+    width: 33.33333%;
+    top: 0;
+    left: 16.66666%;
+    right: auto;
+    background: #4553ff;
+  }
+
+  .stripes-background :nth-child(3) {
+    width: 33.33333%;
+    left: 49.99999%;
+    bottom: auto;
+    background: #4f40ff;
+  }
+
+  .stripes-background :nth-child(4) {
+    width: 33.33333%;
+    top: 380px;
+    right: -16.66666%;
+    background: #25ddf5;
+  }
+
+  .stripes-background :nth-child(5) {
+    width: 33.33333%;
+    bottom: 0;
+    background: #1fa2ff;
   }
 }
 
@@ -376,8 +525,27 @@ Paleta premium: azul oceano, branco pérola, cinza platina
     50% { opacity: 0.8; transform: scale(1.05); }
   }
 
+  @keyframes splineFadeIn {
+    0% { 
+      opacity: 0;
+      filter: blur(10px);
+    }
+    50% { 
+      opacity: 0.15;
+      filter: blur(5px);
+    }
+    100% { 
+      opacity: 0.25;
+      filter: blur(0);
+    }
+  }
+
   /* Utility classes */
 @layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
   .animate-fade-in-up {
     animation: fadeInUp 0.6s ease-out forwards;
   }
@@ -656,5 +824,66 @@ Paleta premium: azul oceano, branco pérola, cinza platina
         0 0 80px hsl(var(--sanders-blue) / 0.3),
         inset 0 0 40px hsl(var(--sanders-blue) / 0.15);
     }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .marquee-container {
+    width: 100%;
+  }
+
+  .marquee-content {
+    display: flex;
+    animation: marquee 60s linear infinite;
+  }
+
+  .marquee-container:hover .marquee-content {
+    animation-play-state: paused;
+  }
+
+  /* Marquee mais lento - controlado por JavaScript */
+  .marquee-container-slow {
+    width: 100%;
+  }
+
+  .marquee-content-slow {
+    display: flex;
+    animation: marquee 120s linear infinite;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #3b82f6, #2563eb);
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #2563eb, #1d4ed8);
   }
 }
