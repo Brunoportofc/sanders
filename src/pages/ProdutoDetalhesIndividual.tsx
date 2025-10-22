@@ -146,7 +146,12 @@ const ProdutoDetalhesIndividual = () => {
       </section>
 
       {/* Hero Section */}
-      <div className="container mx-auto px-4 py-12">
+      <motion.div 
+        className="container mx-auto px-4 py-12"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
           <Button 
             variant="ghost" 
             asChild 
@@ -174,7 +179,7 @@ const ProdutoDetalhesIndividual = () => {
             {produto.description}
           </p>
         </div>
-            </div>
+            </motion.div>
 
       {/* Seção Principal: Modelo + Especificações */}
       <div ref={containerRef} className="container mx-auto px-4 py-16">

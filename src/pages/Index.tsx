@@ -543,9 +543,31 @@ const Index = () => {
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {/* ISO 13485 - Liquid Glass Card */}
             <div className="group h-[320px] [perspective:1000px]">
-              <div className="relative h-full rounded-[40px] bg-gradient-to-br from-white to-gray-50 shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]">
+              <div className="relative h-full rounded-[40px] shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]" style={{
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.9) 50%, rgba(219, 234, 254, 0.95) 100%)',
+                backdropFilter: 'blur(40px) saturate(150%)',
+                WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                border: '2px solid rgba(255, 255, 255, 0.7)',
+                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.15), 0 0 0 1.5px rgba(255, 255, 255, 0.5) inset',
+              }}>
                 {/* Glass layer */}
-                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/50 bg-gradient-to-b from-white/60 to-white/30 backdrop-blur-md [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/60 bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                
+                {/* Reflexo de vidro intensificado */}
+                <div 
+                  className="absolute top-0 left-0 right-0 h-1/2 pointer-events-none rounded-[40px]"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%)',
+                  }}
+                />
+                {/* Brilho adicional no canto superior direito */}
+                <div 
+                  className="absolute top-0 right-0 w-40 h-40 pointer-events-none rounded-full"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 70%)',
+                    filter: 'blur(30px)',
+                  }}
+                />
                 
                 {/* Content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center [transform:translate3d(0,0,25px)]">
@@ -566,9 +588,31 @@ const Index = () => {
 
             {/* ANVISA - Liquid Glass Card */}
             <div className="group h-[320px] [perspective:1000px]">
-              <div className="relative h-full rounded-[40px] bg-gradient-to-br from-white to-gray-50 shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]">
+              <div className="relative h-full rounded-[40px] shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]" style={{
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.9) 50%, rgba(219, 234, 254, 0.95) 100%)',
+                backdropFilter: 'blur(40px) saturate(150%)',
+                WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                border: '2px solid rgba(255, 255, 255, 0.7)',
+                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.15), 0 0 0 1.5px rgba(255, 255, 255, 0.5) inset',
+              }}>
                 {/* Glass layer */}
-                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/50 bg-gradient-to-b from-white/60 to-white/30 backdrop-blur-md [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/60 bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                
+                {/* Reflexo de vidro intensificado */}
+                <div 
+                  className="absolute top-0 left-0 right-0 h-1/2 pointer-events-none rounded-[40px]"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%)',
+                  }}
+                />
+                {/* Brilho adicional no canto superior direito */}
+                <div 
+                  className="absolute top-0 right-0 w-40 h-40 pointer-events-none rounded-full"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 70%)',
+                    filter: 'blur(30px)',
+                  }}
+                />
                 
                 {/* Content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center [transform:translate3d(0,0,25px)]">
@@ -590,9 +634,31 @@ const Index = () => {
 
             {/* CE Marking - Liquid Glass Card */}
             <div className="group h-[320px] [perspective:1000px]">
-              <div className="relative h-full rounded-[40px] bg-gradient-to-br from-white to-gray-50 shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]">
+              <div className="relative h-full rounded-[40px] shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]" style={{
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.9) 50%, rgba(219, 234, 254, 0.95) 100%)',
+                backdropFilter: 'blur(40px) saturate(150%)',
+                WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                border: '2px solid rgba(255, 255, 255, 0.7)',
+                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.15), 0 0 0 1.5px rgba(255, 255, 255, 0.5) inset',
+              }}>
                 {/* Glass layer */}
-                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/50 bg-gradient-to-b from-white/60 to-white/30 backdrop-blur-md [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/60 bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                
+                {/* Reflexo de vidro intensificado */}
+                <div 
+                  className="absolute top-0 left-0 right-0 h-1/2 pointer-events-none rounded-[40px]"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%)',
+                  }}
+                />
+                {/* Brilho adicional no canto superior direito */}
+                <div 
+                  className="absolute top-0 right-0 w-40 h-40 pointer-events-none rounded-full"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 70%)',
+                    filter: 'blur(30px)',
+                  }}
+                />
                 
                 {/* Content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center [transform:translate3d(0,0,25px)]">
@@ -621,9 +687,31 @@ const Index = () => {
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {/* Missão - Liquid Glass Card */}
             <div className="group h-[280px] [perspective:1000px]">
-              <div className="relative h-full rounded-[40px] bg-gradient-to-br from-white to-gray-50 shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]">
+              <div className="relative h-full rounded-[40px] shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]" style={{
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.9) 50%, rgba(219, 234, 254, 0.95) 100%)',
+                backdropFilter: 'blur(40px) saturate(150%)',
+                WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                border: '2px solid rgba(255, 255, 255, 0.7)',
+                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.15), 0 0 0 1.5px rgba(255, 255, 255, 0.5) inset',
+              }}>
                 {/* Glass layer */}
-                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/50 bg-gradient-to-b from-white/60 to-white/30 backdrop-blur-md [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/60 bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                
+                {/* Reflexo de vidro intensificado */}
+                <div 
+                  className="absolute top-0 left-0 right-0 h-1/2 pointer-events-none rounded-[40px]"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%)',
+                  }}
+                />
+                {/* Brilho adicional no canto superior direito */}
+                <div 
+                  className="absolute top-0 right-0 w-40 h-40 pointer-events-none rounded-full"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 70%)',
+                    filter: 'blur(30px)',
+                  }}
+                />
                 
                 {/* Content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center [transform:translate3d(0,0,25px)]">
@@ -643,9 +731,31 @@ const Index = () => {
 
             {/* Visão - Liquid Glass Card */}
             <div className="group h-[280px] [perspective:1000px]">
-              <div className="relative h-full rounded-[40px] bg-gradient-to-br from-white to-gray-50 shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]">
+              <div className="relative h-full rounded-[40px] shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]" style={{
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.9) 50%, rgba(219, 234, 254, 0.95) 100%)',
+                backdropFilter: 'blur(40px) saturate(150%)',
+                WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                border: '2px solid rgba(255, 255, 255, 0.7)',
+                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.15), 0 0 0 1.5px rgba(255, 255, 255, 0.5) inset',
+              }}>
                 {/* Glass layer */}
-                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/50 bg-gradient-to-b from-white/60 to-white/30 backdrop-blur-md [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/60 bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                
+                {/* Reflexo de vidro intensificado */}
+                <div 
+                  className="absolute top-0 left-0 right-0 h-1/2 pointer-events-none rounded-[40px]"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%)',
+                  }}
+                />
+                {/* Brilho adicional no canto superior direito */}
+                <div 
+                  className="absolute top-0 right-0 w-40 h-40 pointer-events-none rounded-full"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 70%)',
+                    filter: 'blur(30px)',
+                  }}
+                />
                 
                 {/* Content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center [transform:translate3d(0,0,25px)]">
@@ -665,9 +775,31 @@ const Index = () => {
 
             {/* Valores - Liquid Glass Card */}
             <div className="group h-[280px] [perspective:1000px]">
-              <div className="relative h-full rounded-[40px] bg-gradient-to-br from-white to-gray-50 shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]">
+              <div className="relative h-full rounded-[40px] shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]" style={{
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.9) 50%, rgba(219, 234, 254, 0.95) 100%)',
+                backdropFilter: 'blur(40px) saturate(150%)',
+                WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                border: '2px solid rgba(255, 255, 255, 0.7)',
+                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.15), 0 0 0 1.5px rgba(255, 255, 255, 0.5) inset',
+              }}>
                 {/* Glass layer */}
-                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/50 bg-gradient-to-b from-white/60 to-white/30 backdrop-blur-md [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/60 bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                
+                {/* Reflexo de vidro intensificado */}
+                <div 
+                  className="absolute top-0 left-0 right-0 h-1/2 pointer-events-none rounded-[40px]"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%)',
+                  }}
+                />
+                {/* Brilho adicional no canto superior direito */}
+                <div 
+                  className="absolute top-0 right-0 w-40 h-40 pointer-events-none rounded-full"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 70%)',
+                    filter: 'blur(30px)',
+                  }}
+                />
                 
                 {/* Content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center [transform:translate3d(0,0,25px)]">
@@ -706,9 +838,31 @@ const Index = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {/* Suporte Técnico - Liquid Glass Card */}
             <div className="group h-[240px] [perspective:1000px]">
-              <div className="relative h-full rounded-[40px] bg-gradient-to-br from-white to-gray-50 shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]">
+              <div className="relative h-full rounded-[40px] shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]" style={{
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.9) 50%, rgba(219, 234, 254, 0.95) 100%)',
+                backdropFilter: 'blur(40px) saturate(150%)',
+                WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                border: '2px solid rgba(255, 255, 255, 0.7)',
+                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.15), 0 0 0 1.5px rgba(255, 255, 255, 0.5) inset',
+              }}>
                 {/* Glass layer */}
-                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/50 bg-gradient-to-b from-white/60 to-white/30 backdrop-blur-md [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/60 bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                
+                {/* Reflexo de vidro intensificado */}
+                <div 
+                  className="absolute top-0 left-0 right-0 h-1/2 pointer-events-none rounded-[40px]"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%)',
+                  }}
+                />
+                {/* Brilho adicional no canto superior direito */}
+                <div 
+                  className="absolute top-0 right-0 w-40 h-40 pointer-events-none rounded-full"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 70%)',
+                    filter: 'blur(30px)',
+                  }}
+                />
                 
                 {/* Content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center [transform:translate3d(0,0,25px)]">
@@ -727,9 +881,31 @@ const Index = () => {
 
             {/* Garantia Estendida - Liquid Glass Card */}
             <div className="group h-[240px] [perspective:1000px]">
-              <div className="relative h-full rounded-[40px] bg-gradient-to-br from-white to-gray-50 shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]">
+              <div className="relative h-full rounded-[40px] shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]" style={{
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.9) 50%, rgba(219, 234, 254, 0.95) 100%)',
+                backdropFilter: 'blur(40px) saturate(150%)',
+                WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                border: '2px solid rgba(255, 255, 255, 0.7)',
+                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.15), 0 0 0 1.5px rgba(255, 255, 255, 0.5) inset',
+              }}>
                 {/* Glass layer */}
-                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/50 bg-gradient-to-b from-white/60 to-white/30 backdrop-blur-md [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/60 bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                
+                {/* Reflexo de vidro intensificado */}
+                <div 
+                  className="absolute top-0 left-0 right-0 h-1/2 pointer-events-none rounded-[40px]"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%)',
+                  }}
+                />
+                {/* Brilho adicional no canto superior direito */}
+                <div 
+                  className="absolute top-0 right-0 w-40 h-40 pointer-events-none rounded-full"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 70%)',
+                    filter: 'blur(30px)',
+                  }}
+                />
                 
                 {/* Content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center [transform:translate3d(0,0,25px)]">
@@ -748,9 +924,31 @@ const Index = () => {
 
             {/* Peças Originais - Liquid Glass Card */}
             <div className="group h-[240px] [perspective:1000px]">
-              <div className="relative h-full rounded-[40px] bg-gradient-to-br from-white to-gray-50 shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]">
+              <div className="relative h-full rounded-[40px] shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]" style={{
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.9) 50%, rgba(219, 234, 254, 0.95) 100%)',
+                backdropFilter: 'blur(40px) saturate(150%)',
+                WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                border: '2px solid rgba(255, 255, 255, 0.7)',
+                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.15), 0 0 0 1.5px rgba(255, 255, 255, 0.5) inset',
+              }}>
                 {/* Glass layer */}
-                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/50 bg-gradient-to-b from-white/60 to-white/30 backdrop-blur-md [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/60 bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                
+                {/* Reflexo de vidro intensificado */}
+                <div 
+                  className="absolute top-0 left-0 right-0 h-1/2 pointer-events-none rounded-[40px]"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%)',
+                  }}
+                />
+                {/* Brilho adicional no canto superior direito */}
+                <div 
+                  className="absolute top-0 right-0 w-40 h-40 pointer-events-none rounded-full"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 70%)',
+                    filter: 'blur(30px)',
+                  }}
+                />
                 
                 {/* Content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center [transform:translate3d(0,0,25px)]">
@@ -769,9 +967,31 @@ const Index = () => {
 
             {/* Treinamento - Liquid Glass Card */}
             <div className="group h-[240px] [perspective:1000px]">
-              <div className="relative h-full rounded-[40px] bg-gradient-to-br from-white to-gray-50 shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]">
+              <div className="relative h-full rounded-[40px] shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]" style={{
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.9) 50%, rgba(219, 234, 254, 0.95) 100%)',
+                backdropFilter: 'blur(40px) saturate(150%)',
+                WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+                border: '2px solid rgba(255, 255, 255, 0.7)',
+                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.15), 0 0 0 1.5px rgba(255, 255, 255, 0.5) inset',
+              }}>
                 {/* Glass layer */}
-                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/50 bg-gradient-to-b from-white/60 to-white/30 backdrop-blur-md [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                <div className="absolute inset-2 rounded-[45px] border-b border-l border-white/60 bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm [transform-style:preserve-3d] [transform:translate3d(0,0,20px)]"></div>
+                
+                {/* Reflexo de vidro intensificado */}
+                <div 
+                  className="absolute top-0 left-0 right-0 h-1/2 pointer-events-none rounded-[40px]"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%)',
+                  }}
+                />
+                {/* Brilho adicional no canto superior direito */}
+                <div 
+                  className="absolute top-0 right-0 w-40 h-40 pointer-events-none rounded-full"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 70%)',
+                    filter: 'blur(30px)',
+                  }}
+                />
                 
                 {/* Content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center [transform:translate3d(0,0,25px)]">
