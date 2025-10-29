@@ -1,12 +1,14 @@
 /**
- * 🚀 CARROSSEL 3D ULTRA-FLUIDO - VERSÃO SIMPLIFICADA
+ * 🚀 CARROSSEL 3D ULTRA-FLUIDO - VERSÃO OTIMIZADA
  * 
  * ESTRATÉGIA MÁXIMA PERFORMANCE:
- * 1. ✅ Apenas 1 modelo renderizado por vez (zero overhead)
- * 2. ✅ Pré-carregamento em cache (zero delay)
- * 3. ✅ Rotação CSS + GPU acceleration (60fps garantido)
- * 4. ✅ Transições instantâneas (sem fade complexo)
- * 5. ✅ Código mínimo (máxima performance)
+ * 1. ✅ TODOS os modelos renderizados simultaneamente em memória
+ * 2. ✅ Pré-carregamento automático com useGLTF.preload()
+ * 3. ✅ Alternância instantânea por visibilidade (visible={true/false})
+ * 4. ✅ Rotação apenas no modelo visível (economia de CPU)
+ * 5. ✅ Transição de 100ms para bloqueio de cliques rápidos
+ * 6. ✅ Zero lag ao trocar modelos (keep-alive pattern)
+ * 7. ✅ OrbitControls para interação do usuário
  */
 
 import React, { useState, Suspense, useRef, useEffect, memo } from 'react';
@@ -56,19 +58,25 @@ const Lighting = memo(() => (
   </>
 ));
 
-// Modelo 3D com rotação infinita
-function Model({ modelPath, scale, position }: { 
+// Modelo 3D com rotação infinita - Versão otimizada
+function Model({ 
+  modelPath, 
+  scale, 
+  position,
+  isVisible 
+}: { 
   modelPath: string;
   scale: number;
   position: [number, number, number];
+  isVisible: boolean;
 }) {
   const gltf: any = useGLTF(modelPath);
   const groupRef = useRef<THREE.Group>(null);
   const { size } = useThree();
 
-  // Rotação contínua infinita
+  // Rotação contínua apenas quando visível
   useFrame(() => {
-    if (groupRef.current) {
+    if (groupRef.current && isVisible) {
       groupRef.current.rotation.y += 0.01; // Rotação suave
     }
   });
@@ -78,7 +86,12 @@ function Model({ modelPath, scale, position }: {
   const finalScale = scale * viewportScale;
 
   return (
-    <group ref={groupRef} scale={finalScale} position={position}>
+    <group 
+      ref={groupRef} 
+      scale={finalScale} 
+      position={position}
+      visible={isVisible}
+    >
       <primitive object={gltf.scene} />
     </group>
   );
@@ -99,14 +112,14 @@ const HeroModelCarousel: React.FC<HeroModelCarouselProps> = ({ className = '' })
     if (isTransitioning) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => (prev + 1) % models.length);
-    setTimeout(() => setIsTransitioning(false), 300);
+    setTimeout(() => setIsTransitioning(false), 100); // Transição instantânea
   };
 
   const prevModel = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => (prev - 1 + models.length) % models.length);
-    setTimeout(() => setIsTransitioning(false), 300);
+    setTimeout(() => setIsTransitioning(false), 100); // Transição instantânea
   };
 
   return (
@@ -134,13 +147,16 @@ const HeroModelCarousel: React.FC<HeroModelCarouselProps> = ({ className = '' })
           >
             <Lighting />
             
-            {/* Renderiza apenas o modelo atual */}
-            <Model 
-              key={currentModel.id}
-              modelPath={currentModel.path}
-              scale={currentModel.scale}
-              position={currentModel.position}
-            />
+            {/* Renderiza TODOS os modelos simultaneamente - apenas alterna visibilidade */}
+            {models.map((model, index) => (
+              <Model 
+                key={model.id}
+                modelPath={model.path}
+                scale={model.scale}
+                position={model.position}
+                isVisible={index === currentIndex}
+              />
+            ))}
             
             <ContactShadows 
               position={[0, -0.9, 0]} 
