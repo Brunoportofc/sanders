@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Award } from "lucide-react";
-import BrazilMap from "./BrazilMap";
 
 
 
@@ -82,10 +81,14 @@ const SocialProof: React.FC = () => {
                 
                 {/* Container do mapa */}
                 <div className="relative w-full h-96 rounded-lg overflow-hidden">
-                  {/* Componente do mapa do Brasil */}
-                  <BrazilMap className="w-full h-full" />
-                  
-                  {/* Mapa limpo sem pinos de localização */}
+                  {/* Mapa do Brasil em iframe */}
+                  <iframe 
+                    src="/mapa-brasil.html" 
+                    className="w-full h-full border-0"
+                    title="Mapa de Presença Nacional"
+                    style={{ display: 'block', background: 'transparent', overflow: 'hidden' }}
+                    scrolling="no"
+                  />
                 </div>
                 
 

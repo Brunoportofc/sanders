@@ -35,13 +35,13 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [hasShownAutoMessage, setHasShownAutoMessage] = useState(false);
   const [chatState, setChatState] = useState<ChatState>(initialChatState);
 
-  // Mostrar mensagem automática após 3 segundos do carregamento da página
+  // Mostrar mensagem automática após 7 segundos do carregamento da página
   useEffect(() => {
     if (!hasShownAutoMessage) {
       const timer = setTimeout(() => {
         setShowAutoMessage(true);
         setHasShownAutoMessage(true);
-      }, 3000);
+      }, 7000);
 
       return () => clearTimeout(timer);
     }

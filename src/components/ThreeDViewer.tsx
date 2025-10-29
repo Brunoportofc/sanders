@@ -1,6 +1,6 @@
 import React, { useState, Suspense, useRef, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useGLTF, OrbitControls, Environment, ContactShadows, useAnimations } from '@react-three/drei';
+import { useGLTF, OrbitControls, ContactShadows, useAnimations } from '@react-three/drei';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Eye, Download, RotateCcw, ZoomIn, ZoomOut } from 'lucide-react';
@@ -236,9 +236,7 @@ const ThreeDViewer: React.FC<ThreeDViewerProps> = ({ trigger }) => {
                 shadow-mapSize-height={2048}
               />
               <pointLight position={[-10, -10, -10]} intensity={0.5} />
-              
-              {/* Ambiente HDR */}
-              <Environment preset="studio" />
+              <hemisphereLight color="#ffffff" groundColor="#444444" intensity={0.6} />
               
               {/* Modelo 3D */}
               <Model resetTrigger={resetTrigger} />

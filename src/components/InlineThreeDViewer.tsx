@@ -1,6 +1,6 @@
 import React, { useState, Suspense, useRef, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useGLTF, OrbitControls, Environment, ContactShadows, useAnimations } from '@react-three/drei';
+import { useGLTF, OrbitControls, ContactShadows, useAnimations } from '@react-three/drei';
 import { Button } from '@/components/ui/button';
 import { Eye, RotateCcw, Settings } from 'lucide-react';
 import * as THREE from 'three';
@@ -259,9 +259,7 @@ const InlineThreeDViewer: React.FC<InlineThreeDViewerProps> = ({ isActive, onClo
             shadow-mapSize-height={1024}
           />
           <pointLight position={[-3, -3, -3]} intensity={0.3} />
-          
-          {/* Ambiente HDR */}
-          <Environment preset="city" />
+          <hemisphereLight color="#ffffff" groundColor="#444444" intensity={0.5} />
           
           {/* Modelo 3D */}
           <Model resetTrigger={resetTrigger} isRotating={isRotating} modelPath={modelPath} />

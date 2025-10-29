@@ -9,15 +9,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { hospitaisPorEstado } from "@/data/hospitais";
 
 // Lazy load dos componentes pesados
-const RaycastAnimatedBlueWhiteBackground = lazy(() => 
-  import("@/components/ui/raycast-animated-blue-white-background").then(module => ({
-    default: module.RaycastAnimatedBlueWhiteBackground
-  }))
-);
 const HeroModelCarousel = lazy(() => import("@/components/HeroModelCarousel"));
-const BackgroundPaths = lazy(() => 
-  import("@/components/ui/background-paths").then(module => ({
-    default: module.BackgroundPaths
+const RaycastBackground = lazy(() =>
+  import("@/components/ui/raycast-animated-blue-white-background").then((module) => ({
+    default: module.RaycastAnimatedBlueWhiteBackground,
   }))
 );
 import { 
@@ -41,24 +36,27 @@ import {
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [show3DModel, setShow3DModel] = useState(false);
-  const [showBackground, setShowBackground] = useState(false);
   const [showMapAndCards, setShowMapAndCards] = useState(false);
   const [showSplineBackground, setShowSplineBackground] = useState(false);
   const [presencaTextVisible, setPresencaTextVisible] = useState(false);
   const [presencaMapVisible, setPresencaMapVisible] = useState(false);
   const [presencaSplineVisible, setPresencaSplineVisible] = useState(false);
   const [selectedState, setSelectedState] = useState<string | null>(null);
+  
+  // Estados para Intersection Observer de outras seções
+  const [certificacoesVisible, setCertificacoesVisible] = useState(false);
+  const [missaoVisible, setMissaoVisible] = useState(false);
+  const [posVendaVisible, setPosVendaVisible] = useState(false);
+  const [localizacaoVisible, setLocalizacaoVisible] = useState(false);
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
     // Mostra modelo 3D após 300ms (já estará carregado)
     setTimeout(() => setShow3DModel(true), 300);
-    // Carrega background após 800ms
-    setTimeout(() => setShowBackground(true), 800);
-    // Carrega mapa e cards após 1200ms
-    setTimeout(() => setShowMapAndCards(true), 1200);
-    // Carrega Spline background após 1800ms
-    setTimeout(() => setShowSplineBackground(true), 1800);
+    // Carrega mapa e cards após 800ms
+    setTimeout(() => setShowMapAndCards(true), 800);
+    // Carrega Spline background após 1200ms
+    setTimeout(() => setShowSplineBackground(true), 1200);
   };
 
   useEffect(() => {
@@ -104,7 +102,7 @@ const Index = () => {
           }
         });
       },
-      { threshold: 0.1 } // Dispara quando 10% da seção está visível (mais cedo para pré-carregar)
+      { threshold: 0.1, rootMargin: '200px' } // Pré-carrega 200px antes de entrar na viewport
     );
 
     const presencaSection = document.getElementById('presenca-nacional-section');
@@ -119,101 +117,148 @@ const Index = () => {
     };
   }, [presencaTextVisible]);
 
+  // Intersection Observer para outras seções
+  useEffect(() => {
+    // Criar observer reutilizável
+    const createObserver = (setState: (value: boolean) => void) => {
+      return new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setState(true);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '200px' }
+      );
+    };
+
+    // Observar seção de Certificações
+    const certObserver = createObserver(setCertificacoesVisible);
+    const certSection = document.getElementById('certificacoes-section');
+    if (certSection) certObserver.observe(certSection);
+
+    // Observar seção de Missão/Visão/Valores
+    const missaoObserver = createObserver(setMissaoVisible);
+    const missaoSection = document.getElementById('missao-section');
+    if (missaoSection) missaoObserver.observe(missaoSection);
+
+    // Observar seção de Pós-venda
+    const posVendaObserver = createObserver(setPosVendaVisible);
+    const posVendaSection = document.getElementById('posvenda-section');
+    if (posVendaSection) posVendaObserver.observe(posVendaSection);
+
+    // Observar seção de Localização
+    const localizacaoObserver = createObserver(setLocalizacaoVisible);
+    const localizacaoSection = document.getElementById('localizacao-section');
+    if (localizacaoSection) localizacaoObserver.observe(localizacaoSection);
+
+    return () => {
+      certObserver.disconnect();
+      missaoObserver.disconnect();
+      posVendaObserver.disconnect();
+      localizacaoObserver.disconnect();
+    };
+  }, []);
+
   return (
     <>
       {isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
       
-      <div className="min-h-screen bg-background tech-page" style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.5s' }}>
+      <div className="min-h-screen bg-background" style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.5s' }}>
       <Header />
       
       {/* Hero Banner */}
-      <section className="py-6 relative overflow-hidden min-h-[490px] pb-32">
-        {/* Animated blue and white background - carrega por último */}
-        {showBackground && (
-          <Suspense fallback={<div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-white" />}>
-            <div className="absolute inset-0 z-0 w-full overflow-hidden animate-fade-in" style={{ pointerEvents: 'none' }}>
-              <div style={{ 
-                width: '100%', 
-                height: '150vh', 
-                minHeight: '1000px',
-                position: 'absolute', 
-                top: '0',
-                left: '0',
-                transform: 'scale(1.2)',
-                transformOrigin: 'top center'
-              }}>
-          <RaycastAnimatedBlueWhiteBackground />
-        </div>
-            </div>
+      <section className="pt-20 pb-6 relative overflow-hidden min-h-screen bg-white">
+        {/* Background branco + animação Raycast com zoom */}
+        <div className="absolute inset-0" style={{ transform: 'scale(1.2)', transformOrigin: 'center center' }}>
+          <Suspense fallback={<div className="absolute inset-0 bg-white" />}>
+            <RaycastBackground />
           </Suspense>
-        )}
+        </div>
+
+        {/* Divisor decorativo com onda */}
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ zIndex: 5, marginBottom: '-1px' }}>
+          <svg 
+            className="w-full h-24" 
+            viewBox="0 0 1440 100" 
+            fill="none" 
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none"
+          >
+            {/* Onda azul de fundo */}
+            <path 
+              d="M0,10 C360,70 540,0 720,30 C900,60 1080,0 1440,30 L1440,100 L0,100 Z" 
+              fill="#3b82f6"
+              fillOpacity="0.15"
+            />
+            {/* Ondas brancas */}
+            <path 
+              d="M0,20 C320,80 420,0 720,40 C1020,80 1120,0 1440,40 L1440,100 L0,100 Z" 
+              fill="white"
+              fillOpacity="0.3"
+            />
+            <path 
+              d="M0,40 C360,100 540,20 720,60 C900,100 1080,20 1440,60 L1440,100 L0,100 Z" 
+              fill="white"
+              fillOpacity="0.5"
+            />
+            <path 
+              d="M0,60 C240,100 480,40 720,80 C960,100 1200,40 1440,80 L1440,100 L0,100 Z" 
+              fill="white"
+            />
+          </svg>
+        </div>
         
-        {/* Background estático enquanto carrega */}
-        {!showBackground && (
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-blue-50" />
-        )}
-        
-        {/* Blur overlay */}
-        <div className="absolute inset-0 z-5 backdrop-blur-sm"></div>
-        
-        {/* Gradiente de transição suave no final da hero section */}
-        <div 
-          className="absolute bottom-0 left-0 right-0 h-48 z-[6] pointer-events-none"
-          style={{
-            background: 'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.3) 30%, rgba(255, 255, 255, 0.7) 70%, #ffffff 100%)'
-          }}
-        />
-        
-        <div className="container mx-auto px-6 relative z-10 h-full">
-          <div className="grid lg:grid-cols-2 gap-8 items-start min-h-[510px] pt-2">
-            {/* Content Column - mantido do lado esquerdo */}
-            <div className="max-w-2xl animate-fade-up order-2 lg:order-1">
-              <div className="space-y-6">
+        <div className="w-full max-w-none mx-0 px-0 relative z-10 h-full">
+          <div className="grid lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center min-h-[510px] pt-4 sm:pt-6 lg:pt-8">
+            {/* Content Column - sempre alinhado à esquerda */}
+            <div className="max-w-full lg:max-w-2xl animate-fade-up order-1 lg:order-1 text-left pl-2 sm:pl-4 lg:pl-6 -mt-2 sm:-mt-4 lg:-mt-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Badges superiores */}
-                <div className="flex items-center gap-3 mb-6">
-                  <Badge variant="secondary" className="bg-white/90 text-black backdrop-blur-sm border-gray-200">
-                    <Award className="h-4 w-4 mr-2" />
+                <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-3 mb-4 sm:mb-6">
+                  <Badge variant="secondary" className="bg-white/90 text-black backdrop-blur-sm border-gray-200 text-[clamp(0.75rem,0.4vw+0.5rem,0.9rem)]">
+                    <Award className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                     +23 anos de experiência
                   </Badge>
                   <div className="flex items-center gap-1">
-                    <span className="text-blue-500">★★★★★</span>
-                    <span className="text-sm text-black ml-2">Excelência comprovada</span>
+                    <span className="text-blue-500 text-[clamp(0.95rem,1vw+0.5rem,1.35rem)]">★★★★★</span>
+                    <span className="text-[clamp(0.85rem,0.6vw+0.5rem,1.05rem)] text-black ml-1 sm:ml-2">Excelência comprovada</span>
                   </div>
-                </div>
-                
+        </div>
+        
                 {/* Título principal */}
-                <h1 className="text-4xl lg:text-5xl font-bold leading-tight text-black mb-6 font-nunito drop-shadow-lg">
-                  Equipamentos<br />Hospitalares de 
-                  <span className="block mt-2" style={{color: '#066ba4'}}>Excelência</span>
-                </h1>
+                <h1 className="font-bold leading-tight text-black mb-4 sm:mb-6 font-nunito drop-shadow-lg text-left text-[clamp(2.25rem,4vw+0.5rem,5rem)]">
+                  Equipamentos Hospitalares de{' '}
+                  <span className="inline-block mt-1 sm:mt-2" style={{color: '#066ba4'}}>Excelência</span>
+              </h1>
                 
                 {/* Descrição */}
-                <p className="text-lg text-black leading-relaxed mb-8 font-figtree drop-shadow-md">
-                  Soluções completas em esterilização e equipamentos<br />
-                  médicos com certificações ANVISA e ISO 13485.
+                <p className="text-black leading-relaxed mb-6 sm:mb-8 font-figtree drop-shadow-md text-left text-[clamp(1rem,1.2vw+0.25rem,1.5rem)]">
+                  Soluções completas em esterilização e equipamentos médicos com certificações ANVISA e ISO 13485.
                 </p>
                 
                 {/* Badges de certificação */}
-                <div className="flex items-center gap-4 mb-8">
-                  <Badge variant="outline" className="text-xs bg-white/90 text-black border-gray-200 backdrop-blur-sm">
-                    <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-6 sm:mb-8 justify-start">
+                  <Badge variant="outline" className="bg-white/90 text-black border-gray-200 backdrop-blur-sm text-[clamp(0.75rem,0.6vw+0.4rem,1rem)]">
+                    <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full mr-1 sm:mr-2"></span>
                     ANVISA Certificado
                   </Badge>
-                  <Badge variant="outline" className="text-xs bg-white/90 text-black border-gray-200 backdrop-blur-sm">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                  <Badge variant="outline" className="bg-white/90 text-black border-gray-200 backdrop-blur-sm text-[clamp(0.75rem,0.6vw+0.4rem,1rem)]">
+                    <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-500 rounded-full mr-1 sm:mr-2"></span>
                     ISO 13485
                   </Badge>
                 </div>
                 
                 {/* Botões de ação */}
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button size="lg" variant="default" className="hover-lift font-medium" style={{backgroundColor: '#066ba4', color: 'white'}} asChild>
-                    <Link to="/produtos">
-                      Ver Produtos
-                      <ArrowRight className="h-5 w-5 ml-2" />
-                    </Link>
-                  </Button>
-                  <Button size="lg" variant="outline" className="hover-lift bg-white/90 text-black border-gray-200 hover:bg-white backdrop-blur-sm font-medium">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-start">
+                  <Button size="lg" variant="default" className="hover-lift font-medium w-full sm:w-auto text-[clamp(0.95rem,0.8vw+0.5rem,1.2rem)]" style={{backgroundColor: '#066ba4', color: 'white'}} asChild>
+                  <Link to="/produtos">
+                    Ver Produtos
+                      <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2" />
+                  </Link>
+                </Button>
+                  <Button size="lg" variant="outline" className="hover-lift bg-white/90 text-black border-gray-200 hover:bg-white backdrop-blur-sm font-medium w-full sm:w-auto text-[clamp(0.95rem,0.8vw+0.5rem,1.2rem)]">
                     Fale Conosco
                   </Button>
                 </div>
@@ -221,16 +266,19 @@ const Index = () => {
             </div>
 
             {/* 3D Model Carousel Column */}
-            <div className="flex items-center justify-center order-1 lg:order-2">
-              <Suspense fallback={<div className="w-full max-w-lg h-96" />}>
+            <div className="flex items-center justify-center order-2 lg:order-2">
+              <Suspense fallback={<div className="w-full h-64 sm:h-80 md:h-96" />}>
                 <div 
-                  className="w-full max-w-lg transition-all duration-500"
+                  className="transition-all duration-500 w-full"
                   style={{ 
+                    width: 'clamp(280px, 44vw, 860px)',
                     opacity: show3DModel ? 1 : 0,
                     transform: show3DModel ? 'translateY(0)' : 'translateY(20px)'
                   }}
                 >
-                  <HeroModelCarousel className="w-full max-w-lg" />
+                  <div className="w-full aspect-[4/3]">
+                    <HeroModelCarousel className="w-full h-full" />
+                  </div>
                 </div>
               </Suspense>
             </div>
@@ -238,87 +286,30 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Divisor decorativo com onda */}
-      <div className="relative -mt-24 pointer-events-none">
-        <svg 
-          className="w-full h-24" 
-          viewBox="0 0 1440 100" 
-          fill="none" 
-          xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="none"
-        >
-          {/* Onda azul de fundo */}
-          <path 
-            d="M0,10 C360,70 540,0 720,30 C900,60 1080,0 1440,30 L1440,100 L0,100 Z" 
-            fill="#3b82f6"
-            fillOpacity="0.15"
-          />
-          {/* Ondas brancas */}
-          <path 
-            d="M0,20 C320,80 420,0 720,40 C1020,80 1120,0 1440,40 L1440,100 L0,100 Z" 
-            fill="white"
-            fillOpacity="0.3"
-          />
-          <path 
-            d="M0,40 C360,100 540,20 720,60 C900,100 1080,20 1440,60 L1440,100 L0,100 Z" 
-            fill="white"
-            fillOpacity="0.5"
-          />
-          <path 
-            d="M0,60 C240,100 480,40 720,80 C960,100 1200,40 1440,80 L1440,100 L0,100 Z" 
-            fill="white"
-          />
-        </svg>
-      </div>
-
       {/* Seção de Presença Nacional */}
-      <section id="presenca-nacional-section" className="pt-8 pb-16 bg-gradient-to-b from-background to-muted/20 -mt-1 relative overflow-hidden">
-        {/* Background gradiente estático de fallback */}
-        <div 
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.03) 0%, rgba(96, 165, 250, 0.02) 50%, transparent 100%)',
-          }}
-        />
+      <section id="presenca-nacional-section" className="pt-8 pb-16 bg-white -mt-1 relative overflow-hidden min-h-screen">
+        {/* Background branco limpo */}
+        <div className="absolute inset-0 pointer-events-none bg-white" />
         
-        {/* Spline 3D Background - carrega com otimização */}
-        {presencaSplineVisible && (
+        {/* Spline 3D Background - DESABILITADO (causava conflito com Three.js) */}
+        {/* {presencaSplineVisible && (
           <Suspense fallback={null}>
-            <div 
-              className="absolute inset-0 pointer-events-none overflow-hidden"
-              style={{
-                opacity: 0,
-                animation: 'splineFadeIn 2s ease-out forwards',
-                willChange: 'opacity',
-              }}
-            >
-              <spline-viewer 
-                url="https://prod.spline.design/vZN8RrCEK7GQLAoL/scene.splinecode"
-                style={{ 
-                  width: '100%', 
-                  height: 'calc(100% + 60px)', 
-                  position: 'relative', 
-                  top: '0',
-                  transform: 'translateZ(0)',
-                  backfaceVisibility: 'hidden',
-                }}
-              ></spline-viewer>
-            </div>
+            ...spline viewer code...
           </Suspense>
-        )}
+        )} */}
         
         <div className="container mx-auto px-4 relative z-10">
           {/* Textos - aparecem primeiro com fade-in */}
           <div 
-            className="text-center mb-12 transition-all duration-700"
+            className="text-center mb-8 sm:mb-12 transition-all duration-700 px-4"
             style={{
               opacity: presencaTextVisible ? 1 : 0,
               transform: presencaTextVisible ? 'translateY(0)' : 'translateY(20px)'
             }}
           >
-            <Badge className="mb-4" variant="outline">Presença Nacional</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nossa Presença no Brasil</h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            <Badge className="mb-3 sm:mb-4 text-xs sm:text-sm" variant="outline">Presença Nacional</Badge>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">Nossa Presença no Brasil</h2>
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Atendemos hospitais e clínicas em todo o território nacional
             </p>
           </div>
@@ -338,6 +329,7 @@ const Index = () => {
               title="Mapa de Presença Nacional"
               style={{ display: 'block', background: 'transparent', overflow: 'hidden' }}
               scrolling="no"
+              loading="lazy"
             />
 
             {/* Informações Dinâmicas - Lado Direito */}
@@ -437,8 +429,8 @@ const Index = () => {
                   </div>
                 </div>
                 ) : null}
+              </div>
             </div>
-          </div>
 
           {/* Marquee de Hospitais Parceiros - aparece com mapa e cards */}
           <div 
@@ -527,19 +519,25 @@ const Index = () => {
         <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20"></div>
 
       {/* Certificações e Qualidade */}
-        <section className="py-16 relative">
-          <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-12">
-            <Badge className="mb-4" variant="outline">
-              <Shield className="h-3 w-3 mr-2" />
+        <section id="certificacoes-section" className="py-16 relative">
+          <div 
+            className="container mx-auto px-4 relative z-10 transition-all duration-700"
+            style={{
+              opacity: certificacoesVisible ? 1 : 0,
+              transform: certificacoesVisible ? 'translateY(0)' : 'translateY(30px)'
+            }}
+          >
+          <div className="text-center mb-8 sm:mb-12 px-4">
+            <Badge className="mb-3 sm:mb-4 text-xs sm:text-sm" variant="outline">
+              <Shield className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
               Qualidade Garantida
             </Badge>
-            <h2 className="text-3xl font-bold mb-4">Certificações e Qualidade</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">Certificações e Qualidade</h2>
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Nosso compromisso com a qualidade é reconhecido pelas principais certificações nacionais e internacionais.
             </p>
           </div>
-
+          
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {/* ISO 13485 - Liquid Glass Card */}
             <div className="group h-[320px] [perspective:1000px]">
@@ -623,7 +621,7 @@ const Index = () => {
                       <circle cx="100" cy="140" r="8" fill="white" />
                       <path d="M 100 148 L 85 165 L 115 165 Z" fill="white" />
                     </svg>
-                  </div>
+                </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">ANVISA</h3>
                   <p className="text-sm text-gray-600 leading-relaxed">
                   Registro na Agência Nacional de Vigilância Sanitária para todos os nossos produtos.
@@ -669,21 +667,27 @@ const Index = () => {
                       <text x="43" y="70" textAnchor="middle" fill="#000" fontSize="55" fontWeight="bold" fontFamily="Arial, sans-serif">C</text>
                       <text x="153" y="70" textAnchor="middle" fill="#000" fontSize="55" fontWeight="bold" fontFamily="Arial, sans-serif">E</text>
                     </svg>
-                  </div>
+                </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">CE Marking</h3>
                   <p className="text-sm text-gray-600 leading-relaxed">
                   Conformidade europeia para exportação e padrões internacionais de qualidade.
                 </p>
                 </div>
               </div>
-            </div>
+                </div>
           </div>
         </div>
       </section>
 
       {/* Missão, Visão e Valores */}
-        <section className="py-16 relative">
-          <div className="container mx-auto px-4 relative z-10">
+        <section id="missao-section" className="py-16 relative">
+        <div 
+          className="container mx-auto px-4 relative z-10 transition-all duration-700"
+          style={{
+            opacity: missaoVisible ? 1 : 0,
+            transform: missaoVisible ? 'translateY(0)' : 'translateY(30px)'
+          }}
+        >
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {/* Missão - Liquid Glass Card */}
             <div className="group h-[280px] [perspective:1000px]">
@@ -724,8 +728,8 @@ const Index = () => {
                   <p className="text-sm text-gray-600 leading-relaxed">
                     Nossa missão é preservar a vida dos pacientes e profissionais da área da saúde através de equipamentos 
                     hospitalares de alta tecnologia e qualidade excepcional.
-                  </p>
-                </div>
+            </p>
+          </div>
               </div>
             </div>
 
@@ -769,10 +773,10 @@ const Index = () => {
                   Ser referência nacional em equipamentos médicos, reconhecida pela inovação, qualidade e 
                   excelência no atendimento.
                 </p>
-                </div>
-              </div>
-            </div>
-
+                  </div>
+                  </div>
+          </div>
+          
             {/* Valores - Liquid Glass Card */}
             <div className="group h-[280px] [perspective:1000px]">
               <div className="relative h-full rounded-[40px] shadow-2xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[box-shadow:rgba(0,0,0,0.1)_30px_50px_25px_-40px,rgba(0,0,0,0.05)_0px_25px_30px_0px] group-hover:[transform:rotate3d(1,1,0,15deg)]" style={{
@@ -822,19 +826,25 @@ const Index = () => {
       </div>
 
       {/* Pós-venda e Garantia */}
-      <section className="py-16 bg-muted -mt-1">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <Badge className="mb-4" variant="outline">
-              <Wrench className="h-3 w-3 mr-2" />
+      <section id="posvenda-section" className="py-16 bg-muted -mt-1">
+        <div 
+          className="container mx-auto px-4 transition-all duration-700"
+          style={{
+            opacity: posVendaVisible ? 1 : 0,
+            transform: posVendaVisible ? 'translateY(0)' : 'translateY(30px)'
+          }}
+        >
+          <div className="text-center mb-8 sm:mb-12 px-4">
+            <Badge className="mb-3 sm:mb-4 text-xs sm:text-sm" variant="outline">
+              <Wrench className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
               Suporte Completo
             </Badge>
-            <h2 className="text-3xl font-bold mb-4">Pós-venda e Garantia</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">Pós-venda e Garantia</h2>
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Nosso compromisso com você não termina na venda. Oferecemos suporte completo durante toda a vida útil do equipamento.
             </p>
           </div>
-
+          
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {/* Suporte Técnico - Liquid Glass Card */}
             <div className="group h-[240px] [perspective:1000px]">
@@ -1004,28 +1014,29 @@ const Index = () => {
                   <p className="text-sm text-gray-600 leading-relaxed">
                   Capacitação da equipe para uso correto dos equipamentos.
                 </p>
-                </div>
-              </div>
-            </div>
+                  </div>
+                  </div>
+                  </div>
           </div>
         </div>
       </section>
 
-      {/* Divisor decorativo */}
-      <div className="h-px w-full relative">
-        <div className="absolute inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-border to-transparent" />
-      </div>
-
       {/* Nossa Localização */}
-      <section className="py-16 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <Badge className="mb-4" variant="outline">
-              <MapPin className="h-3 w-3 mr-2" />
+      <section id="localizacao-section" className="py-16 bg-background">
+        <div 
+          className="container mx-auto px-4 transition-all duration-700"
+          style={{
+            opacity: localizacaoVisible ? 1 : 0,
+            transform: localizacaoVisible ? 'translateY(0)' : 'translateY(30px)'
+          }}
+        >
+          <div className="text-center mb-8 sm:mb-12 px-4">
+            <Badge className="mb-3 sm:mb-4 text-xs sm:text-sm" variant="outline">
+              <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
               Localização
             </Badge>
-            <h2 className="text-3xl font-bold mb-4">Nossa Localização</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">Nossa Localização</h2>
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Estrategicamente localizada em Santa Rita do Sapucaí – MG, reconhecida como o Vale da Eletrônica, 
               facilitando logística e atendimento ágil em todo o território nacional.
             </p>
@@ -1052,7 +1063,7 @@ const Index = () => {
                       <p className="font-semibold">Horário de Funcionamento:</p>
                       <p>Segunda a Sexta: 8h às 18h</p>
                       <p>Sábado: 8h às 12h</p>
-                    </div>
+            </div>
                   </div>
                 </div>
               </CardContent>
@@ -1070,7 +1081,7 @@ const Index = () => {
                     height="100%" 
                     style={{ border: 0 }} 
                     allowFullScreen={true}
-                    loading="lazy" 
+                    loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                     title="Localização Sanders do Brasil - Santa Rita do Sapucaí, MG"
                   ></iframe>

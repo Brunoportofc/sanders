@@ -1,9 +1,9 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF, Environment, ContactShadows } from '@react-three/drei';
+import { useGLTF, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
 import ReactLenis from "lenis/react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -31,33 +31,99 @@ const SpecCard = ({
   totalCards,
   scrollYProgress,
 }: SpecCardProps) => {
-  // Animação vindo da direita com base no scroll - mais rápida
-  const progress = (index + 1) / totalCards;
+  // Range mais suave com overlap entre cards
+  const step = 1 / (totalCards + 0.5);
+  const start = index * step;
+  const end = (index + 1.5) * step;
   
-  // Reduzindo o range para completar a animação mais cedo (0.6 ao invés de 1)
+  // Animação de entrada da direita mais suave
   const x = useTransform(
     scrollYProgress,
-    [Math.max(0, progress - 0.15) * 0.6, progress * 0.6],
-    [200, 0]
+    [start, end],
+    [250, 0]
   );
   
+  // Fade in mais gradual
   const opacity = useTransform(
     scrollYProgress,
-    [Math.max(0, progress - 0.15) * 0.6, (progress - 0.05) * 0.6, progress * 0.6],
+    [start, start + (end - start) * 0.3, end],
     [0, 0.5, 1]
   );
+  
+  // Escala mais sutil
+  const scale = useTransform(
+    scrollYProgress,
+    [start, end],
+    [0.92, 1]
+  );
+  
+  // Rotação sutil no eixo Y
+  const rotateY = useTransform(
+    scrollYProgress,
+    [start, end],
+    [5, 0]
+  );
 
+  // Animação infinita sutil após aparecer
+  const isVisible = useTransform(opacity, (val) => val > 0.9);
+  
   return (
     <motion.div
-      className="mb-8"
-      style={{ x, opacity }}
+      className="mb-16 py-4 will-change-transform relative group"
+      style={{ 
+        x, 
+        opacity, 
+        scale,
+        rotateY,
+        transformOrigin: "left center"
+      }}
+      animate={
+        isVisible 
+          ? {
+              y: [0, -5, 0],
+            }
+          : {}
+      }
+      transition={{
+        y: {
+          duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: index * 0.2
+        }
+      }}
     >
-      <h3 className="text-3xl font-bold text-gray-900 mb-3 bg-gradient-to-r from-sanders-blue to-blue-600 bg-clip-text text-transparent">
+      {/* Brilho animado de fundo */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-sanders-blue/5 to-transparent rounded-lg -z-10"
+        animate={{
+          x: ["-100%", "200%"]
+        }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          ease: "linear",
+          delay: index * 0.3
+        }}
+      />
+      
+      <motion.h3 
+        className="text-3xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-sanders-blue to-blue-600 bg-clip-text text-transparent"
+        style={{
+          opacity: useTransform(scrollYProgress, [start, end], [0.6, 1])
+        }}
+        whileHover={{ scale: 1.02, x: 5 }}
+        transition={{ duration: 0.2 }}
+      >
         {title}
-      </h3>
-      <p className="text-lg text-gray-700 leading-relaxed border-l-4 border-sanders-blue pl-6">
+      </motion.h3>
+      <motion.p 
+        className="text-lg text-gray-700 leading-relaxed border-l-4 border-sanders-blue pl-6 py-2"
+        whileHover={{ x: 5 }}
+        transition={{ duration: 0.2 }}
+      >
         {value}
-      </p>
+      </motion.p>
     </motion.div>
   );
 };
@@ -102,15 +168,98 @@ const ProdutoDetalhesIndividual = () => {
   const { id } = useParams<{ id: string }>();
   const { isChatModalOpen, setIsChatModalOpen } = useChatContext();
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isLocked, setIsLocked] = useState(false);
+  const [hasEnteredSection, setHasEnteredSection] = useState(false);
+  const [progressPercent, setProgressPercent] = useState(0);
+  const internalProgress = useMotionValue(0);
 
   const produto = id ? getProdutoById(id) : null;
   const specs = produto?.specifications ? Object.entries(produto.specifications) : [];
 
-  // Hook de scroll progress para animação dos cards
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
+  // Atualiza o percentual
+  useEffect(() => {
+    const unsubscribe = internalProgress.on('change', (latest) => {
+      setProgressPercent(Math.round(latest * 100));
+    });
+    return unsubscribe;
+  }, [internalProgress]);
+
+  // Detecta quando entrar na seção
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasEnteredSection) {
+          setIsLocked(true);
+          setHasEnteredSection(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasEnteredSection]);
+
+  // Controla o scroll interno com velocidade ajustada
+  useEffect(() => {
+    if (!isLocked) return;
+
+    let touchStartY = 0;
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      
+      // Velocidade mais suave
+      const delta = e.deltaY * 0.0012;
+      const current = internalProgress.get();
+      const newValue = Math.max(0, Math.min(1, current + delta));
+      
+      internalProgress.set(newValue);
+      
+      // Libera quando chegar ao fim
+      if (newValue >= 0.98 && delta > 0) {
+        setTimeout(() => {
+          setIsLocked(false);
+        }, 300);
+      }
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      
+      const touchY = e.touches[0].clientY;
+      const delta = (touchStartY - touchY) * 0.002;
+      const current = internalProgress.get();
+      const newValue = Math.max(0, Math.min(1, current + delta));
+      
+      internalProgress.set(newValue);
+      touchStartY = touchY;
+      
+      // Libera quando chegar ao fim
+      if (newValue >= 0.98 && delta > 0) {
+        setTimeout(() => {
+          setIsLocked(false);
+        }, 300);
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: false });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, [isLocked, internalProgress]);
 
   if (!produto) {
     return (
@@ -182,8 +331,52 @@ const ProdutoDetalhesIndividual = () => {
             </motion.div>
 
       {/* Seção Principal: Modelo + Especificações */}
-      <div ref={containerRef} className="container mx-auto px-4 py-16">
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+      <div ref={containerRef} className="relative min-h-screen py-16">
+        {/* Dica de Scroll no Topo */}
+        {isLocked && progressPercent < 10 && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="absolute top-4 left-1/2 -translate-x-1/2 z-40"
+          >
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-xs uppercase tracking-widest text-sanders-blue/60 font-medium">
+                Role para explorar
+              </span>
+              <div className="w-px h-12 bg-gradient-to-b from-sanders-blue/60 to-transparent"></div>
+            </div>
+          </motion.div>
+        )}
+        
+        {/* Indicador de Progresso */}
+        {isLocked && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="fixed bottom-8 right-8 z-50 flex flex-col items-center gap-3"
+          >
+            <div className="bg-white/95 backdrop-blur-lg border-2 border-sanders-blue/40 rounded-full p-4 shadow-2xl">
+              <svg className="w-8 h-8 text-sanders-blue animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
+            </div>
+            <div className="bg-white/95 backdrop-blur-lg border-2 border-sanders-blue/40 rounded-full px-5 py-2 shadow-xl">
+              <span className="text-base font-bold text-sanders-blue">
+                {progressPercent}%
+              </span>
+            </div>
+            <motion.p 
+              className="text-sm text-gray-700 bg-white/95 backdrop-blur-lg px-4 py-2 rounded-full shadow-lg font-medium"
+              animate={{ scale: progressPercent >= 98 ? [1, 1.05, 1] : 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              {progressPercent < 98 ? 'Role para ver mais' : '✓ Pronto! Continue'}
+            </motion.p>
+          </motion.div>
+        )}
+        
+        <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-12 items-start">
           {/* Modelo 3D - Lado Esquerdo - Sticky */}
           {produto.gallery?.[0]?.endsWith('.glb') && (
             <div className="sticky top-24 h-[600px] rounded-3xl overflow-hidden bg-gradient-to-br from-blue-100 to-white shadow-2xl">
@@ -191,11 +384,12 @@ const ProdutoDetalhesIndividual = () => {
                 camera={{ position: [0, 0, 5], fov: 50 }}
                 gl={{ alpha: true, antialias: true }}
               >
-                <ambientLight intensity={0.8} />
-                <directionalLight position={[10, 10, 5]} intensity={1.2} />
-                <directionalLight position={[-10, -10, -5]} intensity={0.6} />
+                <ambientLight intensity={0.6} />
+                <directionalLight position={[10, 10, 5]} intensity={1.5} />
+                <directionalLight position={[-10, 5, -5]} intensity={0.8} />
+                <directionalLight position={[0, -5, 0]} intensity={0.4} />
+                <spotLight position={[15, 15, 15]} angle={0.3} penumbra={1} intensity={1} castShadow />
                 <Model modelPath={produto.gallery[0]} />
-                <Environment preset="studio" />
                 <ContactShadows 
                   opacity={0.4} 
                   scale={15} 
@@ -209,7 +403,10 @@ const ProdutoDetalhesIndividual = () => {
           )}
 
           {/* Especificações - Lado Direito - Textos Animados com Scroll */}
-          <div className="space-y-12">
+          <div 
+            className="space-y-8"
+            style={{ perspective: "1000px" }}
+          >
             {specs.map(([key, value], index) => (
               <SpecCard
                 key={key}
@@ -217,12 +414,12 @@ const ProdutoDetalhesIndividual = () => {
                 value={value}
                 index={index}
                 totalCards={specs.length}
-                scrollYProgress={scrollYProgress}
+                scrollYProgress={internalProgress}
               />
             ))}
           </div>
-          </div>
         </div>
+      </div>
 
       {/* Features & CTA com Animação de Scroll 3D */}
       <div className="bg-white overflow-hidden pb-32 pt-16">

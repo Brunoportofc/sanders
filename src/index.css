@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Responsive Layout - Adapts to all screen sizes */
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 /* Viewport and Full HD optimizations */
 @media (min-width: 1920px) {
   .container {
@@ -24,7 +30,7 @@ Paleta premium: azul oceano, branco pérola, cinza platina
 @layer base {
   :root {
     /* Light mode backgrounds */
-    --background: 0 0% 99%;
+    --background: 0 0% 100%;
     --foreground: 210 24% 16%;
 
     --card: 0 0% 100%;
@@ -71,12 +77,12 @@ Paleta premium: azul oceano, branco pérola, cinza platina
     --sanders-pearl: 40 10% 98%;
     --sanders-platinum: 220 8% 85%;
 
-    /* Enhanced Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(var(--sanders-blue)), hsl(var(--sanders-blue-dark)));
-    --gradient-hero-glow: linear-gradient(135deg, hsl(var(--sanders-blue) / 0.9), hsl(var(--sanders-blue-dark) / 0.9));
-    --gradient-card: linear-gradient(145deg, hsl(var(--background)), hsl(var(--sanders-blue-light) / 0.3));
-    --gradient-pearl: linear-gradient(145deg, hsl(var(--sanders-pearl)), hsl(var(--background)));
-    --gradient-ocean: linear-gradient(135deg, hsl(var(--sanders-ocean) / 0.8), hsl(var(--sanders-blue) / 0.8));
+    /* Enhanced Gradients (converted to neutral whites) */
+    --gradient-hero: linear-gradient(0deg, #ffffff, #ffffff);
+    --gradient-hero-glow: linear-gradient(0deg, #ffffff, #ffffff);
+    --gradient-card: linear-gradient(0deg, #ffffff, #ffffff);
+    --gradient-pearl: linear-gradient(0deg, #ffffff, #ffffff);
+    --gradient-ocean: linear-gradient(0deg, #ffffff, #ffffff);
 
     /* Lighting Effects */
     --light-blue-1: 214 100% 72%;
@@ -163,6 +169,7 @@ Paleta premium: azul oceano, branco pérola, cinza platina
   }
 
   /* Animated background lights */
+  /* DESABILITADO: Gradientes removidos para background branco limpo
   body::before {
     content: '';
     position: fixed;
@@ -179,8 +186,10 @@ Paleta premium: azul oceano, branco pérola, cinza platina
       radial-gradient(circle at 10% 90%, hsl(var(--light-blue-2) / 0.09) 0%, transparent 50%);
     animation: float-lights 20s ease-in-out infinite;
   }
+  */
 
   /* Dark mode lights */
+  /* DESABILITADO: Dark mode gradients também removidos
   .dark body::before {
     background: 
       radial-gradient(circle at 20% 30%, hsl(var(--sanders-blue-glow) / 0.12) 0%, transparent 50%),
@@ -190,6 +199,7 @@ Paleta premium: azul oceano, branco pérola, cinza platina
       radial-gradient(circle at 10% 90%, hsl(var(--sanders-ocean) / 0.12) 0%, transparent 50%);
     animation: float-lights-dark 15s ease-in-out infinite;
   }
+  */
 }
 
 /* Enhanced animations */
@@ -657,6 +667,7 @@ Paleta premium: azul oceano, branco pérola, cinza platina
   }
 
   /* High-tech page background for Index (white-first, blue as detail) */
+  /* DESABILITADO: Removido para background branco limpo com apenas BackgroundPaths
   .tech-page {
     background-image: 
       radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
@@ -668,9 +679,10 @@ Paleta premium: azul oceano, branco pérola, cinza platina
       radial-gradient(circle at 25% 25%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
       radial-gradient(circle at 75% 75%, rgba(45, 212, 191, 0.1) 0%, transparent 50%);
   }
+  */
 
-  /* Subtle grid with blue lines */
-  .tech-page::before {
+  /* tech-page overlays desativados para manter fundo branco puro */
+  /* .tech-page::before {
     content: '';
     position: fixed;
     inset: 0;
@@ -684,7 +696,6 @@ Paleta premium: azul oceano, branco pérola, cinza platina
     pointer-events: none;
   }
 
-  /* Moving blue highlight sweep */
   .tech-page::after {
     content: '';
     position: fixed;
@@ -698,7 +709,7 @@ Paleta premium: azul oceano, branco pérola, cinza platina
     transform: translateX(-50%);
     animation: tech-sweep 18s linear infinite;
     pointer-events: none;
-  }
+  } */
 
   /* Garantir que o background raycast escale com o zoom da página */
   @supports (zoom: 1) {
@@ -885,5 +896,217 @@ Paleta premium: azul oceano, branco pérola, cinza platina
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(180deg, #2563eb, #1d4ed8);
+  }
+
+  /* ========================================
+     ANIMAÇÕES DE ONDAS NAS TRANSIÇÕES
+     ======================================== */
+  
+  /* Onda animada suave */
+  @keyframes wave-flow {
+    0% {
+      d: path("M0,20 C320,80 420,0 720,40 C1020,80 1120,0 1440,40 L1440,100 L0,100 Z");
+    }
+    50% {
+      d: path("M0,40 C360,100 540,20 720,60 C900,100 1080,20 1440,60 L1440,100 L0,100 Z");
+    }
+    100% {
+      d: path("M0,20 C320,80 420,0 720,40 C1020,80 1120,0 1440,40 L1440,100 L0,100 Z");
+    }
+  }
+
+  /* Onda de fundo pulsante subindo */
+  @keyframes wave-pulse {
+    0%, 100% {
+      opacity: 0.15;
+      transform: translateY(10px);
+    }
+    50% {
+      opacity: 0.25;
+      transform: translateY(-8px);
+    }
+  }
+
+  /* Aplicar animação às ondas SVG */
+  .wave-animated {
+    animation: wave-pulse 4s ease-in-out infinite;
+  }
+
+  /* Onda flutuante suave */
+  .wave-float {
+    animation: wave-float-up 6s ease-in-out infinite;
+  }
+
+  /* Transição suave de seção para seção */
+  .section-transition {
+    position: relative;
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .section-transition::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(59, 130, 246, 0.3) 25%, 
+      rgba(59, 130, 246, 0.5) 50%, 
+      rgba(59, 130, 246, 0.3) 75%, 
+      transparent 100%);
+    animation: section-glow 3s ease-in-out infinite;
+  }
+
+  @keyframes section-glow {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scaleX(0.8);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scaleX(1);
+    }
+  }
+
+  /* Efeito de paralaxe nas ondas */
+  .wave-parallax {
+    transition: transform 0.3s ease-out;
+  }
+
+  .wave-parallax:hover {
+    transform: translateY(-3px);
+  }
+
+  /* Onda decorativa com gradiente */
+  .wave-gradient {
+    fill: url(#wave-gradient-fill);
+  }
+
+  /* Animação de entrada para divisores de onda */
+  @keyframes wave-slide-in {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .wave-enter {
+    animation: wave-slide-in 0.8s ease-out forwards;
+  }
+
+  /* Efeito de brilho nas ondas */
+  .wave-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .wave-shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 100%
+    );
+    animation: shimmer-wave 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer-wave {
+    0% {
+      left: -100%;
+    }
+    50%, 100% {
+      left: 100%;
+    }
+  }
+
+  /* Animação de ondas subindo suavemente */
+  @keyframes wave-rise {
+    0% {
+      transform: translateY(15px);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translateY(-8px);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(15px);
+      opacity: 0.6;
+    }
+  }
+
+  /* Animação de onda contínua subindo */
+  @keyframes wave-float-up {
+    0% {
+      transform: translateY(0px) scale(1);
+    }
+    50% {
+      transform: translateY(-12px) scale(1.02);
+    }
+    100% {
+      transform: translateY(0px) scale(1);
+    }
+  }
+
+  /* Múltiplas ondas com atraso e movimento vertical */
+  .wave-layer-1 {
+    animation: wave-rise 4s ease-in-out infinite;
+    animation-delay: 0s;
+  }
+
+  .wave-layer-2 {
+    animation: wave-rise 5s ease-in-out infinite;
+    animation-delay: -1s;
+  }
+
+  .wave-layer-3 {
+    animation: wave-rise 6s ease-in-out infinite;
+    animation-delay: -2s;
+  }
+
+  /* Transição fluida entre cores de seção */
+  .section-fade-transition {
+    position: relative;
+  }
+
+  .section-fade-transition::before,
+  .section-fade-transition::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 120px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .section-fade-transition::before {
+    top: -120px;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      var(--background) 100%
+    );
+  }
+
+  .section-fade-transition::after {
+    bottom: -120px;
+    background: linear-gradient(
+      to top,
+      transparent 0%,
+      var(--background) 100%
+    );
   }
 }

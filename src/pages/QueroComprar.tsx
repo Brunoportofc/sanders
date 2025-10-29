@@ -14,14 +14,14 @@ const QueroComprar = () => {
       <Header />
       
       {/* Hero Banner */}
-      <section className="bg-gradient-hero py-16 text-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <ShoppingCart className="h-16 w-16 mx-auto mb-6 opacity-90" />
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+      <section className="bg-white py-12 sm:py-16 md:py-20 text-gray-900">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <ShoppingCart className="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 mx-auto mb-4 sm:mb-6 text-sanders-blue" />
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 text-sanders-blue">
               Quero Comprar
             </h1>
-            <p className="text-lg md:text-xl opacity-90">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground leading-relaxed">
               Solicite uma cotação personalizada e descubra as melhores soluções 
               em equipamentos hospitalares e odontológicos para sua instituição.
             </p>

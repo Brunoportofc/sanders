@@ -12,7 +12,7 @@ const Header = () => {
     { name: "Empresa", path: "/empresa" },
     { name: "Produtos", path: "/produtos" },
     { name: "Blog", path: "/blog" },
-    { name: "Assistência Técnica", path: "/assistencia-tecnica" },
+    { name: "Suporte", path: "/assistencia-tecnica" },
     { name: "Contato", path: "/contato" }
   ];
 
@@ -23,10 +23,10 @@ const Header = () => {
   // ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b overflow-hidden relative">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full border-b overflow-hidden transition-all duration-300">
       {/* Clean background - same as HeroSection */}
       <div className="absolute inset-0 z-[1] pointer-events-none">
-        <div className="absolute inset-0 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60" />
+        <div className="absolute inset-0 bg-white/95 backdrop-blur-md supports-[backdrop-filter]:bg-white/80" />
       </div>
       
 

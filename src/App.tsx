@@ -9,14 +9,13 @@ import Empresa from "./pages/Empresa";
 import Produtos from "./pages/Produtos";
 import ProdutoDetalhes from "./pages/ProdutoDetalhes";
 import ProdutoDetalhesIndividual from "./pages/ProdutoDetalhesIndividual";
+import AssistenciaTecnica from "./pages/AssistenciaTecnica";
 import NotFound from "./pages/NotFound";
 import FloatingChat from "@/components/FloatingChat";
 import { ChatProvider } from "@/contexts/ChatContext";
-
 import Blog from "./pages/Blog";
 import Contato from "./pages/Contato";
 import QueroComprar from "./pages/QueroComprar";
-import AssistenciaTecnica from "./pages/AssistenciaTecnica";
 
 const queryClient = new QueryClient();
 

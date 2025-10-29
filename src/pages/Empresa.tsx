@@ -10,13 +10,13 @@ const Empresa = () => {
       <Header />
       
       {/* Hero Banner */}
-      <section className="bg-gradient-hero py-16 text-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+      <section className="bg-gradient-hero py-12 sm:py-16 md:py-20 text-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
               Sobre a Sanders do Brasil
             </h1>
-            <p className="text-lg md:text-xl opacity-90">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl opacity-90 leading-relaxed">
               Com 23 anos de atuação, somos fabricantes 100% nacionais de equipamentos hospitalares 
               de alta tecnologia, com foco em limpeza, secagem, desinfecção e esterilização.
             </p>

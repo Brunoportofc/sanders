@@ -100,25 +100,37 @@ export const RaycastAnimatedBlueWhiteBackground = () => {
     };
   }, []);
 
+  // Detectar mobile para reduzir complexidade
+  const isMobile = width < 768;
+  
   return ( 
     <div 
       ref={containerRef}
       className={cn("flex flex-col items-center w-full h-full")} 
-      style={{ transformOrigin: 'top left' }}
+      style={{ 
+        transformOrigin: 'top left',
+        transform: 'translateZ(0)',
+        backfaceVisibility: 'hidden',
+        willChange: 'transform'
+      }}
     > 
       {isMounted && isVisible && width > 0 && height > 0 && (
-        <UnicornScene 
-          production={true} 
-          projectId="2mMfzhTYIBPRbtfinXzB" 
-          width={width} 
-          height={height} 
-          style={{ 
-            background: 'linear-gradient(135deg, #ffffff 0%, #3b82f6 100%)',
-            filter: 'brightness(1.2) contrast(1.1)',
-            width: '100%',
-            height: '100%'
-          }}
-        /> 
+        <div style={{ 
+          background: '#ffffff',
+          filter: isMobile ? 'brightness(1.1) contrast(1.05)' : 'brightness(1.2) contrast(1.1)',
+          width: '100%',
+          height: '100%',
+          transform: 'translateZ(0)',
+          backfaceVisibility: 'hidden',
+          willChange: 'transform'
+        }}>
+          <UnicornScene 
+            production={true} 
+            projectId="2mMfzhTYIBPRbtfinXzB" 
+            width={isMobile ? Math.floor(width * 0.8) : width} 
+            height={isMobile ? Math.floor(height * 0.8) : height} 
+          /> 
+        </div>
       )}
     </div> 
   ); 
