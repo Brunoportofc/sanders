@@ -34,10 +34,13 @@ import {
 } from "lucide-react";
 
 const Index = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [show3DModel, setShow3DModel] = useState(false);
-  const [showMapAndCards, setShowMapAndCards] = useState(false);
-  const [showSplineBackground, setShowSplineBackground] = useState(false);
+  // Verifica se a Home já foi carregada nesta sessão
+  const homeAlreadyLoaded = sessionStorage.getItem('homeLoaded') === 'true';
+  
+  const [isLoading, setIsLoading] = useState(!homeAlreadyLoaded);
+  const [show3DModel, setShow3DModel] = useState(homeAlreadyLoaded);
+  const [showMapAndCards, setShowMapAndCards] = useState(homeAlreadyLoaded);
+  const [showSplineBackground, setShowSplineBackground] = useState(homeAlreadyLoaded);
   const [presencaTextVisible, setPresencaTextVisible] = useState(false);
   const [presencaMapVisible, setPresencaMapVisible] = useState(false);
   const [presencaSplineVisible, setPresencaSplineVisible] = useState(false);
@@ -51,6 +54,8 @@ const Index = () => {
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
+    // Marca que a Home foi carregada nesta sessão
+    sessionStorage.setItem('homeLoaded', 'true');
     // Mostra modelo 3D após 300ms (já estará carregado)
     setTimeout(() => setShow3DModel(true), 300);
     // Carrega mapa e cards após 800ms

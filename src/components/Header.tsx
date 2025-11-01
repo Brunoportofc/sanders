@@ -9,8 +9,8 @@ const Header = () => {
 
   const navigationItems = [
     { name: "Home", path: "/" },
-    { name: "Empresa", path: "/empresa" },
     { name: "Produtos", path: "/produtos" },
+    { name: "Empresa", path: "/empresa" },
     { name: "Blog", path: "/blog" },
     { name: "Suporte", path: "/assistencia-tecnica" },
     { name: "Contato", path: "/contato" }

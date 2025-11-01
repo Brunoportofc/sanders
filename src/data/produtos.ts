@@ -58,7 +58,7 @@ export const produtos: Produto[] = [
       "Normas Atendidas": "ANVISA RDC 15/2012, ISO 15883-1 e 2"
     },
     gallery: [
-      "/Termodesinfectora WDS-380SD.glb",
+      "/TermodesinfectoraWDS-380SD.glb",
       "/images/termodesinfetora-1.svg",
       "/images/termodesinfetora-2.svg",
       "/termo1.jpg",

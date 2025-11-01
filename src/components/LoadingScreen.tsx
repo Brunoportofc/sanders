@@ -10,7 +10,7 @@ interface LoadingScreenProps {
 const preloadFirstModel = (onProgress: (progress: number) => void) => {
   return new Promise<void>((resolve) => {
     console.log('🎯 Carregando modelo prioritário: Termodesinfectora...');
-    useGLTF.preload('/Termodesinfectora WDS-380SD.glb');
+    useGLTF.preload('/TermodesinfectoraWDS-380SD.glb');
     
     setTimeout(() => {
       onProgress(100); // 100% quando o primeiro modelo carregar

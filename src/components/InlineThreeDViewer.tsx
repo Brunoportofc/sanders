@@ -171,7 +171,7 @@ interface InlineThreeDViewerProps {
   modelPath?: string;
 }
 
-const InlineThreeDViewer: React.FC<InlineThreeDViewerProps> = ({ isActive, onClose, modelPath = '/Termodesinfectora WDS-380SD.glb' }) => {
+const InlineThreeDViewer: React.FC<InlineThreeDViewerProps> = ({ isActive, onClose, modelPath = '/TermodesinfectoraWDS-380SD.glb' }) => {
   const [resetTrigger, setResetTrigger] = useState(0);
   const [canvasKey, setCanvasKey] = useState(0);
   const [isRotating, setIsRotating] = useState(true);

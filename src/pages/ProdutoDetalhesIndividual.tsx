@@ -49,14 +49,52 @@ function Termodesinfectora({ modelPath }: { modelPath: string }) {
 }
 
 // PASSO 3: Controlador da Cena (Sincroniza Scroll da PÁGINA com Animações)
-function SceneController({ modelPath, scrollProgress }: { modelPath: string; scrollProgress: number }) {
+function SceneController({ 
+  modelPath, 
+  scrollProgress, 
+  currentSection 
+}: { 
+  modelPath: string; 
+  scrollProgress: number;
+  currentSection: number;
+}) {
   const group = useRef<THREE.Group>(null!);
-  const { scene, animations } = useGLTF(modelPath);
-  const { actions, names } = useAnimations(animations, group);
+  const gltf = useGLTF(modelPath);
+  const { scene, animations } = gltf;
   const initializedRef = useRef(false);
-  const lastPageRef = useRef(-1);
+  const lastSectionRef = useRef(-1);
+  const baseScaleRef = useRef(1);
+  
+  // Criar mixer manualmente
+  const mixerRef = useRef<THREE.AnimationMixer | null>(null);
+  const currentActionRef = useRef<THREE.AnimationAction | null>(null);
 
-  // Centraliza e escala o modelo (MENOR para dar espaço aos textos)
+  // Debug: Log do GLTF completo
+  useEffect(() => {
+    console.log('📦 GLTF carregado:', gltf);
+    console.log('🎬 Animations do GLTF:', gltf.animations);
+    console.log('📊 Número de animações:', gltf.animations?.length || 0);
+    if (gltf.animations && gltf.animations.length > 0) {
+      gltf.animations.forEach((anim, index) => {
+        console.log(`   ${index}: "${anim.name}" - Duration: ${anim.duration}s - Tracks: ${anim.tracks.length}`);
+      });
+    }
+  }, [gltf]);
+
+  // Inicializa o mixer manualmente
+  useEffect(() => {
+    if (!group.current || mixerRef.current) return;
+    
+    if (animations && animations.length > 0) {
+      mixerRef.current = new THREE.AnimationMixer(group.current);
+      console.log('✅ Mixer criado manualmente!');
+      console.log('🎵 Mixer:', mixerRef.current);
+    } else {
+      console.log('❌ Não foi possível criar mixer - sem animações');
+    }
+  }, [animations]);
+
+  // Centraliza e escala o modelo
   useEffect(() => {
     if (!group.current || initializedRef.current) return;
 
@@ -64,52 +102,120 @@ function SceneController({ modelPath, scrollProgress }: { modelPath: string; scr
     const center = box.getCenter(new THREE.Vector3());
     const size = box.getSize(new THREE.Vector3());
     
-    const maxDim = Math.max(size.x, size.y, size.z);
-    const scale = 2.2 / maxDim; // Reduzido de 3.5 para 2.2
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const scale = 4.0 / maxDim; // Aumentado para 5.5 (maior visibilidade)
+      baseScaleRef.current = scale;
     group.current.scale.setScalar(scale);
     
-    // Posiciona o modelo mais abaixo (ajusta Y para -1.5)
+    // Posiciona o modelo
     const adjustedCenter = center.clone().multiplyScalar(-scale);
-    adjustedCenter.y -= 0.5; // Move o modelo para baixo
+    adjustedCenter.y -= 1.0; // Aumentado de 0.5 para 1.5 (mais abaixo)
     group.current.position.copy(adjustedCenter);
     
     initializedRef.current = true;
   }, [scene]);
 
-  // Sincroniza scroll da PÁGINA com animações
+  // Sincroniza animações com as seções
   useEffect(() => {
-    if (!actions || !names || names.length === 0) return;
+    // Se não tiver animações ou mixer, não faz nada
+    if (!animations || animations.length === 0 || !mixerRef.current) {
+      console.log('⚠️ Sem animações ou mixer disponível');
+      return;
+    }
 
-    // Divide em 4 páginas: 0-0.25, 0.25-0.5, 0.5-0.75, 0.75-1.0
-    let currentPage = -1;
-    if (scrollProgress < 0.25) currentPage = 0;
-    else if (scrollProgress < 0.5) currentPage = 1;
-    else if (scrollProgress < 0.75) currentPage = 2;
-    else currentPage = 3;
-
-    // Se mudou de página, dispara a animação correspondente
-    if (currentPage !== lastPageRef.current && currentPage > 0 && currentPage <= names.length) {
-      // Para todas as animações
-      Object.values(actions).forEach(action => {
-        if (action) action.reset().stop();
-      });
-
-      // Inicia a animação da página atual
-      const animationName = names[currentPage - 1];
-      if (actions[animationName]) {
-        actions[animationName].reset().play();
-        console.log(`🎬 Página ${currentPage}: Tocando "${animationName}"`);
+    // Quando chegar na seção 1 (primeiro texto), inicia animações 1 e 2 ao mesmo tempo
+    if (currentSection !== lastSectionRef.current) {
+      console.log(`📍 Mudou para seção ${currentSection}`);
+      
+      // Para a animação anterior
+      if (currentActionRef.current) {
+        currentActionRef.current.stop();
+        console.log('⏹️ Animação anterior parada');
       }
 
-      lastPageRef.current = currentPage;
-    }
-  }, [scrollProgress, actions, names]);
+      // Seção 1: Inicia animações 1 e 2 simultaneamente
+      if (currentSection === 1) {
+        console.log('🎯 Seção 1 atingida! Iniciando animações 1 e 2 simultaneamente...');
+        
+        try {
+          // Inicia animação 1
+          const clip1 = animations[0];
+          const action1 = mixerRef.current.clipAction(clip1);
+          action1.reset();
+          action1.setLoop(THREE.LoopOnce, 1);
+          action1.clampWhenFinished = true;
+          action1.play();
+          console.log(`✅ Animação 1 "${clip1.name}" iniciada!`);
+          
+          // Inicia animação 2 ao mesmo tempo
+          if (animations.length >= 2) {
+            const clip2 = animations[1];
+            const action2 = mixerRef.current.clipAction(clip2);
+            action2.reset();
+            action2.setLoop(THREE.LoopOnce, 1);
+            action2.clampWhenFinished = true;
+            action2.play();
+            currentActionRef.current = action2;
+            console.log(`✅ Animação 2 "${clip2.name}" iniciada simultaneamente!`);
+          }
+        } catch (error) {
+          console.error('❌ Erro ao iniciar animações:', error);
+        }
+      }
+      // Outras seções: inicia animação correspondente
+      else if (currentSection >= 2) {
+        const animationIndex = currentSection - 1;
+        console.log(`🔍 Procurando animação no índice ${animationIndex}`);
+        
+        if (animationIndex >= 0 && animationIndex < animations.length) {
+          const clip = animations[animationIndex];
+          console.log(`🎬 Animação encontrada: "${clip.name}" (${clip.duration}s)`);
+          
+          try {
+            const action = mixerRef.current.clipAction(clip);
+            action.reset();
+            action.setLoop(THREE.LoopOnce, 1);
+            action.clampWhenFinished = true;
+            action.play();
+            
+            currentActionRef.current = action;
+            console.log(`✅ Animação "${clip.name}" iniciada!`);
+          } catch (error) {
+            console.error('❌ Erro ao iniciar animação:', error);
+          }
+        } else {
+          console.log(`❌ Índice ${animationIndex} fora do range (0-${animations.length - 1})`);
+        }
+      }
 
-  // Mantém a máquina sempre de lado (rotação fixa)
-  useFrame(() => {
+      lastSectionRef.current = currentSection;
+    }
+  }, [currentSection, animations]);
+
+  // Zoom progressivo e rotação fixa
+  useFrame((state, delta) => {
     if (group.current) {
-      // Rotação fixa para manter a máquina de lado (90 graus)
-      group.current.rotation.y = Math.PI * 0.5; // 90 graus = lado para a tela
+      // Rotação fixa de lado
+      group.current.rotation.y = Math.PI * 0.5;
+      
+      // Zoom progressivo: aumenta conforme o scroll
+      // scrollProgress 0 -> 0.17 (seção 0 -> 1): zoom de 1x para 1.5x
+      let zoomFactor = 1;
+      if (scrollProgress < 0.17) {
+        // Zoom progressivo na primeira seção
+        zoomFactor = 1 + (scrollProgress / 0.17) * 0.5; // 1.0 -> 1.5
+      } else {
+        // Mantém o zoom em 1.5x após a primeira seção
+        zoomFactor = 1.5;
+      }
+      
+      const targetScale = baseScaleRef.current * zoomFactor;
+      group.current.scale.setScalar(targetScale);
+    }
+
+    // Atualiza o mixer para as animações funcionarem
+    if (mixerRef.current) {
+      mixerRef.current.update(delta);
     }
   });
 
@@ -259,8 +365,9 @@ const ProdutoDetalhesIndividual = () => {
           
           <Suspense fallback={null}>
             <SceneController 
-              modelPath="/Termodesinfectora WDS-380SD.glb" 
+              modelPath="/TermodesinfectoraWDS-380SD.glb" 
               scrollProgress={scrollProgress}
+              currentSection={currentSection}
             />
           </Suspense>
         </Canvas>
@@ -462,7 +569,7 @@ const ProdutoDetalhesIndividual = () => {
               Equipado com sensores de segurança que impedem o fechamento caso haja obstrução, protegendo tanto os instrumentos quanto os operadores.
             </p>
           </div>
-        </div>
+            </div>
 
         {/* Página 3: Texto à ESQUERDA */}
         <div 
@@ -503,8 +610,8 @@ const ProdutoDetalhesIndividual = () => {
             <p style={{ fontSize: '1rem', color: '#9ca3af', marginTop: '1rem', lineHeight: '1.6' }}>
               Certificado pela ANVISA e em conformidade com normas ISO internacionais. Ciclos de 15 a 30 minutos com eficiência comprovada em testes laboratoriais.
             </p>
-          </div>
         </div>
+      </div>
 
         {/* Página 5: Texto adicional */}
         <div 
@@ -524,8 +631,8 @@ const ProdutoDetalhesIndividual = () => {
             <p style={{ fontSize: '1rem', color: '#9ca3af', marginTop: '1rem', lineHeight: '1.6' }}>
               Modo eco que ajusta automaticamente a potência conforme a carga, resultando em economia significativa na conta de energia.
             </p>
-          </div>
-        </div>
+                </div>
+            </div>
 
         {/* Página 6: Texto adicional */}
         <div 

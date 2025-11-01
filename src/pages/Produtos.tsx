@@ -62,10 +62,10 @@ const Produtos = () => {
       <section className="bg-gradient-hero py-12 sm:py-16 md:py-20 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6" style={{ color: '#066ba5' }}>
               Nossos Produtos
             </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl opacity-90 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl opacity-90 leading-relaxed" style={{ color: '#066ba5' }}>
               Equipamentos hospitalares e odontológicos de alta qualidade, 
               desenvolvidos com tecnologia avançada e certificações internacionais.
             </p>

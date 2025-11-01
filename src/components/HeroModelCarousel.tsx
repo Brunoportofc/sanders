@@ -19,7 +19,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import * as THREE from 'three';
 
 // Pré-carregamento dos modelos
-useGLTF.preload('/Termodesinfectora WDS-380SD.glb');
+useGLTF.preload('/TermodesinfectoraWDS-380SD.glb');
 useGLTF.preload('/Autoclave Stericlean_12_D.glb');
 useGLTF.preload('/SeladoraPecksel.glb');
 
@@ -28,7 +28,7 @@ const models = [
   {
     id: 'termodesinfectora',
     name: 'Termodesinfectora WDS-380SD',
-    path: '/Termodesinfectora WDS-380SD.glb',
+    path: '/TermodesinfectoraWDS-380SD.glb',
     scale: 0.5,
     position: [0, -2.0, 0] as [number, number, number]
   },
